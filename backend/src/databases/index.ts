@@ -1,6 +1,5 @@
 import { appConfigs } from '@/config';
 import entities from '@/entities';
-import { User } from '@/entities/users.entity';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
@@ -9,7 +8,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
     imports: [
         SequelizeModule.forRootAsync({
             imports: [ConfigModule],
-            useFactory: async (configService: ConfigService) => ({
+            useFactory: async () => ({
                 dialect: 'postgres',
                 host: appConfigs().postgres.host,
                 port: appConfigs().postgres.port,

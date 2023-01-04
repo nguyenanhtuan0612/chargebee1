@@ -31,10 +31,10 @@ const generateWhere = (filter: Filter) => {
             return { [prop]: { [Op.gte]: value } };
         }
         case 'like': {
-            return { [prop]: { [Op.like]: value } };
+            return { [prop]: { [Op.like]: `%${value}%` } };
         }
         case 'iLike': {
-            return { [prop]: { [Op.iLike]: value } };
+            return { [prop]: { [Op.iLike]: `%${value}%` } };
         }
         case 'in': {
             if (!Array.isArray(value)) {
