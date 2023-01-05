@@ -2,10 +2,10 @@ import { NextFunction, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@entities/users.entity';
 import { RequestWithUser } from '@interfaces/auth.interface';
-import { IUser } from '@/interfaces/users.interface';
 import { errors } from '@/utils/errors';
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { ExceptionWithMessage } from '@/exceptions/HttpException';
+import { UserResponse } from '@/dtos/users.dto';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -20,17 +20,16 @@ export class AuthMiddleware implements NestMiddleware {
 
             if (Authorization) {
                 const tokenDecode: any = this.jwtService.decode(Authorization);
-                const findUser: IUser = await User.findOne(tokenDecode.id);
+                const findUser: User = await User.findOne(tokenDecode.id);
 
                 if (findUser) {
-                    req.auth = findUser;
+                    req.auth = new UserResponse(findUser);
                     next();
                 } else {
                     next(
                         new ExceptionWithMessage(
-                            errors.LOGIN_ERROR_UNAUTHORIZE.detail,
+                            errors.LOGIN_ERROR_UNAUTHORIZE,
                             401,
-                            errors.LOGIN_ERROR_UNAUTHORIZE.code,
                             'Wrong authentication token',
                         ),
                     );
@@ -38,9 +37,8 @@ export class AuthMiddleware implements NestMiddleware {
             } else {
                 next(
                     new ExceptionWithMessage(
-                        errors.LOGIN_ERROR_MISSING.detail,
+                        errors.LOGIN_ERROR_MISSING,
                         404,
-                        errors.LOGIN_ERROR_MISSING.code,
                         'Authentication token missing',
                     ),
                 );
@@ -48,9 +46,8 @@ export class AuthMiddleware implements NestMiddleware {
         } catch (error) {
             next(
                 new ExceptionWithMessage(
-                    errors.LOGIN_ERROR_UNAUTHORIZE.detail,
+                    errors.LOGIN_ERROR_UNAUTHORIZE,
                     401,
-                    errors.LOGIN_ERROR_UNAUTHORIZE.code,
                     'Wrong authentication token',
                 ),
             );

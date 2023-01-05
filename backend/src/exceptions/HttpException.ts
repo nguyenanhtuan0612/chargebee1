@@ -3,15 +3,16 @@ import { HttpException } from '@nestjs/common';
 export class ExceptionWithMessage extends HttpException {
     public message: string;
     public code: number;
+    public detail: string;
 
     constructor(
-        response: any,
+        error: { detail: string; code: number; message?: string },
         status: number,
-        code?: number,
         message?: string,
     ) {
-        super(response, status);
-        this.code = code || 999;
-        this.message = message || 'Something went wrong';
+        super(error.detail, status);
+        this.detail = error.detail || null;
+        this.code = error.code || 999;
+        this.message = message || error.message || 'Something went wrong';
     }
 }

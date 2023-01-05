@@ -1,23 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { RegisterDto } from '@/dtos/users.dto';
+import {
+    LoginDto,
+    RegisterDto,
+    UserResponeWithToken,
+    UserResponse,
+} from '@/dtos/users.dto';
 import { UsersService } from './users.service';
 import { errors } from '@/utils/errors';
 import { User } from '@/entities/users.entity';
-import { genSalt, hash } from 'bcrypt';
+import { compare, genSalt, hash } from 'bcrypt';
 import { ExceptionWithMessage } from '@/exceptions/HttpException';
+import { authConfigs } from '@/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly userService: UsersService) {}
+    constructor(
+        private readonly userService: UsersService,
+        private readonly jwtService: JwtService,
+    ) {}
 
     async register(registerDto: RegisterDto) {
         const check = await this.userService.findByEmail(registerDto.email);
 
         if (check)
             throw new ExceptionWithMessage(
-                errors.EMAIL_EXIST.detail,
+                errors.EMAIL_EXIST,
                 400,
-                errors.EMAIL_EXIST.code,
                 'Register Fail',
             ); // error
         const user = new User();
@@ -27,6 +36,46 @@ export class AuthService {
         user.password = await hash(registerDto.password, salt);
         const userData = await user.save();
 
-        return userData;
+        return new UserResponse(userData);
+    }
+
+    async login(dto: LoginDto): Promise<UserResponeWithToken> {
+        const user = await this.userService.findByEmail(dto.email);
+        if (user) {
+            const compareResult = await compare(dto.password, user.password);
+            if (compareResult) {
+                const payload = {
+                    email: user.email,
+                    sub: user.id,
+                };
+
+                const tokenExpiresIn = authConfigs().jwtExpiresIn;
+                const accessToken = await this.jwtService.signAsync(payload, {
+                    expiresIn: tokenExpiresIn,
+                });
+                const refreshTokenExpiresIn = authConfigs().jwtRefreshExpiresIn;
+                const refreshToken = await this.jwtService.signAsync(payload, {
+                    secret: authConfigs().jwtRefreshTokenKey,
+                    expiresIn: refreshTokenExpiresIn,
+                });
+
+                return new UserResponeWithToken(user, {
+                    accessToken,
+                    refreshToken,
+                    tokenExpiresIn,
+                    refreshTokenExpiresIn,
+                });
+            }
+            throw new ExceptionWithMessage(
+                errors.USERNAME_PASSWwRD_INVALID,
+                401,
+                'Login Fail',
+            );
+        }
+        throw new ExceptionWithMessage(
+            errors.USERNAME_PASSWwRD_INVALID,
+            401,
+            'Login Fail',
+        );
     }
 }

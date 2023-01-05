@@ -1,10 +1,10 @@
+import { Role } from '@/utils/constants';
 import {
-    AutoIncrement,
     Column,
     CreatedAt,
+    DataType,
     IsEmail,
     Model,
-    PrimaryKey,
     Table,
     Unique,
     UpdatedAt,
@@ -15,10 +15,12 @@ import {
     timestamps: true,
 })
 export class User extends Model {
-    @AutoIncrement
-    @PrimaryKey
-    @Column
-    id: number;
+    @Column({
+        type: DataType.UUID,
+        defaultValue: DataType.UUIDV4,
+        primaryKey: true,
+    })
+    id: string;
 
     @Unique
     @IsEmail
@@ -27,6 +29,12 @@ export class User extends Model {
 
     @Column
     password: string;
+
+    @Column({ defaultValue: 0 })
+    balance: number;
+
+    @Column({ defaultValue: Role.CUSTOMER })
+    role: string;
 
     @Column
     @CreatedAt

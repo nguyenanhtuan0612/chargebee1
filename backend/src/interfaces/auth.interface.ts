@@ -13,3 +13,10 @@ export interface TokenData {
 export interface RequestWithUser extends Request {
     auth: IUser;
 }
+
+export interface JwtInfo {
+    accessToken: string;
+    refreshToken: string;
+    tokenExpiresIn: string;
+    refreshTokenExpiresIn: string;
+}

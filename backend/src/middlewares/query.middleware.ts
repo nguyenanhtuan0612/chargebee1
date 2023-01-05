@@ -81,9 +81,8 @@ export class QueryMiddleware implements NestMiddleware {
                     if (!valid) {
                         next(
                             new ExceptionWithMessage(
-                                errors.FILTER_INVALID.detail,
+                                errors.FILTER_INVALID,
                                 400,
-                                errors.FILTER_INVALID.code,
                                 'Filter error: ' + message,
                             ),
                         );
@@ -105,9 +104,8 @@ export class QueryMiddleware implements NestMiddleware {
                     if (!valid) {
                         next(
                             new ExceptionWithMessage(
-                                errors.ORDER_INVALID.detail,
+                                errors.ORDER_INVALID,
                                 400,
-                                errors.ORDER_INVALID.code,
                                 'Order error: ' + message,
                             ),
                         );

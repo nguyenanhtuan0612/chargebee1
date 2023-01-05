@@ -14,4 +14,5 @@ export default () => ({
         synchronize: parseBool(process.env.DB_SYNC),
         autoLoadModels: parseBool(process.env.DB_AUTO_LOAD),
     },
+    limitFileSize: process.env.LIMIT_FILE_SIZE,
 });

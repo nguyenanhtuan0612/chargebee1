@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -7,6 +7,10 @@ import { PostgreSqlModule } from '@databases';
 import { JwtModule } from '@nestjs/jwt';
 import UsersController from './controllers/users.controller';
 import { UsersService } from './services/users.service';
+import { AuthMiddleware } from './middlewares/auth.middleware';
+import { QueryMiddleware } from './middlewares/query.middleware';
+import { AuthController } from './controllers/auth.controller';
+import { AuthService } from './services/auth.service';
 const ENV = process.env.NODE_ENV;
 console.log(ENV);
 
@@ -26,10 +30,16 @@ console.log(ENV);
         }),
         PostgreSqlModule,
     ],
-    controllers: [AppController, UsersController],
-    providers: [AppService, UsersService],
+    controllers: [AppController, UsersController, AuthController],
+    providers: [AppService, UsersService, AuthService],
 })
 export class AppModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(AuthMiddleware).forRoutes('/api/*');
+        consumer
+            .apply(QueryMiddleware)
+            .forRoutes({ path: '*', method: RequestMethod.GET });
+    }
     constructor() {
         console.log(appConfigs());
     }
