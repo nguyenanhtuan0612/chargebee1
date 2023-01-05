@@ -1,16 +1,9 @@
 // ** Icon imports
-import Login from 'mdi-material-ui/Login'
-import Table from 'mdi-material-ui/Table'
-import CubeOutline from 'mdi-material-ui/CubeOutline'
-import HomeOutline from 'mdi-material-ui/HomeOutline'
-import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
-import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
-import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
-import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
-import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
+import HomeOutline from 'mdi-material-ui/HomeOutline'
 
 // ** Type import
+import { AccountCashOutline } from 'mdi-material-ui'
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
 
 const navigation = (): VerticalNavItemsType => {
@@ -21,57 +14,58 @@ const navigation = (): VerticalNavItemsType => {
       path: '/'
     },
     {
-      title: 'Account Settings',
+      title: 'Management Account',
       icon: AccountCogOutline,
       path: '/account-settings'
     },
+
+    // {
+    //   sectionTitle: 'Pages'
+    // },
+    // {
+    //   title: 'Login',
+    //   icon: Login,
+    //   path: '/pages/login',
+    //   openInNewTab: true
+    // },
+    // {
+    //   title: 'Register',
+    //   icon: AccountPlusOutline,
+    //   path: '/pages/register',
+    //   openInNewTab: true
+    // },
+    // {
+    //   title: 'Error',
+    //   icon: AlertCircleOutline,
+    //   path: '/pages/error',
+    //   openInNewTab: true
+    // },
     {
-      sectionTitle: 'Pages'
+      sectionTitle: 'Danh mục các tài khoản'
     },
     {
-      title: 'Login',
-      icon: Login,
-      path: '/pages/login',
-      openInNewTab: true
-    },
-    {
-      title: 'Register',
-      icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
-    },
-    {
-      title: 'Error',
-      icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
-    },
-    {
-      sectionTitle: 'User Interface'
-    },
-    {
-      title: 'Typography',
-      icon: FormatLetterCase,
-      path: '/typography'
-    },
-    {
-      title: 'Icons',
-      path: '/icons',
-      icon: GoogleCirclesExtended
-    },
-    {
-      title: 'Cards',
-      icon: CreditCardOutline,
+      title: 'Live stream',
+      icon: AccountCashOutline,
       path: '/cards'
     },
     {
-      title: 'Tables',
-      icon: Table,
+      title: 'Idol',
+      icon: AccountCashOutline,
+      path: '/typography'
+    },
+    {
+      title: 'Ẩm thực',
+      path: '/icons',
+      icon: AccountCashOutline
+    },
+    {
+      title: 'Review phim',
+      icon: AccountCashOutline,
       path: '/tables'
     },
     {
-      icon: CubeOutline,
-      title: 'Form Layouts',
+      title: 'Giải trí',
+      icon: AccountCashOutline,
       path: '/form-layouts'
     }
   ]
