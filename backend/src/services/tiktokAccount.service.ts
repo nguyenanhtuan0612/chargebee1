@@ -17,6 +17,9 @@ export class TiktokAccountServie {
         data.tiktokCoin = dto.tiktokCoin;
         data.title = dto.title;
         data.subTitle = dto.subTitle;
+        data.price = dto.price;
+        data.image = dto.image;
+        data.link = dto.link;
         const res = await data.save();
 
         return res;
@@ -55,6 +58,7 @@ export class TiktokAccountServie {
                 'ownedBy',
                 'title',
                 'subTitle',
+                'price',
             ],
         });
 

@@ -29,6 +29,18 @@ export class AddAccountDto {
     @ApiProperty()
     @IsString()
     subTitle: string;
+
+    @ApiProperty()
+    @IsNumber()
+    price: number;
+
+    @ApiProperty()
+    @IsString()
+    link: string;
+
+    @ApiPropertyOptional()
+    @IsString()
+    image: string;
 }
 
 export class UpdateAccountDto {
@@ -66,4 +78,17 @@ export class UpdateAccountDto {
     @IsString()
     @IsOptional()
     subTitle: string;
+
+    @ApiPropertyOptional()
+    @IsNumber()
+    @IsOptional()
+    price: number;
+
+    @ApiPropertyOptional()
+    @IsString()
+    link: string;
+
+    @ApiPropertyOptional()
+    @IsString()
+    image: string;
 }

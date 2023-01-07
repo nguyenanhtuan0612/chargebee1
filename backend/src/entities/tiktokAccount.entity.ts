@@ -45,6 +45,15 @@ export class TiktokAccount extends Model {
     @Column
     subTitle: string;
 
+    @Column
+    price: number;
+
+    @Column
+    image: string;
+
+    @Column
+    link: string;
+
     @Column({ defaultValue: true })
     active: boolean;
 
