@@ -68,7 +68,7 @@ export class QueryMiddleware implements NestMiddleware {
                 offset: Number(offset) || 0,
                 limit: Number(limit) || 10,
                 where: {},
-                order: {},
+                order: [],
             };
 
             const filterArr = filter ? JSON.parse(filter.toString()) : [];

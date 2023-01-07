@@ -17,12 +17,12 @@ export class AppService implements OnModuleInit {
                 const salt = await genSalt(10);
                 user.password = await hash('123456', salt);
                 user.role = Role.ADMIN;
+                user.active = true;
                 const userData = await user.save();
                 return userData;
             }
         } catch (error) {
             console.log(error);
-            throw error;
         }
     }
 

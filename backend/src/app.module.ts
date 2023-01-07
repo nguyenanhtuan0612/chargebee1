@@ -11,6 +11,9 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
 import { QueryMiddleware } from './middlewares/query.middleware';
 import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './services/auth.service';
+import { TiktokController } from './controllers/tiktokAccount.controller';
+import { TiktokAccountServie } from './services/tiktokAccount.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
 const ENV = process.env.NODE_ENV;
 console.log(ENV);
 
@@ -30,12 +33,23 @@ console.log(ENV);
         }),
         PostgreSqlModule,
     ],
-    controllers: [AppController, UsersController, AuthController],
-    providers: [AppService, UsersService, AuthService],
+    controllers: [
+        AppController,
+        UsersController,
+        AuthController,
+        TiktokController,
+    ],
+    providers: [
+        AppService,
+        JwtStrategy,
+        UsersService,
+        AuthService,
+        TiktokAccountServie,
+    ],
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {
-        consumer.apply(AuthMiddleware).forRoutes('/api/*');
+        consumer.apply(AuthMiddleware).forRoutes('*');
         consumer
             .apply(QueryMiddleware)
             .forRoutes({ path: '*', method: RequestMethod.GET });

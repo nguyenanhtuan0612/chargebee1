@@ -36,6 +36,9 @@ export class User extends Model {
     @Column({ defaultValue: Role.CUSTOMER })
     role: string;
 
+    @Column({ defaultValue: true })
+    active: boolean;
+
     @Column
     @CreatedAt
     createdAt: Date;

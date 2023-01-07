@@ -12,12 +12,9 @@ export class AuthMiddleware implements NestMiddleware {
     constructor(private readonly jwtService: JwtService) {}
     async use(req: RequestWithUser, res: Response, next: NextFunction) {
         try {
-            const Authorization =
-                req.cookies['Authorization'] ||
-                (req.header('Authorization')
-                    ? req.header('Authorization').split('Bearer ')[1]
-                    : null);
-
+            const Authorization = req.headers.authorization
+                ? req.headers.authorization.split('Bearer ')[1]
+                : null;
             if (Authorization) {
                 const tokenDecode: any = this.jwtService.decode(Authorization);
                 const findUser: User = await User.findOne(tokenDecode.id);

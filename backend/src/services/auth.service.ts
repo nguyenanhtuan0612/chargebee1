@@ -5,7 +5,6 @@ import {
     UserResponeWithToken,
     UserResponse,
 } from '@/dtos/users.dto';
-import { UsersService } from './users.service';
 import { errors } from '@/utils/errors';
 import { User } from '@/entities/users.entity';
 import { compare, genSalt, hash } from 'bcrypt';
@@ -15,13 +14,12 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private readonly userService: UsersService,
-        private readonly jwtService: JwtService,
-    ) {}
+    constructor(private readonly jwtService: JwtService) {}
 
     async register(registerDto: RegisterDto) {
-        const check = await this.userService.findByEmail(registerDto.email);
+        const check = await User.findOne({
+            where: { email: registerDto.email },
+        });
 
         if (check)
             throw new ExceptionWithMessage(
@@ -40,7 +38,9 @@ export class AuthService {
     }
 
     async login(dto: LoginDto): Promise<UserResponeWithToken> {
-        const user = await this.userService.findByEmail(dto.email);
+        const user = await User.findOne({
+            where: { email: dto.email, active: true },
+        });
         if (user) {
             const compareResult = await compare(dto.password, user.password);
             if (compareResult) {
@@ -67,13 +67,13 @@ export class AuthService {
                 });
             }
             throw new ExceptionWithMessage(
-                errors.USERNAME_PASSWwRD_INVALID,
+                errors.USERNAME_PASSWORD_INVALID,
                 401,
                 'Login Fail',
             );
         }
         throw new ExceptionWithMessage(
-            errors.USERNAME_PASSWwRD_INVALID,
+            errors.USERNAME_PASSWORD_INVALID,
             401,
             'Login Fail',
         );

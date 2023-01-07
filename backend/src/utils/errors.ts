@@ -42,7 +42,7 @@ export const errors = {
         code: 10,
         detail: '{{user.roleInvalid}}',
     },
-    USERNAME_PASSWwRD_INVALID: {
+    USERNAME_PASSWORD_INVALID: {
         code: 11,
         detail: '{{login.usernameOrPasswordInvalid}}',
     },
@@ -66,7 +66,7 @@ export const errors = {
         code: 16,
         detail: '{{otp.otpSentYetToExpire}}',
     },
-    TEACHER_NOT_FOUND: {
+    ACCOUNT_NOT_FOUND: {
         code: 17,
         detail: '{{teacher.notFound}}',
     },

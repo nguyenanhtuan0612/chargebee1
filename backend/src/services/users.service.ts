@@ -16,10 +16,4 @@ export class UsersService {
 
         return userData;
     }
-
-    async findByEmail(email: string): Promise<User | null> {
-        return User.findOne({
-            where: { email },
-        });
-    }
 }
