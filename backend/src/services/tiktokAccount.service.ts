@@ -1,4 +1,6 @@
 import { AddAccountDto, UpdateAccountDto } from '@/dtos/tiktokAccount.dto';
+import { AccountCategoryLinks } from '@/entities/accountCategoryLink.entity';
+import { Category } from '@/entities/categories.entity';
 import { TiktokAccount } from '@/entities/tiktokAccount.entity';
 import { User } from '@/entities/users.entity';
 import { ExceptionWithMessage } from '@/exceptions/HttpException';
@@ -21,6 +23,15 @@ export class TiktokAccountServie {
         data.image = dto.image;
         data.link = dto.link;
         const res = await data.save();
+        for (const iterator of dto.categories) {
+            const cate = await Category.findByPk(iterator);
+            if (cate) {
+                const link = new AccountCategoryLinks();
+                link.categoryId = cate.id;
+                link.tiktokAccountId = res.id;
+                await link.save();
+            }
+        }
 
         return res;
     }
@@ -31,7 +42,27 @@ export class TiktokAccountServie {
             throw new ExceptionWithMessage(errors.ACCOUNT_NOT_FOUND, 404);
         }
         await TiktokAccount.update(dto, { where: { id: data.id } });
-        data = await TiktokAccount.findByPk(id);
+        if (dto.categories) {
+            await AccountCategoryLinks.destroy({
+                where: {
+                    tiktokAccountId: data.id,
+                },
+            });
+
+            for (const iterator of dto.categories) {
+                const cate = await Category.findByPk(iterator);
+                if (cate) {
+                    const link = new AccountCategoryLinks();
+                    link.categoryId = cate.id;
+                    link.categoryId = data.id;
+                    await link.save();
+                }
+            }
+        }
+
+        data = await TiktokAccount.findByPk(id, {
+            include: [{ model: Category }],
+        });
         return data;
     }
 
