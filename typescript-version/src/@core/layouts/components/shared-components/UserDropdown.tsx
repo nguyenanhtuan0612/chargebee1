@@ -90,124 +90,124 @@ const UserDropdown = () => {
     }
   }
 
-  const ModalLogin = () => {
-    const [isModalLogin, setModalLoginOpen] = useState(false)
-    const handleModalLoginOpen = () => setModalLoginOpen(true)
-    const handleModalLoginClose = () => setModalLoginOpen(false)
+  const [isModalLogin, setModalLoginOpen] = useState(false)
+  const handleModalLoginOpen = () => setModalLoginOpen(true)
+  const handleModalLoginClose = () => setModalLoginOpen(false)
 
-    let menu
-    if (isLogin) {
-      menu = (
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={() => handleDropdownClose()}
-          sx={{ '& .MuiMenu-paper': { width: 230, marginTop: 4 } }}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
-          <Box sx={{ pt: 2, pb: 3, px: 4 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Badge
-                overlap='circular'
-                badgeContent={<BadgeContentSpan />}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              >
-                <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
-              </Badge>
-              <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-                <Typography sx={{ fontWeight: 600 }}>Admin</Typography>
-              </Box>
+  let menu
+  if (isLogin) {
+    menu = (
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={() => handleDropdownClose()}
+        sx={{ '& .MuiMenu-paper': { width: 230, marginTop: 4 } }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Box sx={{ pt: 2, pb: 3, px: 4 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Badge
+              overlap='circular'
+              badgeContent={<BadgeContentSpan />}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            >
+              <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
+            </Badge>
+            <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
+              <Typography sx={{ fontWeight: 600 }}>Admin</Typography>
             </Box>
           </Box>
-          <Divider sx={{ mt: 0, mb: 1 }} />
-          <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-            <Box sx={styles}>
-              <AccountOutline sx={{ marginRight: 2 }} />
-              Profile
-            </Box>
-          </MenuItem>
-          <Divider />
-          <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-            <Box sx={styles}>
-              <CogOutline sx={{ marginRight: 2 }} />
-              Settings
-            </Box>
-          </MenuItem>
-          <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-            <Box sx={styles}>
-              <CurrencyUsd sx={{ marginRight: 2 }} />
-              Pricing
-            </Box>
-          </MenuItem>
-          <Divider />
-          <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
-            <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
-            Logout
-          </MenuItem>
-        </Menu>
-      )
-    } else {
-      menu = (
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={() => handleDropdownClose()}
-          sx={{ '& .MuiMenu-paper': { width: 230, marginTop: 4 } }}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
-          <MenuItem sx={{ p: 0 }} onClick={() => handleModalLoginOpen()}>
-            <Box sx={styles}>
-              <CurrencyUsd sx={{ marginRight: 2 }} />
-              Đăng nhập
-            </Box>
-          </MenuItem>
-          <Divider />
-          <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
-            <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
-            Đăng kí
-          </MenuItem>
-        </Menu>
-      )
-    }
+        </Box>
+        <Divider sx={{ mt: 0, mb: 1 }} />
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+          <Box sx={styles}>
+            <AccountOutline sx={{ marginRight: 2 }} />
+            Profile
+          </Box>
+        </MenuItem>
+        <Divider />
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+          <Box sx={styles}>
+            <CogOutline sx={{ marginRight: 2 }} />
+            Settings
+          </Box>
+        </MenuItem>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+          <Box sx={styles}>
+            <CurrencyUsd sx={{ marginRight: 2 }} />
+            Pricing
+          </Box>
+        </MenuItem>
+        <Divider />
+        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+          <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
+          Logout
+        </MenuItem>
+      </Menu>
+    )
+  } else {
+    menu = (
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={() => handleDropdownClose()}
+        sx={{ '& .MuiMenu-paper': { width: 230, marginTop: 4 } }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <MenuItem sx={{ p: 0 }} onClick={() => handleModalLoginOpen()}>
+          <Box sx={styles}>
+            <CurrencyUsd sx={{ marginRight: 2 }} />
+            Đăng nhập
+          </Box>
+        </MenuItem>
+        <Divider />
+        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+          <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
+          Đăng kí
+        </MenuItem>
+      </Menu>
+    )
+  }
 
-    const styleModalLogin = {
-      // eslint-disable-next-line @typescript-eslint/prefer-as-const
-      position: 'absolute' as 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      width: 400,
-      bgcolor: 'background.paper',
-      border: '2px solid #000',
-      boxShadow: 24,
-      p: 4
-    }
+  const styleModalLogin = {
+    // eslint-disable-next-line @typescript-eslint/prefer-as-const
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4
+  }
 
-    // const modalLogin = (
+  // const modalLogin = (
 
-    // )
+  // )
 
-    return (
-      <Fragment>
-        <Badge
-          overlap='circular'
+  return (
+    <Fragment>
+      <Badge
+        overlap='circular'
+        onClick={handleDropdownOpen}
+        sx={{ ml: 2, cursor: 'pointer' }}
+        badgeContent={<BadgeContentSpan />}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Avatar
+          alt='John Doe'
           onClick={handleDropdownOpen}
-          sx={{ ml: 2, cursor: 'pointer' }}
-          badgeContent={<BadgeContentSpan />}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        >
-          <Avatar
-            alt='John Doe'
-            onClick={handleDropdownOpen}
-            sx={{ width: 40, height: 40 }}
-            src='/images/avatars/1.png'
-          />
-        </Badge>
-        {menu}
+          sx={{ width: 40, height: 40 }}
+          src='/images/avatars/1.png'
+        />
+      </Badge>
+      {menu}
 
-        {/* <Modal
+      {modalLogin}
+      {/* <Modal
         open={isModalLogin}
         onClose={handleModalLoginClose}
         aria-labelledby='modal-modal-title'
@@ -222,9 +222,8 @@ const UserDropdown = () => {
           </Typography>
         </Box>
       </Modal> */}
-      </Fragment>
-    )
-  }
+    </Fragment>
+  )
 }
 
 export default UserDropdown

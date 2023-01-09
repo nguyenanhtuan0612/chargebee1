@@ -1,8 +1,34 @@
-const ModalLogin = () => {
-  const [isModalLogin, setModalLoginOpen] = useState(false)
-  const handleModalLoginOpen = () => setModalLoginOpen(true)
-  const handleModalLoginClose = () => setModalLoginOpen(false)
+// ** React Imports
+import { ChangeEvent, Fragment, SyntheticEvent, useState, MouseEvent } from 'react'
 
+// ** Next Import
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+
+// Icon
+import {
+  Button,
+  Card,
+  CardContent,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  Modal,
+  OutlinedInput,
+  TextField,
+  useTheme
+} from '@mui/material'
+import themeConfig from 'src/configs/themeConfig'
+import { EyeOutline, EyeOffOutline, Facebook, Twitter, Github, Google, Box } from 'mdi-material-ui'
+
+interface State {
+  password: string
+  showPassword: boolean
+}
+const ModalLogin = () => {
   const theme = useTheme()
 
   // ** State
