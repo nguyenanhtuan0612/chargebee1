@@ -53,11 +53,9 @@ export class AllExceptionFilter implements ExceptionFilter {
                 break;
             case error instanceof BaseError:
                 const baseErr: BaseError = error;
-                detail = {
-                    detail: baseErr.name,
-                };
                 code = errors.SEQUELIZE_ERROR.code;
                 message = baseErr.message;
+                detail = error.errors || '';
                 status = HttpStatus.BAD_REQUEST;
 
                 break;
