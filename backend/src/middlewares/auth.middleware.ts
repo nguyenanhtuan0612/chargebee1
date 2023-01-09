@@ -32,13 +32,8 @@ export class AuthMiddleware implements NestMiddleware {
                     );
                 }
             } else {
-                next(
-                    new ExceptionWithMessage(
-                        errors.LOGIN_ERROR_MISSING,
-                        404,
-                        'Authentication token missing',
-                    ),
-                );
+                req.auth = null;
+                next();
             }
         } catch (error) {
             next(

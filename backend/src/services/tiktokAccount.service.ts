@@ -68,7 +68,7 @@ export class TiktokAccountServie {
 
     async detail(id: number) {
         const data = await TiktokAccount.findByPk(id, {
-            include: [{ model: User }],
+            include: [{ model: User }, { model: Category }],
         });
         if (!data) {
             throw new ExceptionWithMessage(errors.ACCOUNT_NOT_FOUND, 404);
