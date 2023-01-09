@@ -55,9 +55,6 @@ export class CategoriesController {
         }
     }
 
-    @ApiBearerAuth('authorization')
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles([Role.ADMIN])
     @Get('/detail/:id')
     async detail(@Res() res: Response, @Param('id') id: number) {
         try {
@@ -89,9 +86,6 @@ export class CategoriesController {
         description: '10',
         required: false,
     })
-    @ApiBearerAuth('authorization')
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles([Role.ADMIN])
     @Get()
     async list(@Res() res: Response, @Req() req: RequestWithUserOption) {
         try {

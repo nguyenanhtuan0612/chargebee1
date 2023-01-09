@@ -76,5 +76,5 @@ export class TiktokAccount extends Model {
     owner: User;
 
     @BelongsToMany(() => Category, () => AccountCategoryLinks)
-    category: Category[];
+    categories: Category[];
 }
