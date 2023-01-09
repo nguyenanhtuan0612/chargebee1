@@ -1,6 +1,7 @@
 import {
     AutoIncrement,
     BelongsTo,
+    BelongsToMany,
     Column,
     CreatedAt,
     DataType,
@@ -11,6 +12,8 @@ import {
     Unique,
     UpdatedAt,
 } from 'sequelize-typescript';
+import { AccountCategoryLinks } from './accountCategoryLink.entity';
+import { Category } from './categories.entity';
 import { User } from './users.entity';
 
 @Table({
@@ -71,4 +74,7 @@ export class TiktokAccount extends Model {
 
     @BelongsTo(() => User)
     owner: User;
+
+    @BelongsToMany(() => Category, () => AccountCategoryLinks)
+    category: Category[];
 }

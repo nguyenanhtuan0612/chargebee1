@@ -1,18 +1,20 @@
-import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from '@/app.controller';
 import { AppService } from '@/app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { appConfigs, authConfigs } from '@/config';
 import { PostgreSqlModule } from '@databases';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { AuthController } from './controllers/auth.controller';
+import { CategoriesController } from './controllers/categories.controller';
+import { TiktokController } from './controllers/tiktokAccount.controller';
 import UsersController from './controllers/users.controller';
-import { UsersService } from './services/users.service';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { QueryMiddleware } from './middlewares/query.middleware';
-import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './services/auth.service';
-import { TiktokController } from './controllers/tiktokAccount.controller';
+import { CategoriesService } from './services/category.service';
 import { TiktokAccountServie } from './services/tiktokAccount.service';
+import { UsersService } from './services/users.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 const ENV = process.env.NODE_ENV;
 console.log(ENV);
@@ -38,6 +40,7 @@ console.log(ENV);
         UsersController,
         AuthController,
         TiktokController,
+        CategoriesController,
     ],
     providers: [
         AppService,
@@ -45,6 +48,7 @@ console.log(ENV);
         UsersService,
         AuthService,
         TiktokAccountServie,
+        CategoriesService,
     ],
 })
 export class AppModule {
