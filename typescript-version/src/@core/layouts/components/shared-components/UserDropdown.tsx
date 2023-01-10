@@ -1,9 +1,8 @@
 // ** React Imports
-import { ChangeEvent, Fragment, SyntheticEvent, useState, MouseEvent } from 'react'
+import { Fragment, SyntheticEvent, useState } from 'react'
 
 // ** Next Import
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
 // ** MUI Imports
 import Avatar from '@mui/material/Avatar'
@@ -12,30 +11,17 @@ import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import { styled, useTheme } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 
 // ** Icons Imports
+import { Modal } from '@mui/material'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import CogOutline from 'mdi-material-ui/CogOutline'
 import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
 import LogoutVariant from 'mdi-material-ui/LogoutVariant'
-import {
-  Button,
-  Card,
-  CardContent,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  Modal,
-  OutlinedInput,
-  TextField
-} from '@mui/material'
-import themeConfig from 'src/configs/themeConfig'
-import { EyeOutline, EyeOffOutline, Facebook, Twitter, Github, Google } from 'mdi-material-ui'
+import ModalLogin from '../ModalLogin'
+import ModalRegister from '../ModalRegister'
 
 interface State {
   password: string
@@ -49,12 +35,6 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
   borderRadius: '50%',
   backgroundColor: theme.palette.success.main,
   boxShadow: `0 0 0 2px ${theme.palette.background.paper}`
-}))
-
-const LinkStyled = styled('a')(({ theme }) => ({
-  fontSize: '0.875rem',
-  textDecoration: 'none',
-  color: theme.palette.primary.main
 }))
 
 const UserDropdown = () => {
@@ -91,8 +71,21 @@ const UserDropdown = () => {
   }
 
   const [isModalLogin, setModalLoginOpen] = useState(false)
-  const handleModalLoginOpen = () => setModalLoginOpen(true)
-  const handleModalLoginClose = () => setModalLoginOpen(false)
+  const handleModalLoginOpen = () => {
+    handleModalRegisterClose()
+    setModalLoginOpen(true)
+  }
+  const handleModalLoginClose = () => {
+    setModalLoginOpen(false)
+  }
+  const [isModalRegister, setModalRegisterOpen] = useState(false)
+  const handleModalRegisterOpen = () => {
+    handleModalLoginClose()
+    setModalRegisterOpen(true)
+  }
+  const handleModalRegisterClose = () => {
+    setModalRegisterOpen(false)
+  }
 
   let menu
   if (isLogin) {
@@ -163,7 +156,7 @@ const UserDropdown = () => {
           </Box>
         </MenuItem>
         <Divider />
-        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+        <MenuItem sx={{ py: 2 }} onClick={() => handleModalRegisterOpen()}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
           Đăng kí
         </MenuItem>
@@ -172,21 +165,13 @@ const UserDropdown = () => {
   }
 
   const styleModalLogin = {
-    // eslint-disable-next-line @typescript-eslint/prefer-as-const
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4
+    boxShadow: 24
   }
-
-  // const modalLogin = (
-
-  // )
 
   return (
     <Fragment>
@@ -206,22 +191,25 @@ const UserDropdown = () => {
       </Badge>
       {menu}
 
-      {modalLogin}
-      {/* <Modal
+      <Modal
         open={isModalLogin}
         onClose={handleModalLoginClose}
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
       >
-        <Box sx={styleModalLogin}>
-          <Typography id='modal-modal-title' variant='h6' component='h2'>
-            Text in a modal
-          </Typography>
-          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
-      </Modal> */}
+        <Box sx={styleModalLogin}>{<ModalLogin />}</Box>
+      </Modal>
+
+      {/* Modal Register */}
+
+      <Modal
+        open={isModalRegister}
+        onClose={handleModalRegisterClose}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <Box sx={styleModalLogin}>{<ModalRegister />}</Box>
+      </Modal>
     </Fragment>
   )
 }

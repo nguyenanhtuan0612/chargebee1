@@ -8,15 +8,15 @@ import { VerticalNavItemsType } from 'src/@core/layouts/types'
 
 const navigation = (): VerticalNavItemsType => {
   return [
+    // {
+    //   title: 'Dashboard',
+    //   icon: HomeOutline,
+    //   path: '/'
+    // },
     {
-      title: 'Dashboard',
-      icon: HomeOutline,
-      path: '/'
-    },
-    {
-      title: 'Management Account',
+      title: 'Quản lý tài khoản',
       icon: AccountCogOutline,
-      path: '/account-settings'
+      path: '/tables'
     },
 
     // {
@@ -44,30 +44,31 @@ const navigation = (): VerticalNavItemsType => {
       sectionTitle: 'Danh mục các tài khoản'
     },
     {
-      title: 'Live stream',
+      title: 'Có xu',
       icon: AccountCashOutline,
       path: '/cards'
     },
-    {
-      title: 'Idol',
-      icon: AccountCashOutline,
-      path: '/typography'
-    },
-    {
-      title: 'Ẩm thực',
-      path: '/icons',
-      icon: AccountCashOutline
-    },
-    {
-      title: 'Review phim',
-      icon: AccountCashOutline,
-      path: '/tables'
-    },
-    {
-      title: 'Giải trí',
-      icon: AccountCashOutline,
-      path: '/form-layouts'
-    }
+
+    // {
+    //   title: 'Idol',
+    //   icon: AccountCashOutline,
+    //   path: '/typography'
+    // },
+    // {
+    //   title: 'Ẩm thực',
+    //   path: '/icons',
+    //   icon: AccountCashOutline
+    // },
+    // {
+    //   title: 'Review phim',
+    //   icon: AccountCashOutline,
+    //   path: '/tables'
+    // },
+    // {
+    //   title: 'Giải trí',
+    //   icon: AccountCashOutline,
+    //   path: '/form-layouts'
+    // }
   ]
 }
 

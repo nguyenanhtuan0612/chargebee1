@@ -1,63 +1,56 @@
 // ** MUI Imports
-import Grid from '@mui/material/Grid'
-import Link from '@mui/material/Link'
 import Card from '@mui/material/Card'
-import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 
 // ** Demo Components Imports
-import TableBasic from 'src/views/tables/TableBasic'
-import TableDense from 'src/views/tables/TableDense'
-import TableSpanning from 'src/views/tables/TableSpanning'
-import TableCustomized from 'src/views/tables/TableCustomized'
-import TableCollapsible from 'src/views/tables/TableCollapsible'
+import { Button, Modal } from '@mui/material'
+import { Box } from 'mdi-material-ui'
+import { useState } from 'react'
 import TableStickyHeader from 'src/views/tables/TableStickyHeader'
 
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4
+}
+
 const MUITable = () => {
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <Typography variant='h5'>
-          <Link href='https://mui.com/components/tables/' target='_blank'>
-            MUI Tables
-          </Link>
-        </Typography>
-        <Typography variant='body2'>Tables display sets of data. They can be fully customized</Typography>
-      </Grid>
-      <Grid item xs={12}>
         <Card>
-          <CardHeader title='Basic Table' titleTypographyProps={{ variant: 'h6' }} />
-          <TableBasic />
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Dense Table' titleTypographyProps={{ variant: 'h6' }} />
-          <TableDense />
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Sticky Header' titleTypographyProps={{ variant: 'h6' }} />
+          <CardHeader title='Quản lý tài khoản' titleTypographyProps={{ variant: 'h6' }} />
+          <div>
+            <Button onClick={handleOpen}>Thêm tài khoản</Button>
+            <Modal
+              keepMounted
+              open={open}
+              onClose={handleClose}
+              aria-labelledby='keep-mounted-modal-title'
+              aria-describedby='keep-mounted-modal-description'
+            >
+              <Box sx={style}>
+                <Typography id='keep-mounted-modal-title' variant='h6' component='h2'>
+                  Text in a modal
+                </Typography>
+                <Typography id='keep-mounted-modal-description' sx={{ mt: 2 }}>
+                  Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                </Typography>
+              </Box>
+            </Modal>
+          </div>
           <TableStickyHeader />
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Collapsible Table' titleTypographyProps={{ variant: 'h6' }} />
-          <TableCollapsible />
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Spanning Table' titleTypographyProps={{ variant: 'h6' }} />
-          <TableSpanning />
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Customized Table' titleTypographyProps={{ variant: 'h6' }} />
-          <TableCustomized />
         </Card>
       </Grid>
     </Grid>

@@ -20,25 +20,25 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: 'name', label: 'Name', minWidth: 170 },
-  { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+  { id: 'name', label: 'Tài khoản', minWidth: 170 },
+  { id: 'code', label: 'Giá', minWidth: 100 },
   {
     id: 'population',
-    label: 'Population',
+    label: 'Xu tiktok',
     minWidth: 170,
     align: 'right',
     format: (value: number) => value.toLocaleString('en-US')
   },
   {
     id: 'size',
-    label: 'Size\u00a0(km\u00b2)',
+    label: 'Trạng thái',
     minWidth: 170,
     align: 'right',
     format: (value: number) => value.toLocaleString('en-US')
   },
   {
     id: 'density',
-    label: 'Density',
+    label: 'Thao tác',
     minWidth: 170,
     align: 'right',
     format: (value: number) => value.toFixed(2)
@@ -49,14 +49,14 @@ interface Data {
   name: string
   code: string
   size: number
-  density: number
   population: number
+  density?: number
 }
 
 function createData(name: string, code: string, population: number, size: number): Data {
-  const density = population / size
+  // const density = population / size
 
-  return { name, code, population, size, density }
+  return { name, code, population, size }
 }
 
 const rows = [
