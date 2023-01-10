@@ -40,7 +40,7 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 const UserDropdown = () => {
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
-  const [isLogin] = useState<boolean>(false)
+  const [isLogin] = useState<boolean>(true)
 
   // ** Hooks
   const router = useRouter()
@@ -72,6 +72,7 @@ const UserDropdown = () => {
 
   const [isModalLogin, setModalLoginOpen] = useState(false)
   const handleModalLoginOpen = () => {
+    setAnchorEl(null)
     handleModalRegisterClose()
     setModalLoginOpen(true)
   }
@@ -80,6 +81,7 @@ const UserDropdown = () => {
   }
   const [isModalRegister, setModalRegisterOpen] = useState(false)
   const handleModalRegisterOpen = () => {
+    setAnchorEl(null)
     handleModalLoginClose()
     setModalRegisterOpen(true)
   }
@@ -113,7 +115,7 @@ const UserDropdown = () => {
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('account-settings')}>
           <Box sx={styles}>
             <AccountOutline sx={{ marginRight: 2 }} />
             Profile
@@ -122,14 +124,8 @@ const UserDropdown = () => {
         <Divider />
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
-            <CogOutline sx={{ marginRight: 2 }} />
-            Settings
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
             <CurrencyUsd sx={{ marginRight: 2 }} />
-            Pricing
+            Nạp tiền
           </Box>
         </MenuItem>
         <Divider />

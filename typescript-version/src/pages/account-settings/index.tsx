@@ -16,12 +16,13 @@ import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
 import InformationOutline from 'mdi-material-ui/InformationOutline'
 
 // ** Demo Tabs Imports
-import TabInfo from 'src/views/account-settings/TabInfo'
 import TabAccount from 'src/views/account-settings/TabAccount'
 import TabSecurity from 'src/views/account-settings/TabSecurity'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
+import TabRechargeHistory from 'src/views/account-settings/TabRechargeHistory'
+import TabPayment from 'src/views/account-settings/TabPayment'
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -62,7 +63,7 @@ const AccountSettings = () => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
-                <TabName>Account</TabName>
+                <TabName>Thông tin tài khoản</TabName>
               </Box>
             }
           />
@@ -71,16 +72,25 @@ const AccountSettings = () => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <LockOpenOutline />
-                <TabName>Security</TabName>
+                <TabName>Đổi mật khẩu</TabName>
               </Box>
             }
           />
           <Tab
-            value='info'
+            value='rechargeHistory'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <InformationOutline />
-                <TabName>Info</TabName>
+                <TabName>Lịch sử nạp tiền</TabName>
+              </Box>
+            }
+          />
+          <Tab
+            value='payment'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <InformationOutline />
+                <TabName>Đã mua</TabName>
               </Box>
             }
           />
@@ -92,8 +102,11 @@ const AccountSettings = () => {
         <TabPanel sx={{ p: 0 }} value='security'>
           <TabSecurity />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='info'>
-          <TabInfo />
+        <TabPanel sx={{ p: 0 }} value='rechargeHistory'>
+          <TabRechargeHistory />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='payment'>
+          <TabPayment />
         </TabPanel>
       </TabContext>
     </Card>

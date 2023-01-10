@@ -5,13 +5,13 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 
 // ** Demo Components Imports
-import { Button, Modal } from '@mui/material'
+import { Button, Modal, Stack } from '@mui/material'
 import { Box } from 'mdi-material-ui'
 import { useState } from 'react'
 import TableStickyHeader from 'src/views/tables/TableStickyHeader'
 
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -30,9 +30,10 @@ const MUITable = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='Quản lý tài khoản' titleTypographyProps={{ variant: 'h6' }} />
-          <div>
+          <CardHeader title='Danh sách tài khoản tiktok' titleTypographyProps={{ variant: 'h6' }} />
+          <Stack direction='row' justifyContent='flex-end' alignItems='flex-start' spacing={2} mb={4.5}>
             <Button onClick={handleOpen}>Thêm tài khoản</Button>
+            <Button onClick={handleOpen}>Nhập excel</Button>
             <Modal
               keepMounted
               open={open}
@@ -49,7 +50,8 @@ const MUITable = () => {
                 </Typography>
               </Box>
             </Modal>
-          </div>
+          </Stack>
+
           <TableStickyHeader />
         </Card>
       </Grid>
