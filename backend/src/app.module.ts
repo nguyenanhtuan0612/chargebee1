@@ -8,12 +8,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './controllers/auth.controller';
 import { CategoriesController } from './controllers/categories.controller';
 import { TiktokController } from './controllers/tiktokAccount.controller';
+import { TransactionController } from './controllers/transaction.controller';
 import UsersController from './controllers/users.controller';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { QueryMiddleware } from './middlewares/query.middleware';
 import { AuthService } from './services/auth.service';
 import { CategoriesService } from './services/category.service';
 import { TiktokAccountServie } from './services/tiktokAccount.service';
+import { TransactionService } from './services/transaction.service';
 import { UsersService } from './services/users.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 const ENV = process.env.NODE_ENV;
@@ -41,6 +43,7 @@ console.log(ENV);
         AuthController,
         TiktokController,
         CategoriesController,
+        TransactionController,
     ],
     providers: [
         AppService,
@@ -49,6 +52,7 @@ console.log(ENV);
         AuthService,
         TiktokAccountServie,
         CategoriesService,
+        TransactionService,
     ],
 })
 export class AppModule {

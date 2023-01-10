@@ -10,3 +10,16 @@ export interface Options {
 export interface RequestWithOptions extends Request {
     options: Options;
 }
+
+export interface IImportAccountFileData extends Request {
+    email: string;
+    password: string;
+    coin: number;
+    like: number;
+    follower: number;
+    title: string;
+    subTitle: string;
+    price: number;
+    image: string;
+    link: string;
+}

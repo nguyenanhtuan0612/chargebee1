@@ -1,7 +1,7 @@
 import { User } from '@/entities/users.entity';
 import { JwtInfo } from '@/interfaces/auth.interface';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class RegisterDto {
     @ApiProperty()
@@ -14,11 +14,34 @@ export class RegisterDto {
 }
 
 export class CreateUserDto {
+    @ApiProperty()
     @IsEmail()
     public email: string;
 
+    @ApiProperty()
     @IsString()
     public password: string;
+
+    @ApiProperty()
+    @IsString()
+    role: string;
+}
+
+export class UpdateUserDto {
+    @ApiPropertyOptional()
+    @IsOptional()
+    @IsEmail()
+    public email: string;
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    @IsString()
+    public password: string;
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    @IsString()
+    role: string;
 }
 
 export class LoginDto {

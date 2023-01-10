@@ -3,12 +3,16 @@ import {
     Column,
     CreatedAt,
     DataType,
+    HasMany,
     IsEmail,
     Model,
     Table,
     Unique,
     UpdatedAt,
 } from 'sequelize-typescript';
+import { Payment } from './payment.entity';
+import { TiktokAccount } from './tiktokAccount.entity';
+import { Transaction } from './transaction.entity';
 
 @Table({
     tableName: 'users',
@@ -46,4 +50,13 @@ export class User extends Model {
     @Column
     @UpdatedAt
     updatedAt: Date;
+
+    @HasMany(() => TiktokAccount)
+    tiktokAccounts: TiktokAccount[];
+
+    @HasMany(() => Payment)
+    payments: Payment[];
+
+    @HasMany(() => Transaction)
+    transactions: Transaction[];
 }

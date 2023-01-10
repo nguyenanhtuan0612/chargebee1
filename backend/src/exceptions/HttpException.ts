@@ -13,6 +13,6 @@ export class ExceptionWithMessage extends HttpException {
         super(error.detail, status);
         this.detail = error.detail || null;
         this.code = error.code || 999;
-        this.message = message || error.message || 'Something went wrong';
+        this.message = message || error.message || `Something wen't wrong`;
     }
 }
