@@ -1,7 +1,14 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { genSalt, hash } from 'bcrypt';
+import { UpdateConfigDto } from './dtos/systemConfigs.dto';
+import { Category } from './entities/categories.entity';
+import { SystemConfig } from './entities/systemConfig.entity';
 import { User } from './entities/users.entity';
-import { Role } from './utils/constants';
+import {
+    Role,
+    SECURE_TOKEN_DEFAULT,
+    TIKTOK_ACCOUNT_COIN_CATEGORY,
+} from './utils/constants';
 
 @Injectable()
 export class AppService implements OnModuleInit {
@@ -18,9 +25,31 @@ export class AppService implements OnModuleInit {
                 user.password = await hash('123456', salt);
                 user.role = Role.ADMIN;
                 user.active = true;
-                const userData = await user.save();
-                return userData;
+                await user.save();
             }
+
+            const config = await SystemConfig.findOne({
+                where: { active: true },
+            });
+            if (!config) {
+                const config = new SystemConfig();
+                config.discountForColaborator = 10;
+                config.exchangeRate = 23000;
+                config.active = true;
+                config.secureToken = SECURE_TOKEN_DEFAULT;
+                await config.save();
+            }
+
+            const categoryCoin = await Category.findOne({
+                where: { name: TIKTOK_ACCOUNT_COIN_CATEGORY },
+            });
+            if (!categoryCoin) {
+                const data = new Category();
+                data.name = TIKTOK_ACCOUNT_COIN_CATEGORY;
+                data.active = true;
+                await categoryCoin.save();
+            }
+            return;
         } catch (error) {
             console.log(error);
         }
@@ -28,5 +57,32 @@ export class AppService implements OnModuleInit {
 
     getHello(): string {
         return 'Hello World!';
+    }
+
+    async configs() {
+        const config = (await SystemConfig.findOne({
+            where: { active: true },
+        })) || { discountForColaborator: 10, exchangeRate: 23000 };
+
+        return config;
+    }
+
+    async updateConfigs(dto: UpdateConfigDto) {
+        const config = await SystemConfig.findOne({
+            where: { active: true },
+        });
+        if (config) {
+            config.exchangeRate = dto.exchangeRate;
+            config.discountForColaborator = dto.discountForColaborator;
+            const newConfig = await config.save();
+            return newConfig;
+        } else {
+            const config = new SystemConfig();
+            config.discountForColaborator = 10;
+            config.exchangeRate = 23000;
+            config.active = true;
+            const newConfig = await config.save();
+            return newConfig;
+        }
     }
 }

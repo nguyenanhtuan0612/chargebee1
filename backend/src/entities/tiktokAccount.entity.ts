@@ -6,6 +6,7 @@ import {
     CreatedAt,
     DataType,
     ForeignKey,
+    HasOne,
     Model,
     PrimaryKey,
     Table,
@@ -14,6 +15,7 @@ import {
 } from 'sequelize-typescript';
 import { AccountCategoryLinks } from './accountCategoryLink.entity';
 import { Category } from './categories.entity';
+import { Transaction } from './transaction.entity';
 import { User } from './users.entity';
 
 @Table({
@@ -77,4 +79,7 @@ export class TiktokAccount extends Model {
 
     @BelongsToMany(() => Category, () => AccountCategoryLinks)
     categories: Category[];
+
+    @HasOne(() => Transaction)
+    transaction: Transaction;
 }
