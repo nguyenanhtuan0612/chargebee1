@@ -109,9 +109,9 @@ export const errors = {
         code: 26,
         detail: '{{teacherLanguage.notMatch}}',
     },
-    LOCK_BALANCE_NOT_ENOUGH: {
+    BALANCE_NOT_ENOUGH: {
         code: 27,
-        detail: '{{lockBalance.notEnough}}',
+        detail: '{{balance.notEnough}}',
     },
     TRANSACTION_IS_FINISHED: {
         code: 28,

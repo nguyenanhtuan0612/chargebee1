@@ -1,7 +1,12 @@
+import { BuyAccountDto } from '@/dtos/transaction.dto';
 import { Payment } from '@/entities/payment.entity';
 import { SystemConfig } from '@/entities/systemConfig.entity';
+import { TiktokAccount } from '@/entities/tiktokAccount.entity';
+import { Transaction } from '@/entities/transaction.entity';
 import { User } from '@/entities/users.entity';
 import { ExceptionWithMessage } from '@/exceptions/HttpException';
+import { Options } from '@/interfaces/request.interface';
+import { IUser } from '@/interfaces/users.interface';
 import { ICassoPaymentHookData } from '@/interfaces/webhook.interface';
 import { errors } from '@/utils/errors';
 import { Injectable } from '@nestjs/common';
@@ -42,5 +47,60 @@ export class TransactionService {
             await user.save();
         }
         return 'ok';
+    }
+
+    async listPaymentByUser(id: string, options: Options) {
+        const { limit, offset } = options;
+        const data = await Payment.findAndCountAll({
+            where: { userId: id },
+            limit,
+            offset,
+            order: [['createdAt', 'DESC']],
+        });
+
+        return data;
+    }
+
+    async buyAccount(user: IUser, dto: BuyAccountDto) {
+        if (dto.price > user.balance) {
+            throw new ExceptionWithMessage(errors.BALANCE_NOT_ENOUGH, 400);
+        }
+
+        const account = await TiktokAccount.findByPk(dto.tiktokAcountId);
+        if (!account) {
+            throw new ExceptionWithMessage(errors.ACCOUNT_NOT_FOUND, 404);
+        }
+
+        await User.update(
+            { balance: user.balance - dto.price },
+            {
+                where: {
+                    id: user.id,
+                },
+            },
+        );
+
+        account.ownedBy = user.id;
+        await account.save();
+
+        const transaction = new Transaction();
+        transaction.price = dto.price;
+        transaction.tiktokAccountId = dto.tiktokAcountId;
+        transaction.userId = user.id;
+        const data = await transaction.save();
+        return data;
+    }
+
+    async listTransactionByUser(id: string, options: Options) {
+        const { limit, offset } = options;
+        const data = await Transaction.findAndCountAll({
+            where: { userId: id },
+            limit,
+            offset,
+            order: [['createdAt', 'DESC']],
+            include: [{ model: TiktokAccount }],
+        });
+
+        return data;
     }
 }

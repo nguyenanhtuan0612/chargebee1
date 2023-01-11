@@ -84,7 +84,7 @@ export class TiktokController {
         required: false,
     })
     @ApiQuery({
-        name: 'start',
+        name: 'offset',
         description: '0',
         required: false,
     })
@@ -119,7 +119,7 @@ export class TiktokController {
         required: false,
     })
     @ApiQuery({
-        name: 'start',
+        name: 'offset',
         description: '0',
         required: false,
     })
@@ -155,7 +155,7 @@ export class TiktokController {
         required: false,
     })
     @ApiQuery({
-        name: 'start',
+        name: 'offset',
         description: '0',
         required: false,
     })
