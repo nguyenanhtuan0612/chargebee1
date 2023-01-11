@@ -77,7 +77,7 @@ export class CategoriesController {
         required: false,
     })
     @ApiQuery({
-        name: 'start',
+        name: 'offset',
         description: '0',
         required: false,
     })

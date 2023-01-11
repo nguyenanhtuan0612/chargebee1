@@ -2,6 +2,8 @@ import { Payment } from '@/entities/payment.entity';
 import { SystemConfig } from '@/entities/systemConfig.entity';
 import { User } from '@/entities/users.entity';
 import { ExceptionWithMessage } from '@/exceptions/HttpException';
+import { Options } from '@/interfaces/request.interface';
+import { IUser } from '@/interfaces/users.interface';
 import { ICassoPaymentHookData } from '@/interfaces/webhook.interface';
 import { errors } from '@/utils/errors';
 import { Injectable } from '@nestjs/common';
@@ -43,4 +45,18 @@ export class TransactionService {
         }
         return 'ok';
     }
+
+    async listPaymentByUser(id: string, options: Options) {
+        const { limit, offset } = options;
+        const data = await Payment.findAndCountAll({
+            where: { userId: id },
+            limit,
+            offset,
+            order: [['createdAt', 'DESC']],
+        });
+
+        return data;
+    }
+
+    async buyAccount(user: IUser) {}
 }
