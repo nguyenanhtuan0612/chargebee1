@@ -76,6 +76,36 @@ export class TransactionController {
         required: false,
     })
     @ApiBearerAuth('authorization')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles([Role.ADMIN])
+    @Get('/listTransactionByUser/:id')
+    async listTransactionByUser(
+        @Res() res: Response,
+        @Param('id') id: string,
+        @Req() req: RequestWithUserOption,
+    ) {
+        try {
+            const data = await this.service.listTransactionByUser(
+                id,
+                req.options,
+            );
+            return res.status(200).json(data);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @ApiQuery({
+        name: 'offset',
+        description: '0',
+        required: false,
+    })
+    @ApiQuery({
+        name: 'limit',
+        description: '10',
+        required: false,
+    })
+    @ApiBearerAuth('authorization')
     @UseGuards(JwtAuthGuard)
     @Get('/myPayment')
     async myPayment(
@@ -85,6 +115,35 @@ export class TransactionController {
     ) {
         try {
             const data = await this.service.listPaymentByUser(
+                req.auth.id,
+                req.options,
+            );
+            return res.status(200).json(data);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @ApiQuery({
+        name: 'offset',
+        description: '0',
+        required: false,
+    })
+    @ApiQuery({
+        name: 'limit',
+        description: '10',
+        required: false,
+    })
+    @ApiBearerAuth('authorization')
+    @UseGuards(JwtAuthGuard)
+    @Get('/myTransaction')
+    async myTransaction(
+        @Res() res: Response,
+        @Param('id') id: string,
+        @Req() req: RequestWithUserOption,
+    ) {
+        try {
+            const data = await this.service.listTransactionByUser(
                 req.auth.id,
                 req.options,
             );
