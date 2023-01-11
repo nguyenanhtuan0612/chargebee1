@@ -21,7 +21,7 @@ const style = {
   p: 4
 }
 
-const MUITable = () => {
+const ManagementAccounts = () => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -57,4 +57,4 @@ const MUITable = () => {
   )
 }
 
-export default MUITable
+export default ManagementAccounts

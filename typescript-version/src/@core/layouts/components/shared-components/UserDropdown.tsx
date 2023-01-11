@@ -122,7 +122,7 @@ const UserDropdown = () => {
           </Box>
         </MenuItem>
         <Divider />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('deposit-money')}>
           <Box sx={styles}>
             <CurrencyUsd sx={{ marginRight: 2 }} />
             Nạp tiền
