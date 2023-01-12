@@ -1,6 +1,5 @@
 // ** Icon imports
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
-import HomeOutline from 'mdi-material-ui/HomeOutline'
 
 // ** Type import
 import { AccountCashOutline } from 'mdi-material-ui'
@@ -28,7 +27,7 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Có xu',
       icon: AccountCashOutline,
       path: '/products'
-    },
+    }
   ]
 }
 
