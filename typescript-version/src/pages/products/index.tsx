@@ -10,7 +10,7 @@ import { AccountTikTok } from 'src/@core/modals/AccountTikTok.model'
 import CardAppleWatch from 'src/views/cards/CardAppleWatch'
 
 const CardBasic = () => {
-  const [lisAccounts, setlisAccounts] = useState<Array<AccountTikTok>>([])
+  const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([])
   const [isLoading, setLoading] = useState<boolean>(true)
   useEffect(() => {
     const token =
@@ -24,10 +24,9 @@ const CardBasic = () => {
       })
       .then(res => {
         setLoading(false)
-        setlisAccounts(res.data.rows)
+        setlistAccounts(res.data.rows)
       })
       .catch(err => {
-        console.log('Có lỗi xảy ra', err)
         setLoading(false)
       })
   }, [])
@@ -41,7 +40,7 @@ const CardBasic = () => {
       <Grid item xs={12} sx={{ paddingBottom: 4 }}>
         <Typography variant='h6'>Có xu TikTok</Typography>
       </Grid>
-      {lisAccounts.map((item, index) => (
+      {listAccounts.map((item, index) => (
         <Grid item xs={12} sm={6} md={4} key={index}>
           <CardAppleWatch data={item} />
         </Grid>

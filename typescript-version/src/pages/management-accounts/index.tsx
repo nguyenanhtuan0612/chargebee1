@@ -50,7 +50,7 @@ const ManagementAccounts = () => {
               </Box>
             </Modal>
           </div>
-          <TableStickyHeader />
+          {/* <TableStickyHeader /> */}
         </Card>
       </Grid>
     </Grid>
