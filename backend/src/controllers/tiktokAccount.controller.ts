@@ -194,6 +194,43 @@ export class TiktokController {
         }
     }
 
+    @ApiQuery({
+        name: 'filter',
+        description:
+            '[{"operator":"search","value":"provai","prop":"email,fullName"},{"operator":"eq","value":"887c1870-3000-4110-9426-89afa8724d69","prop":"id"}]',
+        required: false,
+    })
+    @ApiQuery({
+        name: 'sort',
+        description: '[{"direction":"DESC","prop":"createdAt"}]',
+        required: false,
+    })
+    @ApiQuery({
+        name: 'offset',
+        description: '0',
+        required: false,
+    })
+    @ApiQuery({
+        name: 'limit',
+        description: '10',
+        required: false,
+    })
+    @Get('listTiktokAccountCoinForAdmin')
+    async listTiktokAccountCoinForAdmin(
+        @Res() res: Response,
+        @Req() req: RequestWithUserOption,
+    ) {
+        try {
+            const { options } = req;
+            const data = await this.service.listTiktokAccountCoinForAdmin(
+                options,
+            );
+            return res.status(200).json(data);
+        } catch (error) {
+            throw error;
+        }
+    }
+
     @ApiBearerAuth('authorization')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles([Role.ADMIN])

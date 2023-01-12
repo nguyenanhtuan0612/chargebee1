@@ -262,4 +262,44 @@ export class TiktokAccountServie {
 
         return data;
     }
+
+    async listTiktokAccountCoinForAdmin(options: Options) {
+        const { where, limit, order, offset } = options;
+
+        const cate = await Category.findOne({
+            where: { name: TIKTOK_ACCOUNT_COIN_CATEGORY },
+        });
+        if (!cate) {
+            return { count: 0, rows: [] };
+        }
+
+        const data = await TiktokAccount.findAndCountAll({
+            where,
+            limit,
+            offset,
+            order,
+            attributes: [
+                'id',
+                'username',
+                'tiktokCoin',
+                'follower',
+                'like',
+                'ownedBy',
+                'title',
+                'subTitle',
+                'price',
+            ],
+            include: [
+                {
+                    model: Category,
+                    required: true,
+                    through: {
+                        where: { categoryId: cate.id },
+                    },
+                },
+            ],
+        });
+
+        return data;
+    }
 }
