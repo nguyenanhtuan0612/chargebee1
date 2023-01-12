@@ -36,6 +36,9 @@ export class AppService implements OnModuleInit {
                 config.discountForColaborator = 10;
                 config.exchangeRate = 23000;
                 config.active = true;
+                config.accountName = 'NGUYEN ANH TUAN';
+                config.accountNumber = '0680106121998';
+                config.bankName = 'NGÂN HÀNG QUÂN ĐỘI - MBB';
                 config.secureToken = SECURE_TOKEN_DEFAULT;
                 await config.save();
             }
@@ -74,6 +77,10 @@ export class AppService implements OnModuleInit {
         if (config) {
             config.exchangeRate = dto.exchangeRate;
             config.discountForColaborator = dto.discountForColaborator;
+            config.accountName = dto.accountName;
+            config.accountNumber = dto.accountNumber;
+            config.bankName = dto.bankName;
+            config.secureToken = dto.secureToken;
             const newConfig = await config.save();
             return newConfig;
         } else {
@@ -81,6 +88,11 @@ export class AppService implements OnModuleInit {
             config.discountForColaborator = 10;
             config.exchangeRate = 23000;
             config.active = true;
+            config.accountName = 'NGUYEN ANH TUAN';
+            config.accountNumber = '0680106121998';
+            config.bankName = 'NGÂN HÀNG QUÂN ĐỘI - MBB';
+            config.secureToken = SECURE_TOKEN_DEFAULT;
+
             const newConfig = await config.save();
             return newConfig;
         }
