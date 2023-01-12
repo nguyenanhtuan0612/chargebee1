@@ -7,5 +7,6 @@ export interface AccountTikTok {
   ownedBy: string,
   title: string,
   subTitle: string,
-  price: number
+  price: number,
+  status?: any
 }

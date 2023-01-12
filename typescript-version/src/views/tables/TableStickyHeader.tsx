@@ -11,10 +11,9 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import { AccountTikTok } from 'src/@core/modals/AccountTikTok.model'
-import axios from 'axios'
 
 interface Column {
-  id: 'username' | 'price' | 'tiktokCoin' | 'status' | 'actions'
+  id: any
   label: string
   minWidth?: number
   align?: 'right'
@@ -75,16 +74,15 @@ const TableStickyHeader = (props: { data: AccountTikTok[] }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.data.map(row => {
+            {props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
               return (
                 <TableRow hover role='checkbox' tabIndex={-1} key={row.id}>
-                  {row}
                   {columns.map(column => {
-                    const value = row
+                    const value = column.id
 
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
+                        {row[value]}
                       </TableCell>
                     )
                   })}

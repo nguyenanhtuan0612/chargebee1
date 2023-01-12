@@ -68,48 +68,42 @@ const ManagementTikTok = () => {
   }, [])
 
   return (
-    setlistAccounts.length > 0 && (
-      <Grid container spacing={6}>
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader title='Danh sách tài khoản tiktok' titleTypographyProps={{ variant: 'h6' }} />
-            <Stack direction='row' justifyContent='flex-end' alignItems='flex-start' spacing={2} mb={4.5} mr={2}>
-              <Button variant='outlined' onClick={handleOpen}>
-                Thêm tài khoản
-              </Button>
-              <Button variant='contained' component='label'>
-                Nhập excel
-                <input
-                  hidden
-                  type='file'
-                  accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
-                  onChange={importExcel}
-                />
-              </Button>
-            </Stack>
-            <TableStickyHeader data={listAccounts} />
-          </Card>
-        </Grid>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby='parent-modal-title'
-          aria-describedby='parent-modal-description'
-        >
-          <DialogContent sx={style}>
-            <FormLayoutsBasic />
-          </DialogContent>
-        </Modal>
-
-        <Backdrop
-          sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }}
-          open={isLoading}
-          onClick={handleClose}
-        >
-          <CircularProgress color='inherit' />
-        </Backdrop>
+    <Grid container spacing={6}>
+      <Grid item xs={12}>
+        <Card>
+          <CardHeader title='Danh sách tài khoản tiktok' titleTypographyProps={{ variant: 'h6' }} />
+          <Stack direction='row' justifyContent='flex-end' alignItems='flex-start' spacing={2} mb={4.5} mr={2}>
+            <Button variant='outlined' onClick={handleOpen}>
+              Thêm tài khoản
+            </Button>
+            <Button variant='contained' component='label'>
+              Nhập excel
+              <input
+                hidden
+                type='file'
+                accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
+                onChange={importExcel}
+              />
+            </Button>
+          </Stack>
+          <TableStickyHeader data={listAccounts} />
+        </Card>
       </Grid>
-    )
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby='parent-modal-title'
+        aria-describedby='parent-modal-description'
+      >
+        <DialogContent sx={style}>
+          <FormLayoutsBasic />
+        </DialogContent>
+      </Modal>
+
+      <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={isLoading} onClick={handleClose}>
+        <CircularProgress color='inherit' />
+      </Backdrop>
+    </Grid>
   )
 }
 
