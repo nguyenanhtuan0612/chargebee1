@@ -39,7 +39,7 @@ const CardBasic = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12} sx={{ paddingBottom: 4 }}>
-        <Typography variant='h5'>Có xu TikTok</Typography>
+        <Typography variant='h6'>Có xu TikTok</Typography>
       </Grid>
       {lisAccounts.map((item, index) => (
         <Grid item xs={12} sm={6} md={4} key={index}>
