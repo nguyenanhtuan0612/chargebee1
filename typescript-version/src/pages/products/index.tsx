@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { AccountTikTok } from 'src/@core/modals/AccountTikTok.model'
+import { AccountTikTok } from 'src/@core/models/AccountTikTok.model'
 
 // ** Demo Components Imports
 import CardAppleWatch from 'src/views/cards/CardAppleWatch'
