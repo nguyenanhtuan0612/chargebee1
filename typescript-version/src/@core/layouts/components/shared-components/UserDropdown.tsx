@@ -100,30 +100,32 @@ const UserDropdown = () => {
   }, [])
 
   // login
-  const logIn = (body: ILogin) => {
+  const logIn = (success?: boolean) => {
     handleModalLoginClose()
-    setLoading(true)
-    const url = 'http://localhost:5001/api/auth/login'
-    const payload = body
-    const data = axios
-      .post(url, payload)
-      .then(res => {
-        setLoading(false)
-        const token = res.data?.jwt?.accessToken
-        if (!!token) {
-          window.localStorage.setItem('token', token)
-          setIsLogin(true)
-          let data = res.data
-          delete data.jwt
-          data = JSON.stringify(data)
-          window.localStorage.setItem('account', data)
-          handleOpenToast('Đăng nhập thành công')
-        }
-      })
-      .catch(err => {
-        setLoading(false)
-        handleOpenToast('Đăng nhập thất bại')
-      })
+    setIsLogin(true)
+    handleOpenToast('Đăng nhập thành công')
+
+    // setLoading(true)
+    // const url = 'http://localhost:5001/api/auth/login'
+    // const payload = body
+    // const data = axios
+    //   .post(url, payload)
+    //   .then(res => {
+    //     setLoading(false)
+    //     const token = res.data?.jwt?.accessToken
+    //     if (!!token) {
+    //       window.localStorage.setItem('token', token)
+    //       setIsLogin(true)
+    //       let data = res.data
+    //       delete data.jwt
+    //       data = JSON.stringify(data)
+    //       window.localStorage.setItem('account', data)
+    //     }
+    //   })
+    //   .catch(err => {
+    //     setLoading(false)
+    //     handleOpenToast('Đăng nhập thất bại')
+    //   })
   }
 
   // Logout
@@ -139,29 +141,7 @@ const UserDropdown = () => {
   // register
   const registerAccount = (body: any) => {
     handleModalRegisterClose()
-    setLoading(true)
-    const url = 'http://localhost:5001/api/auth/register'
-    const payload = body
-    const data = axios
-      .post(url, payload)
-      .then(res => {
-        setLoading(false)
-
-        // const token = res.data?.jwt?.accessToken
-        // if (!!token) {
-        //   window.localStorage.setItem('token', token)
-        //   setIsLogin(true)
-        //   let data = res.data
-        //   delete data.jwt
-        //   data = JSON.stringify(data)
-        //   window.localStorage.setItem('account', data)
-        // }
-        handleOpenToast('Đăng kí thành công')
-      })
-      .catch(err => {
-        setLoading(false)
-        handleOpenToast('Đăng kí thất bại')
-      })
+    handleOpenToast('Đăng kí thành công')
   }
 
   const styles = {

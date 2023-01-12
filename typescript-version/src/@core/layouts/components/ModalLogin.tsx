@@ -33,6 +33,10 @@ import Twitter from 'mdi-material-ui/Twitter'
 // ** Configs
 import themeConfig from 'src/configs/themeConfig'
 
+import Alert from '@mui/material/Alert'
+import Stack from '@mui/material/Stack'
+import axios from 'axios'
+
 interface State {
   email: string
   password: string
@@ -66,6 +70,8 @@ const ModalLogin = (props: any) => {
     showPassword: false
   })
 
+  const [isError, setIsError] = useState<boolean>(false)
+
   // ** Hook
   const theme = useTheme()
   const router = useRouter()
@@ -86,7 +92,25 @@ const ModalLogin = (props: any) => {
     const email = values.email
     const password = values.password
     const isShowPassword = values.showPassword
-    props.submitLogin({ email, password, isShowPassword })
+
+    const url = 'http://localhost:5001/api/auth/login'
+    const payload = { email, password, isShowPassword }
+    const data = axios
+      .post(url, payload)
+      .then(res => {
+        const token = res.data?.jwt?.accessToken
+        if (!!token) {
+          window.localStorage.setItem('token', token)
+          let data = res.data
+          delete data.jwt
+          data = JSON.stringify(data)
+          window.localStorage.setItem('account', data)
+          props.submitLogin()
+        }
+      })
+      .catch(err => {
+        setIsError(true)
+      })
   }
 
   return (
@@ -98,6 +122,11 @@ const ModalLogin = (props: any) => {
               Welcome to {themeConfig.templateName}!
             </Typography>
           </Box>
+          {isError && (
+            <Stack sx={{ width: '100%', mb: 6 }} spacing={2}>
+              <Alert severity='error'>Tài khoản hoặc mật khẩu chưa chính xác!</Alert>
+            </Stack>
+          )}
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
             <TextField
               onChange={handleChange('email')}

@@ -1,4 +1,5 @@
 // ** React Imports
+import * as React from 'react'
 import { ChangeEvent, Fragment, MouseEvent, useState } from 'react'
 
 // ** Next Imports
@@ -30,6 +31,9 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import Alert from '@mui/material/Alert'
+import Stack from '@mui/material/Stack'
+import axios from 'axios'
 
 interface State {
   email: string
@@ -69,11 +73,12 @@ const ModalRegister = (props: any) => {
     showConfirmPassword: false
   })
 
+  const [isError, setIsError] = useState<boolean>(false)
+
   // ** Hook
   const theme = useTheme()
 
   const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(prop)
     setValues({ ...values, [prop]: event.target.value })
   }
 
@@ -95,7 +100,17 @@ const ModalRegister = (props: any) => {
     const check = password === confirmPassword
     if (!check) return
     const body = { email, password }
-    props.submitRegister(body)
+
+    const url = 'http://localhost:5001/api/auth/register'
+    const payload = body
+    const data = axios
+      .post(url, payload)
+      .then(res => {
+        props.submitRegister(body)
+      })
+      .catch(err => {
+        setIsError(true)
+      })
   }
 
   return (
@@ -107,6 +122,11 @@ const ModalRegister = (props: any) => {
               Đăng kí tài khoản
             </Typography>
           </Box>
+          {isError && (
+            <Stack sx={{ width: '100%', mb: 6 }} spacing={2}>
+              <Alert severity='error'>Đăng kí thất bại!</Alert>
+            </Stack>
+          )}
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
             <TextField
               fullWidth
