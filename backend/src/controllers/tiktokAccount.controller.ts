@@ -45,6 +45,22 @@ export class TiktokController {
     @ApiBearerAuth('authorization')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles([Role.ADMIN])
+    @Post('createTiktokAccountCoin')
+    async createTiktokAccountCoin(
+        @Res() res: Response,
+        @Body() dto: AddAccountDto,
+    ) {
+        try {
+            const data = await this.service.createTiktokAccountCoin(dto);
+            return res.status(200).json(data);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @ApiBearerAuth('authorization')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles([Role.ADMIN])
     @Put('/update/:id')
     async update(
         @Res() res: Response,

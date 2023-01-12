@@ -27,6 +27,15 @@ export class SystemConfig extends Model {
     @Column
     secureToken: string;
 
+    @Column
+    bankName: string;
+
+    @Column
+    accountNumber: string;
+
+    @Column
+    accountName: string;
+
     @Column({ defaultValue: false })
     active: boolean;
 

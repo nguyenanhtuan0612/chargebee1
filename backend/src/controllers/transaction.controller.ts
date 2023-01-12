@@ -1,4 +1,5 @@
 import { Roles } from '@/decorators/roles.decorator';
+import { BuyAccountDto } from '@/dtos/transaction.dto';
 import { JwtAuthGuard } from '@/guards/jwt.guard';
 import { RolesGuard } from '@/guards/role.guard';
 import { RequestWithUserOption } from '@/interfaces/auth.interface';
@@ -32,6 +33,20 @@ export class TransactionController {
         try {
             const secureToken = req.headers['secure-token'] as string;
             const data = await this.service.cassoHook(dto, secureToken);
+            return res.status(200).json(data);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @Post('/buyAccount')
+    async buyAccount(
+        @Res() res: Response,
+        @Body() dto: BuyAccountDto,
+        @Req() req: RequestWithUserOption,
+    ) {
+        try {
+            const data = await this.service.buyAccount(req.auth, dto);
             return res.status(200).json(data);
         } catch (error) {
             throw error;

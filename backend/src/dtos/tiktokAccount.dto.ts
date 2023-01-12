@@ -60,6 +60,20 @@ export class AddAccountDto {
     active: boolean;
 }
 
+export class AddAccountCoinDto {
+    @ApiProperty()
+    @IsString()
+    username: string;
+
+    @ApiProperty()
+    @IsString()
+    password: string;
+
+    @ApiProperty()
+    @IsNumber()
+    tiktokCoin: number;
+}
+
 export class UpdateAccountDto {
     @ApiPropertyOptional()
     @IsString()

@@ -2,6 +2,7 @@ import { UpdateAccountDto } from '@/dtos/tiktokAccount.dto';
 import { CreateUserDto, UserResponse } from '@/dtos/users.dto';
 import { User } from '@/entities/users.entity';
 import { ExceptionWithMessage } from '@/exceptions/HttpException';
+import { Options } from '@/interfaces/request.interface';
 import { IUser } from '@/interfaces/users.interface';
 import { errors } from '@/utils/errors';
 import { Injectable } from '@nestjs/common';
@@ -48,5 +49,16 @@ export class UsersService {
 
         userData = await User.findByPk(id);
         return new UserResponse(userData);
+    }
+
+    async list(options: Options) {
+        const { limit, offset } = options;
+        const data = await User.findAndCountAll({
+            limit,
+            offset,
+            order: [['createdAt', 'DESC']],
+        });
+
+        return data;
     }
 }

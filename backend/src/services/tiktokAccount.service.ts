@@ -1,4 +1,8 @@
-import { AddAccountDto, UpdateAccountDto } from '@/dtos/tiktokAccount.dto';
+import {
+    AddAccountCoinDto,
+    AddAccountDto,
+    UpdateAccountDto,
+} from '@/dtos/tiktokAccount.dto';
 import { AccountCategoryLinks } from '@/entities/accountCategoryLink.entity';
 import { Category } from '@/entities/categories.entity';
 import { TiktokAccount } from '@/entities/tiktokAccount.entity';
@@ -36,6 +40,25 @@ export class TiktokAccountServie {
                 link.tiktokAccountId = res.id;
                 await link.save();
             }
+        }
+
+        return res;
+    }
+
+    async createTiktokAccountCoin(dto: AddAccountCoinDto) {
+        const data = new TiktokAccount();
+        data.username = dto.username;
+        data.password = dto.password;
+        data.tiktokCoin = dto.tiktokCoin;
+        const res = await data.save();
+        const cate = await Category.findOne({
+            where: { name: TIKTOK_ACCOUNT_COIN_CATEGORY },
+        });
+        if (cate) {
+            const link = new AccountCategoryLinks();
+            link.categoryId = cate.id;
+            link.tiktokAccountId = res.id;
+            await link.save();
         }
 
         return res;

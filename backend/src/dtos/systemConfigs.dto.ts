@@ -16,6 +16,21 @@ export class UpdateConfigDto {
     @IsOptional()
     @IsString()
     secureToken: string;
+
+    @ApiProperty()
+    @IsOptional()
+    @IsString()
+    bankName: string;
+
+    @ApiProperty()
+    @IsOptional()
+    @IsString()
+    accountNumber: string;
+
+    @ApiProperty()
+    @IsOptional()
+    @IsString()
+    accountName: string;
 }
 
 export class ImportTiktokAccountCoinDto {

@@ -2,6 +2,7 @@ import { CreateUserDto } from '@dtos/users.dto';
 import {
     Body,
     Controller,
+    Get,
     Param,
     Post,
     Put,
@@ -31,6 +32,19 @@ class UsersController {
     async create(@Body() createUserDto: CreateUserDto, @Res() res: any) {
         try {
             const rs = await this.usersService.create(createUserDto);
+            return res.status(200).json(rs);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @ApiBearerAuth('authorization')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles([Role.ADMIN])
+    @Get()
+    async list(@Req() req: RequestWithUserOption, @Res() res: any) {
+        try {
+            const rs = await this.usersService.list(req.options);
             return res.status(200).json(rs);
         } catch (error) {
             throw error;
