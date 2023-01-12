@@ -17,6 +17,7 @@ import VerticalAppBarContent from './components/vertical/AppBarContent'
 
 // ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
+import { Snackbar } from '@mui/material'
 
 interface Props {
   children: ReactNode

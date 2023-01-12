@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, SyntheticEvent, useState } from 'react'
+import { Fragment, SyntheticEvent, useEffect, useState } from 'react'
 
 // ** Next Import
 import { useRouter } from 'next/router'
@@ -15,17 +15,29 @@ import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 
 // ** Icons Imports
-import { Modal } from '@mui/material'
+import { Backdrop, CircularProgress, Modal, Snackbar, SnackbarOrigin } from '@mui/material'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import CogOutline from 'mdi-material-ui/CogOutline'
 import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
 import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import ModalLogin from '../ModalLogin'
 import ModalRegister from '../ModalRegister'
+import { Login } from 'mdi-material-ui'
+import axios from 'axios'
 
 interface State {
   password: string
   showPassword: boolean
+}
+
+interface ILogin {
+  email: string
+  password: string
+}
+
+export interface StateToast extends SnackbarOrigin {
+  openToast: boolean
+  message?: string
 }
 
 // ** Styled Components
@@ -40,7 +52,26 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 const UserDropdown = () => {
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
-  const [isLogin] = useState<boolean>(true)
+  const [isLogin, setIsLogin] = useState<boolean>(false)
+
+  const [stateToast, setStateToast] = useState<StateToast>({
+    openToast: false,
+    vertical: 'top',
+    horizontal: 'right'
+  })
+
+  const { vertical, horizontal, openToast } = stateToast
+
+  const handleOpenToast = (message: string) => {
+    setStateToast({ ...stateToast, openToast: true, message: message })
+    handleCloseToast()
+  }
+
+  const handleCloseToast = () => {
+    setTimeout(() => {
+      setStateToast({ ...stateToast, openToast: false })
+    }, 1000)
+  }
 
   // ** Hooks
   const router = useRouter()
@@ -54,6 +85,83 @@ const UserDropdown = () => {
       router.push(url)
     }
     setAnchorEl(null)
+  }
+  const [isLoading, setLoading] = useState<boolean>(false)
+
+  const handleClose = () => {
+    return
+  }
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('token')
+    if (!!token) {
+      setIsLogin(true)
+    }
+  }, [])
+
+  // login
+  const logIn = (body: ILogin) => {
+    handleModalLoginClose()
+    setLoading(true)
+    const url = 'http://localhost:5001/api/auth/login'
+    const payload = body
+    const data = axios
+      .post(url, payload)
+      .then(res => {
+        setLoading(false)
+        const token = res.data?.jwt?.accessToken
+        if (!!token) {
+          window.localStorage.setItem('token', token)
+          setIsLogin(true)
+          let data = res.data
+          delete data.jwt
+          data = JSON.stringify(data)
+          window.localStorage.setItem('account', data)
+          handleOpenToast('Đăng nhập thành công')
+        }
+      })
+      .catch(err => {
+        setLoading(false)
+        handleOpenToast('Đăng nhập thất bại')
+      })
+  }
+
+  // Logout
+
+  const logOut = () => {
+    console.log()
+    handleDropdownClose()
+    window.localStorage.removeItem('token')
+    window.localStorage.removeItem('account')
+    setIsLogin(false)
+  }
+
+  // register
+  const registerAccount = (body: any) => {
+    handleModalRegisterClose()
+    setLoading(true)
+    const url = 'http://localhost:5001/api/auth/register'
+    const payload = body
+    const data = axios
+      .post(url, payload)
+      .then(res => {
+        setLoading(false)
+
+        // const token = res.data?.jwt?.accessToken
+        // if (!!token) {
+        //   window.localStorage.setItem('token', token)
+        //   setIsLogin(true)
+        //   let data = res.data
+        //   delete data.jwt
+        //   data = JSON.stringify(data)
+        //   window.localStorage.setItem('account', data)
+        // }
+        handleOpenToast('Đăng kí thành công')
+      })
+      .catch(err => {
+        setLoading(false)
+        handleOpenToast('Đăng kí thất bại')
+      })
   }
 
   const styles = {
@@ -118,7 +226,7 @@ const UserDropdown = () => {
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('account-settings')}>
           <Box sx={styles}>
             <AccountOutline sx={{ marginRight: 2 }} />
-            Profile
+            Thông tin cá nhân
           </Box>
         </MenuItem>
         <Divider />
@@ -129,9 +237,9 @@ const UserDropdown = () => {
           </Box>
         </MenuItem>
         <Divider />
-        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+        <MenuItem sx={{ py: 2 }} onClick={() => logOut()}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
-          Logout
+          Đăng xuất
         </MenuItem>
       </Menu>
     )
@@ -193,7 +301,7 @@ const UserDropdown = () => {
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
       >
-        <Box sx={styleModalLogin}>{<ModalLogin />}</Box>
+        <Box sx={styleModalLogin}>{<ModalLogin submitLogin={logIn} openRegister={handleModalRegisterOpen} />}</Box>
       </Modal>
 
       {/* Modal Register */}
@@ -204,8 +312,23 @@ const UserDropdown = () => {
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
       >
-        <Box sx={styleModalLogin}>{<ModalRegister />}</Box>
+        <Box sx={styleModalLogin}>
+          {<ModalRegister submitRegister={registerAccount} openLogin={handleModalLoginOpen} />}
+        </Box>
       </Modal>
+      <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={isLoading} onClick={handleClose}>
+        <CircularProgress color='inherit' />
+      </Backdrop>
+
+      {/* toast */}
+
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={openToast}
+        onClose={handleCloseToast}
+        message={stateToast.message}
+        key={vertical + horizontal}
+      />
     </Fragment>
   )
 }

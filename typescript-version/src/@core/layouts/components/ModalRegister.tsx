@@ -32,6 +32,7 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 
 interface State {
+  email: string
   password: string
   confirmPassword: string
   showPassword: boolean
@@ -59,8 +60,9 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
   }
 }))
 
-const ModalRegister = () => {
+const ModalRegister = (props: any) => {
   const [values, setValues] = useState<State>({
+    email: '',
     password: '',
     confirmPassword: '',
     showPassword: false,
@@ -86,6 +88,16 @@ const ModalRegister = () => {
     event.preventDefault()
   }
 
+  const register = () => {
+    const email = values.email.replace(/^\s+|\s+$/gm, '')
+    const password = values.password.replace(/^\s+|\s+$/gm, '')
+    const confirmPassword = values.confirmPassword.replace(/^\s+|\s+$/gm, '')
+    const check = password === confirmPassword
+    if (!check) return
+    const body = { email, password }
+    props.submitRegister(body)
+  }
+
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>
@@ -96,7 +108,14 @@ const ModalRegister = () => {
             </Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField
+              fullWidth
+              type='email'
+              label='Email'
+              sx={{ marginBottom: 4 }}
+              value={values.email}
+              onChange={handleChange('email')}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-register-password'>Mật khẩu</InputLabel>
               <OutlinedInput
@@ -127,7 +146,7 @@ const ModalRegister = () => {
                 label='confirmPassword'
                 value={values.confirmPassword}
                 id='auth-register-confirm-password'
-                onChange={handleChange('password')}
+                onChange={handleChange('confirmPassword')}
                 type={values.showConfirmPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position='end'>
@@ -151,25 +170,32 @@ const ModalRegister = () => {
               control={<Checkbox />}
               label={
                 <Fragment>
-                  <span>I agree to </span>
+                  <span>Tôi đồng ý </span>
                   <Link href='/' passHref>
                     <LinkStyled onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
-                      privacy policy & terms
+                      chính sách bảo mật và tài khoản
                     </LinkStyled>
                   </Link>
                 </Fragment>
               }
             />
-            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
-              Sign up
+            <Button
+              fullWidth
+              size='large'
+              type='submit'
+              variant='contained'
+              sx={{ marginBottom: 7 }}
+              onClick={register}
+            >
+              Đăng kí
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Typography variant='body2' sx={{ marginRight: 2 }}>
-                Already have an account?
+                Đã có tài khoản?
               </Typography>
               <Typography variant='body2'>
-                <Link passHref href='/pages/login'>
-                  <LinkStyled>Sign in instead</LinkStyled>
+                <Link passHref href='/'>
+                  <LinkStyled onClick={props.openLogin}>Đến đăng nhập</LinkStyled>
                 </Link>
               </Typography>
             </Box>
