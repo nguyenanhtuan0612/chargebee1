@@ -5,13 +5,14 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 
 // ** Demo Components Imports
-import { Button, DialogContent, Modal, Stack } from '@mui/material'
+import { Backdrop, Button, CircularProgress, DialogContent, Modal, Stack } from '@mui/material'
 import { Box } from 'mdi-material-ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import TableStickyHeader from 'src/views/tables/TableStickyHeader'
 import ModalRegister from 'src/@core/layouts/components/ModalRegister'
 import axios from 'axios'
 import FormLayoutsBasic from 'src/views/form-layouts/FormLayoutsBasic'
+import { AccountTikTok } from 'src/@core/modals/AccountTikTok.model'
 
 const style = {
   position: 'absolute',
@@ -23,6 +24,8 @@ const style = {
 
 const ManagementTikTok = () => {
   const [open, setOpen] = useState(false)
+  const [isLoading, setLoading] = useState<boolean>(true)
+
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
@@ -43,41 +46,70 @@ const ManagementTikTok = () => {
       .then(res => console.log(res))
       .catch(err => console.log(err))
   }
+  const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([])
+
+  useEffect(() => {
+    const token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6IjRkMzU2MDdhLWFjYWEtNDc3NS05OGVhLTliMWRkYTVlYjg3MCIsImlhdCI6MTY3MzA2Mjg5OCwiZXhwIjoxNzA0NTk4ODk4fQ.hjnpzFJWG52YXKhX_n_bm1TYH5z77k6wC3_NNcR5Ii8'
+    const url = 'http://localhost:5001/api/tiktokAccount'
+    const data = axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        setLoading(false)
+        setlistAccounts(res.data.rows)
+      })
+      .catch(err => {
+        setLoading(false)
+      })
+  }, [])
 
   return (
-    <Grid container spacing={6}>
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Danh sách tài khoản tiktok' titleTypographyProps={{ variant: 'h6' }} />
-          <Stack direction='row' justifyContent='flex-end' alignItems='flex-start' spacing={2} mb={4.5} mr={2}>
-            <Button variant='outlined' onClick={handleOpen}>
-              Thêm tài khoản
-            </Button>
-            <Button variant='contained' component='label'>
-              Nhập excel
-              <input
-                hidden
-                type='file'
-                accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
-                onChange={importExcel}
-              />
-            </Button>
-          </Stack>
+    setlistAccounts.length > 0 && (
+      <Grid container spacing={6}>
+        <Grid item xs={12}>
+          <Card>
+            <CardHeader title='Danh sách tài khoản tiktok' titleTypographyProps={{ variant: 'h6' }} />
+            <Stack direction='row' justifyContent='flex-end' alignItems='flex-start' spacing={2} mb={4.5} mr={2}>
+              <Button variant='outlined' onClick={handleOpen}>
+                Thêm tài khoản
+              </Button>
+              <Button variant='contained' component='label'>
+                Nhập excel
+                <input
+                  hidden
+                  type='file'
+                  accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
+                  onChange={importExcel}
+                />
+              </Button>
+            </Stack>
+            <TableStickyHeader data={listAccounts} />
+          </Card>
+        </Grid>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby='parent-modal-title'
+          aria-describedby='parent-modal-description'
+        >
+          <DialogContent sx={style}>
+            <FormLayoutsBasic />
+          </DialogContent>
+        </Modal>
 
-          <TableStickyHeader />
-        </Card>
+        <Backdrop
+          sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }}
+          open={isLoading}
+          onClick={handleClose}
+        >
+          <CircularProgress color='inherit' />
+        </Backdrop>
       </Grid>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='parent-modal-title'
-        aria-describedby='parent-modal-description'
-      >
-        <DialogContent sx={style}>
-          <FormLayoutsBasic />
-        </DialogContent>
-      </Modal>
-    </Grid>
+    )
   )
 }
 
