@@ -9,14 +9,15 @@ import { Button, Modal, Stack } from '@mui/material'
 import { Box } from 'mdi-material-ui'
 import { useState } from 'react'
 import TableStickyHeader from 'src/views/tables/TableStickyHeader'
+import ModalRegister from 'src/@core/layouts/components/ModalRegister'
+import axios from 'axios'
 
-const style = {
+const stylePopup = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4
 }
@@ -26,6 +27,24 @@ const ManagementTikTok = () => {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
+  const importExcel = (e: any) => {
+    const formData = new FormData()
+    formData.append('excel', e.target.files[0])
+    const url = 'http://localhost:5001/api/tiktokAccount/importTiktokAccountCoin'
+    const token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6IjRkMzU2MDdhLWFjYWEtNDc3NS05OGVhLTliMWRkYTVlYjg3MCIsImlhdCI6MTY3MzA2Mjg5OCwiZXhwIjoxNzA0NTk4ODk4fQ.hjnpzFJWG52YXKhX_n_bm1TYH5z77k6wC3_NNcR5Ii8'
+    const header = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`
+      }
+    }
+    const data = axios
+      .post(url, formData, header)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
@@ -33,23 +52,15 @@ const ManagementTikTok = () => {
           <CardHeader title='Danh sách tài khoản tiktok' titleTypographyProps={{ variant: 'h6' }} />
           <Stack direction='row' justifyContent='flex-end' alignItems='flex-start' spacing={2} mb={4.5}>
             <Button onClick={handleOpen}>Thêm tài khoản</Button>
-            <Button onClick={handleOpen}>Nhập excel</Button>
-            <Modal
-              keepMounted
-              open={open}
-              onClose={handleClose}
-              aria-labelledby='keep-mounted-modal-title'
-              aria-describedby='keep-mounted-modal-description'
-            >
-              <Box sx={style}>
-                <Typography id='keep-mounted-modal-title' variant='h6' component='h2'>
-                  Text in a modal
-                </Typography>
-                <Typography id='keep-mounted-modal-description' sx={{ mt: 2 }}>
-                  Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                </Typography>
-              </Box>
-            </Modal>
+            <Button variant='contained' component='label'>
+              Nhập excel
+              <input
+                hidden
+                type='file'
+                accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
+                onChange={importExcel}
+              />
+            </Button>
           </Stack>
 
           <TableStickyHeader />
