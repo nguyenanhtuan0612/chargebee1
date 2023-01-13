@@ -105,7 +105,7 @@ const Home = () => {
   const [account, setAccount] = useState<Account>({ role: '', id: '', email: '', balance: 0 });
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('account') || '');
+    const data = JSON.parse(localStorage.getItem('account') || '{}');
     if (data) {
       setAccount(data);
     }
