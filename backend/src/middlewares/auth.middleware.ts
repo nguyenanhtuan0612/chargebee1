@@ -15,10 +15,10 @@ export class AuthMiddleware implements NestMiddleware {
             const Authorization = req.headers.authorization
                 ? req.headers.authorization.split('Bearer ')[1]
                 : null;
-            console.log(req.headers.authorization);
+            console.log(Authorization);
             if (Authorization) {
                 const tokenDecode: any = this.jwtService.decode(Authorization);
-                const findUser: User = await User.findOne(tokenDecode.id);
+                const findUser: User = await User.findByPk(tokenDecode.sub);
 
                 if (findUser) {
                     req.auth = new UserResponse(findUser);
