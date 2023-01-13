@@ -13,7 +13,7 @@ import TablePagination from '@mui/material/TablePagination';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
 
 interface Column {
-  id: any;
+  id: string;
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -58,6 +58,26 @@ const TableManagementTikTok = (props: { data: AccountTikTok[] }) => {
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const getDataColumn = (id: string, align: any, dataRow: any) => {
+    switch (id) {
+      case 'status':
+        return (
+          <TableCell key={id} align={align}>
+            {dataRow[id] ? 'Hoạt động' : 'Không hoạt động'}
+          </TableCell>
+        );
+        break;
+
+      default:
+        return (
+          <TableCell key={id} align={align}>
+            {dataRow[id]}
+          </TableCell>
+        );
+        break;
+    }
   };
 
   return (

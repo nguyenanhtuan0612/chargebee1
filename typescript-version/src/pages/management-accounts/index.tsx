@@ -2,13 +2,12 @@
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 
 // ** Demo Components Imports
-import { Button, Modal } from '@mui/material';
-import { Box } from 'mdi-material-ui';
-import { useState } from 'react';
-import TableStickyHeader from 'src/views/tables/TableManagementTikTok';
+import { Backdrop, Button, CircularProgress, DialogContent, Modal, Stack } from '@mui/material';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import FormAddAccountUser from 'src/views/form-layouts/FormAddAccountUser';
 import TableManagementAccount from 'src/views/tables/TableManagementAccount';
 
 const style = {
@@ -24,36 +23,57 @@ const style = {
 
 const ManagementAccounts = () => {
   const [open, setOpen] = useState(false);
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [listAccounts, setlistAccounts] = useState<Array<any>>([]);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    const token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6IjRkMzU2MDdhLWFjYWEtNDc3NS05OGVhLTliMWRkYTVlYjg3MCIsImlhdCI6MTY3MzA2Mjg5OCwiZXhwIjoxNzA0NTk4ODk4fQ.hjnpzFJWG52YXKhX_n_bm1TYH5z77k6wC3_NNcR5Ii8';
+    const url = 'http://localhost:5001/api/users';
+    const data = axios
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        setLoading(false);
+        setlistAccounts(res.data.rows);
+      })
+      .catch(err => {
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
           <CardHeader title='Quản lý tài khoản' titleTypographyProps={{ variant: 'h6' }} />
-          <div>
-            <Button onClick={handleOpen}>Thêm tài khoản</Button>
+          <Stack direction='row' justifyContent='flex-end' alignItems='flex-start' spacing={2} mb={4.5} mr={2}>
+            <Button variant='contained' onClick={handleOpen}>
+              Thêm tài khoản
+            </Button>
             <Modal
-              keepMounted
               open={open}
               onClose={handleClose}
-              aria-labelledby='keep-mounted-modal-title'
-              aria-describedby='keep-mounted-modal-description'
+              aria-labelledby='parent-modal-title'
+              aria-describedby='parent-modal-description'
             >
-              <Box sx={style}>
-                <Typography id='keep-mounted-modal-title' variant='h6' component='h2'>
-                  Text in a modal
-                </Typography>
-                <Typography id='keep-mounted-modal-description' sx={{ mt: 2 }}>
-                  Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                </Typography>
-              </Box>
+              <DialogContent sx={style}>
+                <FormAddAccountUser />
+              </DialogContent>
             </Modal>
-          </div>
-          {/* <TableManagementAccount /> */}
+          </Stack>
+          <TableManagementAccount data={listAccounts} />
         </Card>
       </Grid>
+      <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={isLoading} onClick={handleClose}>
+        <CircularProgress color='inherit' />
+      </Backdrop>
     </Grid>
   );
 };

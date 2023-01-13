@@ -1,5 +1,5 @@
 export interface AccountTikTok {
-  id: number,
+  id: string | number,
   username: string,
   tiktokCoin: number,
   follower: number,

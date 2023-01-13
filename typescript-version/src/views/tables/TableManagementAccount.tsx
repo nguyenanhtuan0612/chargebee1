@@ -11,9 +11,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
+import { BriefcaseClock } from 'mdi-material-ui';
 
 interface Column {
-  id: any;
+  id: string;
   label: string;
   minWidth?: number;
   align?: 'right';
@@ -21,28 +22,25 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: 'username', label: 'Email', minWidth: 170 },
-  { id: 'price', label: 'Giá', minWidth: 100 },
+  { id: 'email', label: 'Email', minWidth: 170 },
   {
-    id: 'tiktokCoin',
-    label: 'Xu tiktok',
+    id: 'balance',
+    label: 'Số tiền',
     minWidth: 170,
-    align: 'right',
-    format: (value: number) => value.toLocaleString('en-US')
+    align: 'right'
   },
+  { id: 'role', label: 'Vị trí', align: 'right', minWidth: 100 },
   {
-    id: 'status',
+    id: 'active',
     label: 'Trạng thái',
     minWidth: 170,
-    align: 'right',
-    format: (value: number) => value.toLocaleString('en-US')
+    align: 'right'
   },
   {
     id: 'actions',
     label: 'Thao tác',
     minWidth: 170,
-    align: 'right',
-    format: (value: number) => value.toFixed(2)
+    align: 'right'
   }
 ];
 
@@ -58,6 +56,39 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const getDataColumn = (id: string, align: any, dataRow: any) => {
+    switch (id) {
+      case 'active':
+        return (
+          <TableCell key={id} align={align}>
+            {dataRow[id] ? 'Hoạt động' : 'Không hoạt động'}
+          </TableCell>
+        );
+        break;
+      case 'role':
+        let title = '';
+        if (dataRow[id] == 'customer') {
+          title = 'Khách hàng';
+        } else if (dataRow[id] == 'admin') {
+          title = 'Admin';
+        }
+
+        return (
+          <TableCell key={id} align={align}>
+            {title}
+          </TableCell>
+        );
+        break;
+      default:
+        return (
+          <TableCell key={id} align={align}>
+            {dataRow[id]}
+          </TableCell>
+        );
+        break;
+    }
   };
 
   return (
@@ -80,11 +111,13 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
                   {columns.map(column => {
                     const value = column.id;
 
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {row[value]}
-                      </TableCell>
-                    );
+                    return getDataColumn(value, column.align, row);
+
+                    // return (
+                    //   <TableCell key={column.id} align={column.align}>
+                    //     {row[value]}
+                    //   </TableCell>
+                    // );
                   })}
                 </TableRow>
               );

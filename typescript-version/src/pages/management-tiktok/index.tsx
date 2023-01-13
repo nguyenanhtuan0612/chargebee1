@@ -8,8 +8,9 @@ import { Backdrop, Button, CircularProgress, DialogContent, Modal, Stack } from 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
-import FormLayoutsBasic from 'src/views/form-layouts/FormLayoutsBasic';
+import FormLayoutsBasic from 'src/views/form-layouts/FormAddAccountTikTok';
 import TableManagementTikTok from 'src/views/tables/TableManagementTikTok';
+import FormAddAccountTikTok from 'src/views/form-layouts/FormAddAccountTikTok';
 
 const style = {
   position: 'absolute',
@@ -22,6 +23,7 @@ const style = {
 const ManagementTikTok = () => {
   const [open, setOpen] = useState(false);
   const [isLoading, setLoading] = useState<boolean>(true);
+  const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -43,7 +45,6 @@ const ManagementTikTok = () => {
       .then(res => console.log(res))
       .catch(err => console.log(err));
   };
-  const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([]);
 
   useEffect(() => {
     const token =
@@ -93,7 +94,7 @@ const ManagementTikTok = () => {
         aria-describedby='parent-modal-description'
       >
         <DialogContent sx={style}>
-          <FormLayoutsBasic />
+          <FormAddAccountTikTok />
         </DialogContent>
       </Modal>
 
