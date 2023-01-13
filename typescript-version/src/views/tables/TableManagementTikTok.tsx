@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ChangeEvent, useEffect } from 'react';
+import { useState, ChangeEvent } from 'react';
 
 // ** MUI Imports
 import Paper from '@mui/material/Paper';
@@ -46,7 +46,7 @@ const columns: readonly Column[] = [
   }
 ];
 
-const TableStickyHeader = (props: { data: AccountTikTok[] }) => {
+const TableManagementTikTok = (props: { data: AccountTikTok[] }) => {
   // ** States
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
@@ -105,4 +105,4 @@ const TableStickyHeader = (props: { data: AccountTikTok[] }) => {
   );
 };
 
-export default TableStickyHeader;
+export default TableManagementTikTok;
