@@ -11,7 +11,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
-import { BriefcaseClock } from 'mdi-material-ui';
+import { IconButton, Tooltip } from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
+import axios from 'axios';
 
 interface Column {
   id: string;
@@ -58,6 +61,22 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
     setPage(0);
   };
 
+  const banAccount = (state: boolean, id: string): void => {
+    let url = 'http://localhost:5001/api/';
+    if (state) {
+      url = url + `users/ban/${id}`;
+    } else {
+      url = url + `users/unban/${id}`;
+    }
+    console.log(url);
+    const token = localStorage.getItem('token');
+    const data = axios
+      .put(url, null, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => console.log(res));
+  };
+
   const getDataColumn = (id: string, align: any, dataRow: any) => {
     switch (id) {
       case 'active':
@@ -78,6 +97,35 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
         return (
           <TableCell key={id} align={align}>
             {title}
+          </TableCell>
+        );
+        break;
+      case 'actions':
+        const state = dataRow.active;
+
+        return (
+          <TableCell key={id} align={align}>
+            <Tooltip title={state ? 'Khoá' : 'Mở'}>
+              {state ? (
+                <IconButton
+                  onClick={() => {
+                    banAccount(state, dataRow.id);
+                  }}
+                >
+                  {<LockOutlinedIcon />}
+                </IconButton>
+              ) : (
+                <IconButton
+                  onClick={() => {
+                    banAccount(state, dataRow.id);
+                  }}
+                >
+                  {<LockOpenOutlinedIcon />}
+                </IconButton>
+              )}
+
+              {/* <IconButton>{state ? <LockOutlinedIcon /> : <LockOpenOutlinedIcon />}</IconButton> */}
+            </Tooltip>
           </TableCell>
         );
         break;
@@ -112,12 +160,6 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
                     const value = column.id;
 
                     return getDataColumn(value, column.align, row);
-
-                    // return (
-                    //   <TableCell key={column.id} align={column.align}>
-                    //     {row[value]}
-                    //   </TableCell>
-                    // );
                   })}
                 </TableRow>
               );

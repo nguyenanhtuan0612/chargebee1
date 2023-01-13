@@ -104,28 +104,6 @@ const UserDropdown = () => {
     handleModalLoginClose();
     setIsLogin(true);
     handleOpenToast('Đăng nhập thành công');
-
-    // setLoading(true)
-    // const url = 'http://localhost:5001/api/auth/login'
-    // const payload = body
-    // const data = axios
-    //   .post(url, payload)
-    //   .then(res => {
-    //     setLoading(false)
-    //     const token = res.data?.jwt?.accessToken
-    //     if (!!token) {
-    //       window.localStorage.setItem('token', token)
-    //       setIsLogin(true)
-    //       let data = res.data
-    //       delete data.jwt
-    //       data = JSON.stringify(data)
-    //       window.localStorage.setItem('account', data)
-    //     }
-    //   })
-    //   .catch(err => {
-    //     setLoading(false)
-    //     handleOpenToast('Đăng nhập thất bại')
-    //   })
   };
 
   // Logout
