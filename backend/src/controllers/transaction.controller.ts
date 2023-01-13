@@ -39,6 +39,8 @@ export class TransactionController {
         }
     }
 
+    @ApiBearerAuth('authorization')
+    @UseGuards(JwtAuthGuard)
     @Post('/buyAccount')
     async buyAccount(
         @Res() res: Response,
@@ -151,7 +153,6 @@ export class TransactionController {
     @Get('/myTransaction')
     async myTransaction(
         @Res() res: Response,
-        @Param('id') id: string,
         @Req() req: RequestWithUserOption,
     ) {
         try {

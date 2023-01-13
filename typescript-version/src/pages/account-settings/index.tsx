@@ -23,7 +23,7 @@ import TabSecurity from 'src/views/account-settings/TabSecurity';
 import { CogOutline } from 'mdi-material-ui';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Account } from 'src/@core/models/UserInfo.model';
-import TabPayment from 'src/views/account-settings/TabPayment';
+import TabTransaction from 'src/views/account-settings/TabTransaction';
 import TabRechargeHistory from 'src/views/account-settings/TabRechargeHistory';
 import TabSystemConfig from 'src/views/account-settings/TabSystemConfig';
 
@@ -133,7 +133,7 @@ const AccountSettings = () => {
           <TabRechargeHistory />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='payment'>
-          <TabPayment />
+          <TabTransaction />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='systemConfigs'>
           <TabSystemConfig />

@@ -72,6 +72,19 @@ class UsersController {
     @ApiBearerAuth('authorization')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles([Role.ADMIN])
+    @Put('unBan/:id')
+    async unBan(@Param('id') id: string, @Res() res: any) {
+        try {
+            const rs = await this.usersService.unBanUser(id);
+            return res.status(200).json(rs);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @ApiBearerAuth('authorization')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles([Role.ADMIN])
     @Put('addMoneyToBalance/:id')
     async addMoneyToBalance(
         @Param('id') id: string,
