@@ -123,12 +123,9 @@ export class TransactionController {
     @ApiBearerAuth('authorization')
     @UseGuards(JwtAuthGuard)
     @Get('/myPayment')
-    async myPayment(
-        @Res() res: Response,
-        @Param('id') id: string,
-        @Req() req: RequestWithUserOption,
-    ) {
+    async myPayment(@Res() res: Response, @Req() req: RequestWithUserOption) {
         try {
+            console.log(req.auth.id);
             const data = await this.service.listPaymentByUser(
                 req.auth.id,
                 req.options,
