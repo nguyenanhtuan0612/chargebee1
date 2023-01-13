@@ -12,20 +12,11 @@ import { Box, CardActions, DialogContent, Fade, Modal, Stack } from '@mui/materi
 
 interface PropsProduct {
   data: AccountTikTok;
+  exchangeRate: number;
 }
 
 const CardAppleWatch = (props: PropsProduct) => {
-  const [exchangeRate, setExchangRate] = useState(0);
-
-  useEffect(() => {
-    async function fetch() {
-      const url = 'http://localhost:5001/api/configs';
-      const res = await axios.get(url);
-      setExchangRate(res.data.exchangeRate);
-    }
-
-    fetch();
-  }, []);
+  const { exchangeRate } = props;
 
   const calculatePrice = (coin: number) => {
     const price = ((((coin * exchangeRate) / 100) % 1000) + 1) * 1000;

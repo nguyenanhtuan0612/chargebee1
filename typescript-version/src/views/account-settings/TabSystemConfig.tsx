@@ -12,7 +12,6 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import axios from 'axios';
 import { NumericFormat } from 'react-number-format';
-import { CommentProcessing } from 'mdi-material-ui';
 
 // ** Icons Imports
 
@@ -111,7 +110,7 @@ const TabSystemConfig = () => {
   const handleCloseLoading = () => {
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 200);
   };
 
   return (

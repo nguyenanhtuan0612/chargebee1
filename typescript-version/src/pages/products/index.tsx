@@ -15,8 +15,17 @@ const Product = () => {
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const [account, setAccount] = useState<Account>({ role: '', id: '', email: '', balance: 0 });
+  const [exchangeRate, setExchangRate] = useState(0);
 
   useEffect(() => {
+    async function fetch() {
+      const url = 'http://localhost:5001/api/configs';
+      const res = await axios.get(url);
+      setExchangRate(res.data.exchangeRate);
+    }
+
+    fetch();
+
     const acc = JSON.parse(localStorage.getItem('account') || '{}');
     if (acc) {
       setAccount(acc);
@@ -50,7 +59,7 @@ const Product = () => {
       </Grid>
       {listAccounts.map((item, index) => (
         <Grid item xs={12} sm={6} md={4} key={index}>
-          <CardAppleWatch data={item} />
+          <CardAppleWatch data={item} exchangeRate={exchangeRate} />
         </Grid>
       ))}
       <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={isLoading} onClick={handleClose}>

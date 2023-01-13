@@ -45,6 +45,16 @@ export class UsersService {
         return new UserResponse(userData);
     }
 
+    async unBanUser(id: string) {
+        const userData = await User.findByPk(id);
+        if (!userData) {
+            throw new ExceptionWithMessage(errors.USER_NOT_FOUND, 404);
+        }
+        userData.active = true;
+        await userData.save();
+        return new UserResponse(userData);
+    }
+
     async update(id: string, dto: UpdateAccountDto) {
         let userData = await User.findByPk(id);
         if (!userData) {

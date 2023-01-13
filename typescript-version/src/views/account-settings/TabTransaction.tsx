@@ -13,48 +13,62 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { NumericFormat } from 'react-number-format';
+import moment from 'moment';
 import axios from 'axios';
 import { Backdrop, CircularProgress } from '@mui/material';
-import moment from 'moment';
 
 interface Column {
-  id: 'createdAt' | 'amount';
+  id: 'username' | 'password' | 'tiktokCoin' | 'price' | 'createdAt';
   label: string;
   minWidth?: number;
-  align?: 'right';
-  format?: (value: number) => any;
+  align?: 'right' | 'center';
+  format?: (value: any) => any;
 }
 
 const columns: readonly Column[] = [
+  { id: 'username', label: 'Email đăng nhập', minWidth: 170 },
+  { id: 'password', label: 'Mật khẩu', minWidth: 140, align: 'center' },
+  {
+    id: 'tiktokCoin',
+    label: 'Số xu',
+    minWidth: 120,
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US')
+  },
+  {
+    id: 'price',
+    label: 'Giá mua',
+    minWidth: 120,
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US') + ' VND'
+  },
   {
     id: 'createdAt',
     label: 'Thời gian',
     minWidth: 170,
+    align: 'right',
     format: value => {
       return moment(new Date(value)).format('HH:mm DD-MM-yyyy');
-    }
-  },
-  {
-    id: 'amount',
-    label: 'Số tiền',
-    minWidth: 100,
-    format: value => {
-      return <NumericFormat thousandSeparator value={value | 0} displayType={'text'} suffix=' VND' />;
     }
   }
 ];
 
 interface Data {
   id: number;
-  cassoId: number;
-  amount: number;
   userId: string;
+  tiktokAccountId: number;
+  price: number;
   createdAt: string;
   updatedAt: string;
+  tiktokAccount: {
+    id: string;
+    username: string;
+    password: string;
+    tiktokCoin: string;
+  };
 }
 
-const TabRechargeHistory = () => {
+const TabTransaction = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState<Data[]>([]);
@@ -79,7 +93,7 @@ const TabRechargeHistory = () => {
     async function fetch() {
       setLoading(true);
       const offset = page * rowsPerPage;
-      const url = `http://localhost:5001/api/transactions/myPayment?limit=${rowsPerPage}&offset=${offset}`;
+      const url = `http://localhost:5001/api/transactions/myTransaction?limit=${rowsPerPage}&offset=${offset}`;
       const token = localStorage.getItem('token');
       const res = await axios.get(url, { headers: { authorization: 'Bearer ' + token } });
       const dataRows: Data[] = res.data.rows;
@@ -92,6 +106,7 @@ const TabRechargeHistory = () => {
 
   return (
     <>
+      {' '}
       <CardContent>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label='sticky table'>
@@ -109,11 +124,26 @@ const TabRechargeHistory = () => {
                 return (
                   <TableRow hover role='checkbox' tabIndex={-1} key={row.id}>
                     {columns.map(column => {
-                      const value: any = row[column.id];
+                      let value;
+                      switch (column.id) {
+                        case 'username':
+                          value = row.tiktokAccount.username;
+                          console.log(value);
+                          break;
+                        case 'password':
+                          value = row.tiktokAccount.password;
+                          break;
+                        case 'tiktokCoin':
+                          value = row.tiktokAccount.tiktokCoin;
+                          break;
+                        default:
+                          value = row[column.id];
+                          break;
+                      }
 
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format && column.format(value)}
+                          {column.format ? column.format(value) : value}
                         </TableCell>
                       );
                     })}
@@ -140,4 +170,4 @@ const TabRechargeHistory = () => {
   );
 };
 
-export default TabRechargeHistory;
+export default TabTransaction;

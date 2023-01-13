@@ -87,8 +87,9 @@ export class TransactionService {
         transaction.price = dto.price;
         transaction.tiktokAccountId = dto.tiktokAcountId;
         transaction.userId = user.id;
-        const data = await transaction.save();
-        return data;
+        await transaction.save();
+
+        return account;
     }
 
     async listTransactionByUser(id: string, options: Options) {
