@@ -1,14 +1,13 @@
 // ** MUI Imports
-import Card from '@mui/material/Card';
+import { DialogContent, Modal, Stack } from '@mui/material';
 import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import CardContent from '@mui/material/CardContent';
-import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import { NumericFormat } from 'react-number-format';
-import { Box, CardActions, DialogContent, Fade, Modal, Stack } from '@mui/material';
+import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
 
 interface PropsProduct {
   data: AccountTikTok;
@@ -19,7 +18,7 @@ const CardAppleWatch = (props: PropsProduct) => {
   const { exchangeRate } = props;
 
   const calculatePrice = (coin: number) => {
-    const price = ((((coin * exchangeRate) / 100) % 1000) + 1) * 1000;
+    const price = (Math.floor((coin * exchangeRate) / 100 / 1000) + 1) * 1000;
 
     return price;
   };
