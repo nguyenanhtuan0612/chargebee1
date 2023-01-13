@@ -41,12 +41,13 @@ const CardAppleWatch = (props: PropsProduct) => {
           <NumericFormat
             thousandSeparator
             suffix=' VND'
-            prefix=' '
             value={props.data.price | calculatePrice(props.data.tiktokCoin) | 0}
             displayType={'text'}
           />
         </Typography>
-        <Typography variant='body2'>Số xu: {props.data.tiktokCoin}</Typography>
+        <Typography variant='body2'>
+          Số xu: <NumericFormat thousandSeparator value={props.data.tiktokCoin | 0} displayType={'text'} />
+        </Typography>
       </CardContent>
       <Button variant='contained' sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
         Mua ngay

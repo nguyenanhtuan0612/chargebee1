@@ -1,5 +1,10 @@
 import { UpdateAccountDto } from '@/dtos/tiktokAccount.dto';
-import { CreateUserDto, UserResponse } from '@/dtos/users.dto';
+import {
+    AddMoneyToBalanceDto,
+    ChangeRoleDto,
+    CreateUserDto,
+    UserResponse,
+} from '@/dtos/users.dto';
 import { User } from '@/entities/users.entity';
 import { ExceptionWithMessage } from '@/exceptions/HttpException';
 import { Options } from '@/interfaces/request.interface';
@@ -60,5 +65,25 @@ export class UsersService {
         });
 
         return data;
+    }
+
+    async changeRole(id: string, dto: ChangeRoleDto) {
+        const userData = await User.findByPk(id);
+        if (!userData) {
+            throw new ExceptionWithMessage(errors.USER_NOT_FOUND, 404);
+        }
+        userData.role = dto.role;
+        await userData.save();
+        return new UserResponse(userData);
+    }
+
+    async addMoneyToBalance(id: string, dto: AddMoneyToBalanceDto) {
+        const userData = await User.findByPk(id);
+        if (!userData) {
+            throw new ExceptionWithMessage(errors.USER_NOT_FOUND, 404);
+        }
+        userData.balance = userData.balance + dto.money;
+        await userData.save();
+        return new UserResponse(userData);
     }
 }

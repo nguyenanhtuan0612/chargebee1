@@ -1,7 +1,7 @@
 import { User } from '@/entities/users.entity';
 import { JwtInfo } from '@/interfaces/auth.interface';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class RegisterDto {
     @ApiProperty()
@@ -52,6 +52,18 @@ export class LoginDto {
     @ApiProperty()
     @IsString()
     password: string;
+}
+
+export class ChangeRoleDto {
+    @ApiProperty()
+    @IsString()
+    role: string;
+}
+
+export class AddMoneyToBalanceDto {
+    @ApiProperty()
+    @IsNumber()
+    money: number;
 }
 
 export class UserResponse {

@@ -1,4 +1,8 @@
-import { CreateUserDto } from '@dtos/users.dto';
+import {
+    AddMoneyToBalanceDto,
+    ChangeRoleDto,
+    CreateUserDto,
+} from '@dtos/users.dto';
 import {
     Body,
     Controller,
@@ -19,6 +23,7 @@ import { Role } from '@/utils/constants';
 import { RequestWithUserOption } from '@/interfaces/auth.interface';
 import { ExceptionWithMessage } from '@/exceptions/HttpException';
 import { errors } from '@/utils/errors';
+import { Response } from 'express';
 
 @ApiTags('Users')
 @Controller('users')
@@ -64,8 +69,42 @@ class UsersController {
         }
     }
 
+    @ApiBearerAuth('authorization')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles([Role.ADMIN])
+    @Put('addMoneyToBalance/:id')
+    async addMoneyToBalance(
+        @Param('id') id: string,
+        @Res() res: Response,
+        @Body() dto: AddMoneyToBalanceDto,
+    ) {
+        try {
+            const rs = await this.usersService.addMoneyToBalance(id, dto);
+            return res.status(200).json(rs);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    @ApiBearerAuth('authorization')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles([Role.ADMIN])
+    @Put('changeRole/:id')
+    async changeRole(
+        @Param('id') id: string,
+        @Res() res: Response,
+        @Body() dto: ChangeRoleDto,
+    ) {
+        try {
+            const rs = await this.usersService.changeRole(id, dto);
+            return res.status(200).json(rs);
+        } catch (error) {
+            throw error;
+        }
+    }
+
     @UseGuards(JwtAuthGuard)
-    @Put('detail/:id')
+    @Get('detail/:id')
     async detail(
         @Param('id') id: string,
         @Res() res: any,
