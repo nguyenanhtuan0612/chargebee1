@@ -46,9 +46,7 @@ const Product = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12} sx={{ paddingBottom: 4 }}>
-        <Typography variant='h6'>
-          {account.role === 'admin' ? 'Danh sách tài khoản chưa bán' : 'Danh sách tài khoản Tiktok'}
-        </Typography>
+        <Typography variant='h6'>{'Danh sách tài khoản Tiktok'}</Typography>
       </Grid>
       {listAccounts.map((item, index) => (
         <Grid item xs={12} sm={6} md={4} key={index}>
