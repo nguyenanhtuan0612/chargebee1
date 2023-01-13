@@ -2,17 +2,14 @@
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 
 // ** Demo Components Imports
 import { Backdrop, Button, CircularProgress, DialogContent, Modal, Stack } from '@mui/material';
-import { Box } from 'mdi-material-ui';
-import { useEffect, useState } from 'react';
-import TableStickyHeader from 'src/views/tables/TableStickyHeader';
-import ModalRegister from 'src/@core/layouts/components/ModalRegister';
 import axios from 'axios';
-import FormLayoutsBasic from 'src/views/form-layouts/FormLayoutsBasic';
+import { useEffect, useState } from 'react';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
+import FormLayoutsBasic from 'src/views/form-layouts/FormLayoutsBasic';
+import TableManagementTikTok from 'src/views/tables/TableManagementTikTok';
 
 const style = {
   position: 'absolute',
@@ -86,7 +83,7 @@ const ManagementTikTok = () => {
               />
             </Button>
           </Stack>
-          <TableStickyHeader data={listAccounts} />
+          <TableManagementTikTok data={listAccounts} />
         </Card>
       </Grid>
       <Modal

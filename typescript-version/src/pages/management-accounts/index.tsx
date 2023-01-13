@@ -1,14 +1,15 @@
 // ** MUI Imports
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 
 // ** Demo Components Imports
-import { Button, Modal } from '@mui/material'
-import { Box } from 'mdi-material-ui'
-import { useState } from 'react'
-import TableStickyHeader from 'src/views/tables/TableStickyHeader'
+import { Button, Modal } from '@mui/material';
+import { Box } from 'mdi-material-ui';
+import { useState } from 'react';
+import TableStickyHeader from 'src/views/tables/TableManagementTikTok';
+import TableManagementAccount from 'src/views/tables/TableManagementAccount';
 
 const style = {
   position: 'absolute',
@@ -19,12 +20,12 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4
-}
+};
 
 const ManagementAccounts = () => {
-  const [open, setOpen] = useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <Grid container spacing={6}>
@@ -50,11 +51,11 @@ const ManagementAccounts = () => {
               </Box>
             </Modal>
           </div>
-          {/* <TableStickyHeader /> */}
+          {/* <TableManagementAccount /> */}
         </Card>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default ManagementAccounts
+export default ManagementAccounts;
