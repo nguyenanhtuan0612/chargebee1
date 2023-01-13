@@ -74,7 +74,7 @@ const TableStickyHeader = (props: { data: AccountTikTok[] }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+            {props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => {
               return (
                 <TableRow hover role='checkbox' tabIndex={-1} key={row.id}>
                   {columns.map(column => {

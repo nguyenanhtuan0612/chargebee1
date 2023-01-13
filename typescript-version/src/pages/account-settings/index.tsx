@@ -101,26 +101,26 @@ const AccountSettings = () => {
               }
             />
           ) : (
-            <>
-              <Tab
-                value='rechargeHistory'
-                label={
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <InformationOutline />
-                    <TabName>Lịch sử nạp tiền</TabName>
-                  </Box>
-                }
-              />
-              <Tab
-                value='payment'
-                label={
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <InformationOutline />
-                    <TabName>Đã mua</TabName>
-                  </Box>
-                }
-              />
-            </>
+            <Tab
+              value='rechargeHistory'
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <InformationOutline />
+                  <TabName>Lịch sử nạp tiền</TabName>
+                </Box>
+              }
+            />
+          )}
+          {account.role == 'admin' ? null : (
+            <Tab
+              value='payment'
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <InformationOutline />
+                  <TabName>Đã mua</TabName>
+                </Box>
+              }
+            />
           )}
         </TabList>
 

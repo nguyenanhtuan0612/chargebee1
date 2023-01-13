@@ -1,5 +1,5 @@
 // ** React Imports
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, forwardRef, useEffect, useState } from 'react';
 
 // ** MUI Imports
 import Box from '@mui/material/Box';
@@ -9,6 +9,8 @@ import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import axios from 'axios';
+import { NumericFormat } from 'react-number-format';
 
 // ** Icons Imports
 
@@ -21,6 +23,14 @@ interface State {
   secureToken: string;
 }
 
+const NumberFormatCustom = forwardRef(function NumberFormatCustom(props: any, ref) {
+  const { onChange, ...other } = props;
+
+  return (
+    <NumericFormat {...other} getInputRef={ref} onChange={onChange} thousandSeparator isNumericString suffix=' VND' />
+  );
+});
+
 const TabSystemConfig = () => {
   // ** States
   const [values, setValues] = useState<State>({
@@ -32,18 +42,22 @@ const TabSystemConfig = () => {
     secureToken: ''
   });
 
-  // Handle Current Password
-  const handleCurrentPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    async function fetch() {
+      const url = 'http://localhost:5001/api/configs';
+      const data = await axios.get(url);
+      setValues(data.data);
+    }
+
+    fetch();
+  }, []);
+
+  // Handle
+  const handleStateChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  // Handle New Password
-  const handleNewPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  // Handle Confirm New Password
-  const handleConfirmNewPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+  const handleStateChangeFormatPercent = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
@@ -60,8 +74,8 @@ const TabSystemConfig = () => {
                     label='Chiết khấu cho cộng tác viên'
                     value={values.discountForColaborator}
                     id='discountForColaborator'
-                    type={'number'}
-                    onChange={handleCurrentPasswordChange('discountForColaborator')}
+                    type={'text'}
+                    onChange={handleStateChangeFormatPercent('discountForColaborator')}
                   />
                 </FormControl>
               </Grid>
@@ -73,8 +87,8 @@ const TabSystemConfig = () => {
                     label='Tỉ giá quy đổi $'
                     value={values.exchangeRate}
                     id='exchangeRate'
-                    onChange={handleNewPasswordChange('exchangeRate')}
-                    type={'number'}
+                    onChange={handleStateChange('exchangeRate')}
+                    inputComponent={NumberFormatCustom}
                   />
                 </FormControl>
               </Grid>
@@ -87,7 +101,7 @@ const TabSystemConfig = () => {
                     value={values.secureToken}
                     id='secureToken'
                     type={'text'}
-                    onChange={handleConfirmNewPasswordChange('secureToken')}
+                    onChange={handleStateChange('secureToken')}
                   />
                 </FormControl>
               </Grid>
@@ -100,7 +114,7 @@ const TabSystemConfig = () => {
                     value={values.bankName}
                     id='bankName'
                     type={'text'}
-                    onChange={handleConfirmNewPasswordChange('bankName')}
+                    onChange={handleStateChange('bankName')}
                   />
                 </FormControl>
               </Grid>
@@ -113,7 +127,7 @@ const TabSystemConfig = () => {
                     value={values.accountNumber}
                     id='accountNumber'
                     type={'text'}
-                    onChange={handleConfirmNewPasswordChange('accountNumber')}
+                    onChange={handleStateChange('accountNumber')}
                   />
                 </FormControl>
               </Grid>
@@ -126,7 +140,7 @@ const TabSystemConfig = () => {
                     value={values.accountName}
                     id='accountName'
                     type={'text'}
-                    onChange={handleConfirmNewPasswordChange('accountName')}
+                    onChange={handleStateChange('accountName')}
                   />
                 </FormControl>
               </Grid>
