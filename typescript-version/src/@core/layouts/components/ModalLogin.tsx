@@ -1,66 +1,66 @@
 // ** React Imports
-import { ChangeEvent, MouseEvent, useState } from 'react'
+import { ChangeEvent, MouseEvent, useState } from 'react';
 
 // ** Next Imports
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 // ** MUI Components
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import MuiCard, { CardProps } from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import Checkbox from '@mui/material/Checkbox'
-import Divider from '@mui/material/Divider'
-import FormControl from '@mui/material/FormControl'
-import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
-import IconButton from '@mui/material/IconButton'
-import InputAdornment from '@mui/material/InputAdornment'
-import InputLabel from '@mui/material/InputLabel'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import { styled, useTheme } from '@mui/material/styles'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import MuiCard, { CardProps } from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Checkbox from '@mui/material/Checkbox';
+import Divider from '@mui/material/Divider';
+import FormControl from '@mui/material/FormControl';
+import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { styled, useTheme } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 // ** Icons Imports
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import Facebook from 'mdi-material-ui/Facebook'
-import Github from 'mdi-material-ui/Github'
-import Google from 'mdi-material-ui/Google'
-import Twitter from 'mdi-material-ui/Twitter'
+import EyeOffOutline from 'mdi-material-ui/EyeOffOutline';
+import EyeOutline from 'mdi-material-ui/EyeOutline';
+import Facebook from 'mdi-material-ui/Facebook';
+import Github from 'mdi-material-ui/Github';
+import Google from 'mdi-material-ui/Google';
+import Twitter from 'mdi-material-ui/Twitter';
 
 // ** Configs
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from 'src/configs/themeConfig';
 
-import Alert from '@mui/material/Alert'
-import Stack from '@mui/material/Stack'
-import axios from 'axios'
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import axios from 'axios';
 
 interface State {
-  email: string
-  password: string
-  showPassword: boolean
+  email: string;
+  password: string;
+  showPassword: boolean;
 }
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
   [theme.breakpoints.up('xs')]: { width: '23.5rem' },
   [theme.breakpoints.up('sm')]: { width: '28rem' }
-}))
+}));
 
 const LinkStyled = styled('a')(({ theme }) => ({
   fontSize: '0.875rem',
   textDecoration: 'none',
   color: theme.palette.primary.main
-}))
+}));
 
 const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ theme }) => ({
   '& .MuiFormControlLabel-label': {
     fontSize: '0.875rem',
     color: theme.palette.text.secondary
   }
-}))
+}));
 
 const ModalLogin = (props: any) => {
   // ** State
@@ -68,49 +68,50 @@ const ModalLogin = (props: any) => {
     email: '',
     password: '',
     showPassword: false
-  })
+  });
 
-  const [isError, setIsError] = useState<boolean>(false)
+  const [isError, setIsError] = useState<boolean>(false);
 
   // ** Hook
-  const theme = useTheme()
-  const router = useRouter()
+  const theme = useTheme();
+  const router = useRouter();
 
   const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
+    setValues({ ...values, [prop]: event.target.value });
+  };
 
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
 
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
+    event.preventDefault();
+  };
 
   function logIn() {
-    const email = values.email
-    const password = values.password
-    const isShowPassword = values.showPassword
+    const email = values.email;
+    const password = values.password;
+    const isShowPassword = values.showPassword;
 
-    const url = 'http://localhost:5001/api/auth/login'
-    const payload = { email, password, isShowPassword }
+    const url = 'http://localhost:5001/api/auth/login';
+    const payload = { email, password, isShowPassword };
     const data = axios
       .post(url, payload)
       .then(res => {
-        const token = res.data?.jwt?.accessToken
+        const token = res.data?.jwt?.accessToken;
         if (!!token) {
-          window.localStorage.setItem('token', token)
-          let data = res.data
-          delete data.jwt
-          data = JSON.stringify(data)
-          window.localStorage.setItem('account', data)
-          props.submitLogin()
+          window.localStorage.setItem('token', token);
+          let data = res.data;
+          delete data.jwt;
+          data = JSON.stringify(data);
+          window.localStorage.setItem('account', data);
+          props.submitLogin();
+          router.reload();
         }
       })
       .catch(err => {
-        setIsError(true)
-      })
+        setIsError(true);
+      });
   }
 
   return (
@@ -188,7 +189,7 @@ const ModalLogin = (props: any) => {
         </CardContent>
       </Card>
     </Box>
-  )
-}
+  );
+};
 
-export default ModalLogin
+export default ModalLogin;

@@ -21,6 +21,9 @@ import StatisticsCard from 'src/views/dashboard/StatisticsCard';
 import WeeklyOverview from 'src/views/dashboard/WeeklyOverview';
 import DepositWithdraw from 'src/views/dashboard/DepositWithdraw';
 import SalesByCountries from 'src/views/dashboard/SalesByCountries';
+import { useEffect, useState } from 'react';
+import { Account } from 'src/@core/models/UserInfo.model';
+import Product from './products';
 
 const Dashboard = () => {
   return (
@@ -98,4 +101,17 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+const Home = () => {
+  const [account, setAccount] = useState<Account>({ role: '', id: '', email: '', balance: 0 });
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem('account') || '{}');
+    if (data) {
+      setAccount(data);
+    }
+  }, []);
+
+  return account.role === 'admin' ? <Dashboard /> : <Product />;
+};
+
+export default Home;

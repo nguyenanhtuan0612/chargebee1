@@ -1,43 +1,43 @@
 // ** React Imports
-import { Fragment, SyntheticEvent, useEffect, useState } from 'react'
+import { Fragment, SyntheticEvent, useEffect, useState } from 'react';
 
 // ** Next Import
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 // ** MUI Imports
-import Avatar from '@mui/material/Avatar'
-import Badge from '@mui/material/Badge'
-import Box from '@mui/material/Box'
-import Divider from '@mui/material/Divider'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
-import { styled } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
+import Avatar from '@mui/material/Avatar';
+import Badge from '@mui/material/Badge';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 // ** Icons Imports
-import { Backdrop, CircularProgress, Modal, Snackbar, SnackbarOrigin } from '@mui/material'
-import AccountOutline from 'mdi-material-ui/AccountOutline'
-import CogOutline from 'mdi-material-ui/CogOutline'
-import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
-import LogoutVariant from 'mdi-material-ui/LogoutVariant'
-import ModalLogin from '../ModalLogin'
-import ModalRegister from '../ModalRegister'
-import { Login } from 'mdi-material-ui'
-import axios from 'axios'
+import { Backdrop, CircularProgress, Modal, Snackbar, SnackbarOrigin } from '@mui/material';
+import AccountOutline from 'mdi-material-ui/AccountOutline';
+import CogOutline from 'mdi-material-ui/CogOutline';
+import CurrencyUsd from 'mdi-material-ui/CurrencyUsd';
+import LogoutVariant from 'mdi-material-ui/LogoutVariant';
+import ModalLogin from '../ModalLogin';
+import ModalRegister from '../ModalRegister';
+import { Login } from 'mdi-material-ui';
+import axios from 'axios';
 
 interface State {
-  password: string
-  showPassword: boolean
+  password: string;
+  showPassword: boolean;
 }
 
 interface ILogin {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 
 export interface StateToast extends SnackbarOrigin {
-  openToast: boolean
-  message?: string
+  openToast: boolean;
+  message?: string;
 }
 
 // ** Styled Components
@@ -47,63 +47,63 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
   borderRadius: '50%',
   backgroundColor: theme.palette.success.main,
   boxShadow: `0 0 0 2px ${theme.palette.background.paper}`
-}))
+}));
 
 const UserDropdown = () => {
   // ** States
-  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
-  const [isLogin, setIsLogin] = useState<boolean>(false)
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
 
   const [stateToast, setStateToast] = useState<StateToast>({
     openToast: false,
     vertical: 'top',
     horizontal: 'right'
-  })
+  });
 
-  const { vertical, horizontal, openToast } = stateToast
+  const { vertical, horizontal, openToast } = stateToast;
 
   const handleOpenToast = (message: string) => {
-    setStateToast({ ...stateToast, openToast: true, message: message })
-    handleCloseToast()
-  }
+    setStateToast({ ...stateToast, openToast: true, message: message });
+    handleCloseToast();
+  };
 
   const handleCloseToast = () => {
     setTimeout(() => {
-      setStateToast({ ...stateToast, openToast: false })
-    }, 1000)
-  }
+      setStateToast({ ...stateToast, openToast: false });
+    }, 1000);
+  };
 
   // ** Hooks
-  const router = useRouter()
+  const router = useRouter();
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleDropdownClose = (url?: string) => {
     if (url) {
-      router.push(url)
+      router.push(url);
     }
-    setAnchorEl(null)
-  }
-  const [isLoading, setLoading] = useState<boolean>(false)
+    setAnchorEl(null);
+  };
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const handleClose = () => {
-    return
-  }
+    return;
+  };
 
   useEffect(() => {
-    const token = window.localStorage.getItem('token')
+    const token = window.localStorage.getItem('token');
     if (!!token) {
-      setIsLogin(true)
+      setIsLogin(true);
     }
-  }, [])
+  }, []);
 
   // login
   const logIn = (success?: boolean) => {
-    handleModalLoginClose()
-    setIsLogin(true)
-    handleOpenToast('Đăng nhập thành công')
+    handleModalLoginClose();
+    setIsLogin(true);
+    handleOpenToast('Đăng nhập thành công');
 
     // setLoading(true)
     // const url = 'http://localhost:5001/api/auth/login'
@@ -126,23 +126,23 @@ const UserDropdown = () => {
     //     setLoading(false)
     //     handleOpenToast('Đăng nhập thất bại')
     //   })
-  }
+  };
 
   // Logout
 
   const logOut = () => {
-    console.log()
-    handleDropdownClose()
-    window.localStorage.removeItem('token')
-    window.localStorage.removeItem('account')
-    setIsLogin(false)
-  }
+    handleDropdownClose();
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('account');
+    setIsLogin(false);
+    router.reload();
+  };
 
   // register
   const registerAccount = (body: any) => {
-    handleModalRegisterClose()
-    handleOpenToast('Đăng kí thành công')
-  }
+    handleModalRegisterClose();
+    handleOpenToast('Đăng kí thành công');
+  };
 
   const styles = {
     py: 2,
@@ -156,28 +156,28 @@ const UserDropdown = () => {
       fontSize: '1.375rem',
       color: 'text.secondary'
     }
-  }
+  };
 
-  const [isModalLogin, setModalLoginOpen] = useState(false)
+  const [isModalLogin, setModalLoginOpen] = useState(false);
   const handleModalLoginOpen = () => {
-    setAnchorEl(null)
-    handleModalRegisterClose()
-    setModalLoginOpen(true)
-  }
+    setAnchorEl(null);
+    handleModalRegisterClose();
+    setModalLoginOpen(true);
+  };
   const handleModalLoginClose = () => {
-    setModalLoginOpen(false)
-  }
-  const [isModalRegister, setModalRegisterOpen] = useState(false)
+    setModalLoginOpen(false);
+  };
+  const [isModalRegister, setModalRegisterOpen] = useState(false);
   const handleModalRegisterOpen = () => {
-    setAnchorEl(null)
-    handleModalLoginClose()
-    setModalRegisterOpen(true)
-  }
+    setAnchorEl(null);
+    handleModalLoginClose();
+    setModalRegisterOpen(true);
+  };
   const handleModalRegisterClose = () => {
-    setModalRegisterOpen(false)
-  }
+    setModalRegisterOpen(false);
+  };
 
-  let menu
+  let menu;
   if (isLogin) {
     menu = (
       <Menu
@@ -222,7 +222,7 @@ const UserDropdown = () => {
           Đăng xuất
         </MenuItem>
       </Menu>
-    )
+    );
   } else {
     menu = (
       <Menu
@@ -245,7 +245,7 @@ const UserDropdown = () => {
           Đăng kí
         </MenuItem>
       </Menu>
-    )
+    );
   }
 
   const styleModalLogin = {
@@ -255,7 +255,7 @@ const UserDropdown = () => {
     transform: 'translate(-50%, -50%)',
     bgcolor: 'background.paper',
     boxShadow: 24
-  }
+  };
 
   return (
     <Fragment>
@@ -310,7 +310,7 @@ const UserDropdown = () => {
         key={vertical + horizontal}
       />
     </Fragment>
-  )
-}
+  );
+};
 
-export default UserDropdown
+export default UserDropdown;

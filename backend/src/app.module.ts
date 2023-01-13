@@ -46,8 +46,8 @@ console.log(ENV);
         TransactionController,
     ],
     providers: [
-        AppService,
         JwtStrategy,
+        AppService,
         UsersService,
         AuthService,
         TiktokAccountServie,
