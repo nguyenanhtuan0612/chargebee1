@@ -2,6 +2,7 @@
 import { ChangeEvent, forwardRef, useEffect, useState } from 'react';
 
 // ** MUI Imports
+import { Backdrop, CircularProgress, Snackbar, SnackbarOrigin } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CardContent from '@mui/material/CardContent';
@@ -11,6 +12,7 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import axios from 'axios';
 import { NumericFormat } from 'react-number-format';
+import { CommentProcessing } from 'mdi-material-ui';
 
 // ** Icons Imports
 
@@ -23,12 +25,21 @@ interface State {
   secureToken: string;
 }
 
-const NumberFormatCustom = forwardRef(function NumberFormatCustom(props: any, ref) {
+interface StateToast extends SnackbarOrigin {
+  openToast: boolean;
+  message?: string;
+}
+
+const NumberFormatCurrency = forwardRef(function NumberFormatCustom(props: any, ref) {
   const { onChange, ...other } = props;
 
-  return (
-    <NumericFormat {...other} getInputRef={ref} onChange={onChange} thousandSeparator isNumericString suffix=' VND' />
-  );
+  return <NumericFormat {...other} getInputRef={ref} onChange={onChange} thousandSeparator suffix=' VND' />;
+});
+
+const NumberFormatPercent = forwardRef(function NumberFormatCustom(props: any, ref) {
+  const { onChange, ...other } = props;
+
+  return <NumericFormat {...other} getInputRef={ref} onChange={onChange} suffix=' %' />;
 });
 
 const TabSystemConfig = () => {
@@ -41,12 +52,21 @@ const TabSystemConfig = () => {
     bankName: '',
     secureToken: ''
   });
+  const [stateToast, setStateToast] = useState<StateToast>({
+    openToast: false,
+    vertical: 'top',
+    horizontal: 'right'
+  });
+  const { vertical, horizontal, openToast } = stateToast;
+  const [isLoading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetch() {
+      setLoading(true);
       const url = 'http://localhost:5001/api/configs';
       const data = await axios.get(url);
       setValues(data.data);
+      handleCloseLoading();
     }
 
     fetch();
@@ -58,7 +78,40 @@ const TabSystemConfig = () => {
   };
 
   const handleStateChangeFormatPercent = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value });
+    const value = parseInt(event.target.value.split(' %')[0]) || 0;
+    setValues({ ...values, [prop]: value });
+  };
+
+  const handleStateChangeFormatCurrency = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+    const rate = event.target.value.split(' VND')[0].replaceAll(',', '');
+    const value = parseInt(rate) || 0;
+    setValues({ ...values, [prop]: value });
+  };
+
+  const handleSaveBtnClick = async () => {
+    setLoading(true);
+    const token = localStorage.getItem('token');
+    const url = 'http://localhost:5001/api/updateConfig';
+    await axios.put(url, values, {
+      headers: {
+        authorization: 'Bearer ' + token
+      }
+    });
+    handleCloseLoading();
+    setStateToast({ ...stateToast, openToast: true });
+    handleCloseToast();
+  };
+
+  const handleCloseToast = () => {
+    setTimeout(() => {
+      setStateToast({ ...stateToast, openToast: false });
+    }, 1000);
+  };
+
+  const handleCloseLoading = () => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   return (
@@ -76,6 +129,7 @@ const TabSystemConfig = () => {
                     id='discountForColaborator'
                     type={'text'}
                     onChange={handleStateChangeFormatPercent('discountForColaborator')}
+                    inputComponent={NumberFormatPercent}
                   />
                 </FormControl>
               </Grid>
@@ -87,8 +141,8 @@ const TabSystemConfig = () => {
                     label='Tỉ giá quy đổi $'
                     value={values.exchangeRate}
                     id='exchangeRate'
-                    onChange={handleStateChange('exchangeRate')}
-                    inputComponent={NumberFormatCustom}
+                    onChange={handleStateChangeFormatCurrency('exchangeRate')}
+                    inputComponent={NumberFormatCurrency}
                   />
                 </FormControl>
               </Grid>
@@ -147,34 +201,26 @@ const TabSystemConfig = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Box sx={{ marginTop: 3 }}>
-          <Button variant='contained' sx={{ marginRight: 2 }}>
-            Save Changes
-          </Button>
-          <Button
-            type='reset'
-            variant='outlined'
-            color='secondary'
-            onClick={() =>
-              setValues({
-                ...values,
-                exchangeRate: 0,
-                discountForColaborator: 0,
-                accountName: '',
-                accountNumber: '',
-                bankName: '',
-                secureToken: ''
-              })
-            }
-          >
-            Reset
+        <Box sx={{ marginTop: 3, marginBottom: 8 }}>
+          <Button variant='contained' sx={{ marginRight: 2 }} onClick={handleSaveBtnClick}>
+            Lưu thay đổi
           </Button>
         </Box>
       </CardContent>
+      <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={isLoading}>
+        <CircularProgress color='inherit' />
+      </Backdrop>
 
       {/* <Divider sx={{ margin: 0 }} /> */}
 
       {/* <CardContent></CardContent> */}
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={openToast}
+        onClose={handleCloseToast}
+        message={'Cập nhật thành công !'}
+        key={vertical + horizontal}
+      />
     </form>
   );
 };

@@ -54,7 +54,6 @@ const AccountSettings = () => {
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem('account') || '');
-    console.log(data);
     if (data) {
       setAccount(data);
     }
