@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, SetStateAction, Dispatch } from 'react';
 
 // ** MUI Imports
 import Paper from '@mui/material/Paper';
@@ -15,6 +15,7 @@ import { IconButton, Tooltip } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import axios from 'axios';
+import { AccountUser } from 'src/@core/models/AccountUser.model';
 
 interface Column {
   id: string;
@@ -47,7 +48,13 @@ const columns: readonly Column[] = [
   }
 ];
 
-const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
+const TableManagementAccount = (props: {
+  data: AccountUser[];
+  trigger: boolean;
+  setTrigger: Dispatch<SetStateAction<boolean>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  row: number;
+}) => {
   // ** States
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
@@ -61,20 +68,26 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
     setPage(0);
   };
 
-  const banAccount = (state: boolean, id: string): void => {
+  const banAccount = (state: boolean, dataRow: AccountUser): void => {
+    props.setLoading(true);
     let url = 'http://localhost:5001/api/';
     if (state) {
-      url = url + `users/ban/${id}`;
+      url = url + `users/ban/${dataRow.id}`;
     } else {
-      url = url + `users/unban/${id}`;
+      url = url + `users/unBan/${dataRow.id}`;
     }
-    console.log(url);
     const token = localStorage.getItem('token');
     const data = axios
       .put(url, null, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      .then(res => console.log(res));
+      .then(res => {
+        props.setTrigger(!props.trigger);
+      })
+      .catch(err => {
+        props.setLoading(false);
+        console.log;
+      });
   };
 
   const getDataColumn = (id: string, align: any, dataRow: any) => {
@@ -92,6 +105,8 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
           title = 'Khách hàng';
         } else if (dataRow[id] == 'admin') {
           title = 'Admin';
+        } else if (dataRow[id] == 'collaborator') {
+          title = 'Cộng tác viên';
         }
 
         return (
@@ -109,7 +124,7 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
               {state ? (
                 <IconButton
                   onClick={() => {
-                    banAccount(state, dataRow.id);
+                    banAccount(state, dataRow);
                   }}
                 >
                   {<LockOutlinedIcon />}
@@ -117,14 +132,12 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
               ) : (
                 <IconButton
                   onClick={() => {
-                    banAccount(state, dataRow.id);
+                    banAccount(state, dataRow);
                   }}
                 >
                   {<LockOpenOutlinedIcon />}
                 </IconButton>
               )}
-
-              {/* <IconButton>{state ? <LockOutlinedIcon /> : <LockOpenOutlinedIcon />}</IconButton> */}
             </Tooltip>
           </TableCell>
         );
@@ -170,7 +183,7 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component='div'
-        count={props.data.length}
+        count={props.row}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

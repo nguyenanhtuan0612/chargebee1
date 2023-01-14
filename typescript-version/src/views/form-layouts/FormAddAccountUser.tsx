@@ -10,10 +10,16 @@ import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 // ** Icons Imports
-const FormAddAccountUser = (props: any) => {
+
+interface IProps {
+  addSuccess: (value: boolean) => void;
+  trigger: boolean;
+  setTrigger: Dispatch<SetStateAction<boolean>>;
+}
+const FormAddAccountUser = (props: IProps) => {
   const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -48,6 +54,7 @@ const FormAddAccountUser = (props: any) => {
       .post(url, body, header)
       .then(res => {
         props.addSuccess(true);
+        props.setTrigger(!props.trigger);
       })
       .catch(err => {
         props.addSuccess(false);
