@@ -63,6 +63,6 @@ export class AppModule {
             .forRoutes({ path: '*', method: RequestMethod.GET });
     }
     constructor() {
-        console.log(appConfigs());
+        //console.log(appConfigs());
     }
 }

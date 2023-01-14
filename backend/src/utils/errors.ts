@@ -50,16 +50,8 @@ export const errors = {
         code: 12,
         detail: '{{permisson.forbiddenResource}}',
     },
-    TEACHER_STATUS_INVALID: {
-        code: 13,
-        detail: '{{teacher.registerStatusInvalid}}',
-    },
-    SUBJECT_EXIST: {
-        code: 14,
-        detail: '{{subject.isAlreadyExist}}',
-    },
     RECORD_NOT_FOUND: {
-        code: 15,
+        code: 13,
         detail: '{{record.notFound}}',
     },
     OTP_NOT_EXPIRED: {
@@ -69,14 +61,6 @@ export const errors = {
     ACCOUNT_NOT_FOUND: {
         code: 17,
         detail: '{{teacher.notFound}}',
-    },
-    LANGUAGE_NOT_FOUND: {
-        code: 18,
-        detail: '{{language.notFound}}',
-    },
-    THEMATIC_NOT_MATCH_WITH_LANGUAGE: {
-        code: 19,
-        detail: '{{thematic.notMatchWithLanguage}}',
     },
     TRANSACTION_NOT_FOUND: {
         code: 20,
@@ -105,17 +89,13 @@ export const errors = {
         code: 25,
         detail: '{{user.notFound}}',
     },
-    TEACHER_LANGUAGE_NOT_MATCH: {
-        code: 26,
-        detail: '{{teacherLanguage.notMatch}}',
-    },
     BALANCE_NOT_ENOUGH: {
         code: 27,
         detail: '{{balance.notEnough}}',
     },
-    TRANSACTION_IS_FINISHED: {
+    CURRENT_PASSWORD_NOT_MATCH: {
         code: 28,
-        detail: '{{transaction.isFinished}}',
+        detail: '{{password.notMatch}}',
     },
     INVALID_SIGNATURE: {
         code: 29,

@@ -1,75 +1,92 @@
 // ** React Imports
-import { ChangeEvent, ElementType, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 // ** MUI Imports
-import Button, { ButtonProps } from '@mui/material/Button'
-import CardContent from '@mui/material/CardContent'
-import Grid from '@mui/material/Grid'
-import { styled } from '@mui/material/styles'
-import TextField from '@mui/material/TextField'
+import { Backdrop, CircularProgress } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import axios from 'axios';
 
-// ** Icons Imports
-
-const ImgStyled = styled('img')(({ theme }) => ({
-  width: 120,
-  height: 120,
-  marginRight: theme.spacing(6.25),
-  borderRadius: theme.shape.borderRadius
-}))
-
-const ButtonStyled = styled(Button)<ButtonProps & { component?: ElementType; htmlFor?: string }>(({ theme }) => ({
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-    textAlign: 'center'
-  }
-}))
-
-const ResetButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
-  marginLeft: theme.spacing(4.5),
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-    marginLeft: 0,
-    textAlign: 'center',
-    marginTop: theme.spacing(4)
-  }
-}))
+interface Info {
+  id: string;
+  email: string;
+  balance: number;
+  role: 'admin' | 'customer' | 'collaborator';
+}
 
 const TabAccount = () => {
   // ** State
-  const [openAlert, setOpenAlert] = useState<boolean>(true)
-  const [imgSrc, setImgSrc] = useState<string>('/images/avatars/1.png')
+  const [info, setInfo] = useState<Info>({ id: '', email: '', balance: 0, role: 'admin' });
+  const [isLoading, setLoading] = useState(false);
+  const handleCloseLoading = () => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 200);
+  };
 
-  const onChange = (file: ChangeEvent) => {
-    const reader = new FileReader()
-    const { files } = file.target as HTMLInputElement
-    if (files && files.length !== 0) {
-      reader.onload = () => setImgSrc(reader.result as string)
-
-      reader.readAsDataURL(files[0])
+  const renderRoleString = (info: Info) => {
+    switch (info.role) {
+      case 'admin':
+        return 'Quản trị viên';
+      case 'customer':
+        return 'Khách hàng';
+      default:
+        return 'Cộng tác viên';
     }
-  }
+  };
+
+  useEffect(() => {
+    async function fetch() {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      const url = 'http://localhost:5001/api/auth';
+      const res = await axios.get(url, { headers: { authorization: 'Bearer ' + token } });
+      setInfo(res.data);
+      handleCloseLoading();
+    }
+
+    fetch();
+  }, []);
 
   return (
-    <CardContent>
-      <form>
-        <Grid container spacing={7}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              disabled={true}
-              type='email'
-              label='Email'
-              placeholder='admin@gmail.com'
-              defaultValue='admin@gmail.com'
-            />
+    <>
+      {' '}
+      <CardContent>
+        <form>
+          <Grid container spacing={7}>
+            <Grid item xs={12} sm={6}>
+              <TextField fullWidth inputProps={{ readOnly: true }} type='email' label='Email' value={info.email} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                inputProps={{ readOnly: true }}
+                type='role'
+                label='Vai trò'
+                value={renderRoleString(info)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                inputProps={{ readOnly: true }}
+                type='role'
+                label='Số dư'
+                value={info.balance.toLocaleString('en-US') + ' VND'}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField inputProps={{ readOnly: true }} fullWidth type='role' label='Vai trò' defaultValue='Admin' />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField fullWidth disabled={true} type='role' label='Vai trò' defaultValue='Admin' />
-          </Grid>
-        </Grid>
-      </form>
-    </CardContent>
-  )
-}
+        </form>
+      </CardContent>
+      <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={isLoading}>
+        <CircularProgress color='inherit' />
+      </Backdrop>
+    </>
+  );
+};
 
-export default TabAccount
+export default TabAccount;

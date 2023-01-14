@@ -54,6 +54,16 @@ export class LoginDto {
     password: string;
 }
 
+export class ChangePasswordDto {
+    @ApiProperty()
+    @IsString()
+    currentPassword: string;
+
+    @ApiProperty()
+    @IsString()
+    newPassword: string;
+}
+
 export class ChangeRoleDto {
     @ApiProperty()
     @IsString()
@@ -71,12 +81,14 @@ export class UserResponse {
     email: string;
     balance: number;
     role: string;
+    active: boolean;
 
     constructor(iUser: User) {
         this.id = iUser.id;
         this.email = iUser.email;
         this.balance = iUser.balance;
         this.role = iUser.role;
+        this.active = iUser.active;
     }
 }
 

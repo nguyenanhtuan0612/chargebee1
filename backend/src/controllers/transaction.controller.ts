@@ -127,7 +127,6 @@ export class TransactionController {
     @Get('/myPayment')
     async myPayment(@Res() res: Response, @Req() req: RequestWithUserOption) {
         try {
-            console.log(req.auth.id);
             const data = await this.service.listPaymentByUser(
                 req.auth.id,
                 req.options,

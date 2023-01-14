@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+    ChangePasswordDto,
     LoginDto,
     RegisterDto,
     UserResponeWithToken,
@@ -77,5 +78,31 @@ export class AuthService {
             401,
             'Login Fail',
         );
+    }
+
+    async changePassword(
+        userId: string,
+        dto: ChangePasswordDto,
+    ): Promise<UserResponse> {
+        const user = await User.findOne({
+            where: { id: userId },
+        });
+        if (user) {
+            const compareResult = await compare(
+                dto.currentPassword,
+                user.password,
+            );
+            if (compareResult) {
+                const salt = await genSalt(10);
+                user.password = await hash(dto.newPassword, salt);
+
+                return new UserResponse(user);
+            }
+            throw new ExceptionWithMessage(
+                errors.CURRENT_PASSWORD_NOT_MATCH,
+                401,
+            );
+        }
+        throw new ExceptionWithMessage(errors.USER_NOT_FOUND, 404);
     }
 }

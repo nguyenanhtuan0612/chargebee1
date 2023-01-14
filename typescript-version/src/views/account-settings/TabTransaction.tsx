@@ -6,6 +6,7 @@ import CardContent from '@mui/material/CardContent';
 
 // ** Third Party Imports
 
+import { Backdrop, CircularProgress } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,9 +14,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import moment from 'moment';
 import axios from 'axios';
-import { Backdrop, CircularProgress } from '@mui/material';
+import moment from 'moment';
 
 interface Column {
   id: 'username' | 'password' | 'tiktokCoin' | 'price' | 'createdAt';
@@ -128,7 +128,6 @@ const TabTransaction = () => {
                       switch (column.id) {
                         case 'username':
                           value = row.tiktokAccount.username;
-                          console.log(value);
                           break;
                         case 'password':
                           value = row.tiktokAccount.password;
