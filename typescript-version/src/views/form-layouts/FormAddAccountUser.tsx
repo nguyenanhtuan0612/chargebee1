@@ -1,6 +1,7 @@
 // ** React Imports
 
 // ** MUI Imports
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -8,9 +9,58 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 // ** Icons Imports
-const FormAddAccountUser = () => {
+
+interface IProps {
+  addSuccess: (value: boolean) => void;
+  trigger: boolean;
+  setTrigger: Dispatch<SetStateAction<boolean>>;
+}
+const FormAddAccountUser = (props: IProps) => {
+  const [role, setRole] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+  const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const handleChangeRole = (event: SelectChangeEvent) => {
+    setRole(event.target.value as string);
+  };
+
+  const submitAccount = () => {
+    const body = {
+      email: email.replace(/^\s+|\s+$/gm, ''),
+      password: password.replace(/^\s+|\s+$/gm, ''),
+      role: role.replace(/^\s+|\s+$/gm, '')
+    };
+
+    const url = 'http://localhost:5001/api/users';
+    const token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6IjRkMzU2MDdhLWFjYWEtNDc3NS05OGVhLTliMWRkYTVlYjg3MCIsImlhdCI6MTY3MzA2Mjg5OCwiZXhwIjoxNzA0NTk4ODk4fQ.hjnpzFJWG52YXKhX_n_bm1TYH5z77k6wC3_NNcR5Ii8';
+    const header = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const data = axios
+      .post(url, body, header)
+      .then(res => {
+        props.addSuccess(true);
+        props.setTrigger(!props.trigger);
+      })
+      .catch(err => {
+        props.addSuccess(false);
+      });
+  };
+
   return (
     <Card>
       <CardHeader title='Thêm tài khoản user' titleTypographyProps={{ variant: 'h6' }} />
@@ -22,8 +72,11 @@ const FormAddAccountUser = () => {
                 fullWidth
                 label='Email'
                 placeholder='Nhập email'
-                inputProps={{ style: { fontSize: 14 } }}
-                InputLabelProps={{ style: { fontSize: 14 } }}
+                value={email}
+                onChange={handleChangeEmail}
+
+                // inputProps={{ style: { fontSize: 14 } }}
+                // InputLabelProps={{ style: { fontSize: 14 } }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -31,9 +84,28 @@ const FormAddAccountUser = () => {
                 fullWidth
                 label='Mật khẩu'
                 placeholder='Nhập mật khẩu'
-                inputProps={{ style: { fontSize: 14 } }}
-                InputLabelProps={{ style: { fontSize: 14 } }}
+                value={password}
+                onChange={handleChangePassword}
+
+                // inputProps={{ style: { fontSize: 14 } }}
+                // InputLabelProps={{ style: { fontSize: 14 } }}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel id='demo-simple-select-label'>Vị trí</InputLabel>
+                <Select
+                  labelId='demo-simple-select-label'
+                  id='demo-simple-select'
+                  value={role}
+                  label='Role'
+                  onChange={handleChangeRole}
+                >
+                  <MenuItem value={'admin'}>Admin</MenuItem>
+                  <MenuItem value={'collaborator'}>Công tác viên</MenuItem>
+                  <MenuItem value={'customer'}>Khách hàng thường</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <Box
@@ -45,7 +117,7 @@ const FormAddAccountUser = () => {
                   justifyContent: 'space-between'
                 }}
               >
-                <Button fullWidth type='submit' variant='contained'>
+                <Button fullWidth type='submit' variant='contained' onClick={submitAccount}>
                   Thêm
                 </Button>
               </Box>

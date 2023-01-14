@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, SetStateAction, Dispatch } from 'react';
 
 // ** MUI Imports
 import Paper from '@mui/material/Paper';
@@ -11,7 +11,11 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
-import { BriefcaseClock } from 'mdi-material-ui';
+import { IconButton, Tooltip } from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
+import axios from 'axios';
+import { AccountUser } from 'src/@core/models/AccountUser.model';
 
 interface Column {
   id: string;
@@ -44,7 +48,13 @@ const columns: readonly Column[] = [
   }
 ];
 
-const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
+const TableManagementAccount = (props: {
+  data: AccountUser[];
+  trigger: boolean;
+  setTrigger: Dispatch<SetStateAction<boolean>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  row: number;
+}) => {
   // ** States
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
@@ -56,6 +66,28 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const banAccount = (state: boolean, dataRow: AccountUser): void => {
+    props.setLoading(true);
+    let url = 'http://localhost:5001/api/';
+    if (state) {
+      url = url + `users/ban/${dataRow.id}`;
+    } else {
+      url = url + `users/unBan/${dataRow.id}`;
+    }
+    const token = localStorage.getItem('token');
+    const data = axios
+      .put(url, null, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => {
+        props.setTrigger(!props.trigger);
+      })
+      .catch(err => {
+        props.setLoading(false);
+        console.log;
+      });
   };
 
   const getDataColumn = (id: string, align: any, dataRow: any) => {
@@ -73,11 +105,40 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
           title = 'Khách hàng';
         } else if (dataRow[id] == 'admin') {
           title = 'Admin';
+        } else if (dataRow[id] == 'collaborator') {
+          title = 'Cộng tác viên';
         }
 
         return (
           <TableCell key={id} align={align}>
             {title}
+          </TableCell>
+        );
+        break;
+      case 'actions':
+        const state = dataRow.active;
+
+        return (
+          <TableCell key={id} align={align}>
+            <Tooltip title={state ? 'Khoá' : 'Mở'}>
+              {state ? (
+                <IconButton
+                  onClick={() => {
+                    banAccount(state, dataRow);
+                  }}
+                >
+                  {<LockOutlinedIcon />}
+                </IconButton>
+              ) : (
+                <IconButton
+                  onClick={() => {
+                    banAccount(state, dataRow);
+                  }}
+                >
+                  {<LockOpenOutlinedIcon />}
+                </IconButton>
+              )}
+            </Tooltip>
           </TableCell>
         );
         break;
@@ -112,12 +173,6 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
                     const value = column.id;
 
                     return getDataColumn(value, column.align, row);
-
-                    // return (
-                    //   <TableCell key={column.id} align={column.align}>
-                    //     {row[value]}
-                    //   </TableCell>
-                    // );
                   })}
                 </TableRow>
               );
@@ -128,7 +183,7 @@ const TableManagementAccount = (props: { data: AccountTikTok[] }) => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component='div'
-        count={props.data.length}
+        count={props.row}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
