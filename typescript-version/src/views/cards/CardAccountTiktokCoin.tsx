@@ -26,7 +26,7 @@ interface AcountResponse {
   password: string;
 }
 
-const CardAppleWatch = (props: PropsProduct) => {
+const CardAcountTiktokCoin = (props: PropsProduct) => {
   const { exchangeRate, discountForColaborator, setChange, change } = props;
 
   const calculatePrice = (coin: number, discountForColaborator?: number) => {
@@ -317,4 +317,4 @@ const CardAppleWatch = (props: PropsProduct) => {
   );
 };
 
-export default CardAppleWatch;
+export default CardAcountTiktokCoin;

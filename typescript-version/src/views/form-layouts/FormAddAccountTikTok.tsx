@@ -48,13 +48,13 @@ const FormAddAccountTikTok = (props: IProps) => {
         Authorization: `Bearer ${token}`
       }
     };
-    const data = axios
+    axios
       .post(url, body, header)
-      .then(res => {
+      .then(() => {
         props.addSuccess(true);
         props.setTrigger(!props.trigger);
       })
-      .catch(err => {
+      .catch(() => {
         props.addSuccess(false);
       });
   };

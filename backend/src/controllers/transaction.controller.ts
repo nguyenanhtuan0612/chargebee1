@@ -24,7 +24,7 @@ import { Request, Response } from 'express';
 export class TransactionController {
     constructor(private readonly service: TransactionService) {}
 
-    @Post('/cassoWebhook')
+    @Get('/cassoWebhook')
     async create(
         @Res() res: Response,
         @Body() dto: ICassoPaymentHookData,

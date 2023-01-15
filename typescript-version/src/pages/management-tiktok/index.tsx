@@ -26,6 +26,7 @@ const ManagementTikTok = () => {
   const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([]);
   const [trigger, setTrigger] = useState<boolean>(false);
   const [count, setCount] = useState(0);
+  const [exchangeRate, setExchangRate] = useState(0);
 
   // state statePagination
   const [page, setPage] = useState(0);
@@ -47,14 +48,21 @@ const ManagementTikTok = () => {
     };
     axios
       .post(url, formData, header)
-      .then(res => setTrigger(!trigger))
+      .then(() => setTrigger(!trigger))
       .catch(err => console.log(err));
   };
 
   useEffect(() => {
     setLoading(true);
-    const offset = rowsPerPage * page;
+    async function fetch() {
+      const url = `${process.env.apiUrl}/api/configs`;
+      const res = await axios.get(url);
+      setExchangRate(res.data.exchangeRate);
+    }
 
+    fetch();
+
+    const offset = rowsPerPage * page;
     const token = localStorage.getItem('token');
     const url = `${process.env.apiUrl}/api/tiktokAccount/listTiktokAccountCoinForAdmin?limit=${rowsPerPage}&offset=${offset}`;
     axios
@@ -134,6 +142,7 @@ const ManagementTikTok = () => {
             trigger={trigger}
             setTrigger={setTrigger}
             setLoading={setLoading}
+            exchangeRate={exchangeRate}
           />
         </Card>
       </Grid>

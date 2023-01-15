@@ -29,26 +29,26 @@ interface Column {
 
 const columns: readonly Column[] = [
   { id: 'username', label: 'Email', minWidth: 170 },
-  { id: 'price', label: 'Giá', minWidth: 100 },
+  { id: 'price', label: 'Giá', minWidth: 100, align: 'center' },
   {
     id: 'tiktokCoin',
     label: 'Xu tiktok',
     minWidth: 170,
-    align: 'right',
+    align: 'center',
     format: (value: number) => value.toLocaleString('en-US')
   },
   {
     id: 'ownedBy',
     label: 'Trạng thái',
     minWidth: 170,
-    align: 'right',
+    align: 'center',
     format: (value: number) => value.toLocaleString('en-US')
   },
   {
     id: 'actions',
     label: 'Thao tác',
     minWidth: 170,
-    align: 'right',
+    align: 'center',
     format: (value: number) => value.toFixed(2)
   }
 ];
@@ -63,9 +63,10 @@ const TableManagementTikTok = (props: {
   setLoading: Dispatch<SetStateAction<boolean>>;
   setTrigger: Dispatch<SetStateAction<boolean>>;
   trigger: boolean;
+  exchangeRate: number;
 }) => {
   // ** States
-  const { setPage, page, setRowsPerPage, rowsPerPage, count } = props;
+  const { setPage, page, setRowsPerPage, rowsPerPage, count, exchangeRate } = props;
   const [currentIdClick, setCurrentIdClick] = useState<string>('');
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -75,6 +76,12 @@ const TableManagementTikTok = (props: {
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const calculatePrice = (coin: number) => {
+    const price = (Math.floor((coin * exchangeRate) / 100 / 1000) + 1) * 1000;
+
+    return price;
   };
 
   const getDataColumn = (id: string, align: any, dataRow: any) => {
@@ -112,10 +119,20 @@ const TableManagementTikTok = (props: {
             </Tooltip>
           </TableCell>
         );
-      case 'balance': {
+      case 'tiktokCoin': {
         return (
           <TableCell key={id} align={align}>
-            {dataRow.balance.toLocaleString('en-Us') + ' VND'}
+            {dataRow.tiktokCoin.toLocaleString('en-US')}
+          </TableCell>
+        );
+      }
+      case 'price': {
+        console.log(dataRow);
+
+        return (
+          <TableCell key={id} align={align}>
+            {(dataRow.price && dataRow.price.toLocaleString('en-US') + ' VND') ||
+              (dataRow.tiktokCoin && calculatePrice(dataRow.tiktokCoin).toLocaleString('en-US') + ' VND')}
           </TableCell>
         );
       }

@@ -15,10 +15,9 @@ import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
-import spacing from 'src/@core/theme/spacing';
 
 // ** Demo Components Imports
-import CardAppleWatch from 'src/views/cards/CardAccountTiktokCoin';
+import CardAcountTiktokCoin from 'src/views/cards/CardAccountTiktokCoin';
 
 const Product = () => {
   const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([]);
@@ -162,7 +161,7 @@ const Product = () => {
       </Grid>
       {listAccounts.map((item, index) => (
         <Grid item xs={12} sm={6} md={4} key={index}>
-          <CardAppleWatch
+          <CardAcountTiktokCoin
             data={item}
             exchangeRate={exchangeRate}
             discountForColaborator={discountForColaborator}
