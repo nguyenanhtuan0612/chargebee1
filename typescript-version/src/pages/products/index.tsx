@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
+import { Account } from 'src/@core/models/UserInfo.model';
 
 // ** Demo Components Imports
 import CardAcountTiktokCoin from 'src/views/cards/CardAccountTiktokCoin';
@@ -23,6 +24,7 @@ const Product = () => {
   const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [change, setChange] = useState<boolean>(true);
+  const [account, setAccount] = useState<Account>({ role: '', id: '', email: '', balance: 0 });
 
   const [exchangeRate, setExchangRate] = useState(0);
   const [discountForColaborator, setDiscountForColaborator] = useState(0);
@@ -42,7 +44,13 @@ const Product = () => {
     }
 
     fetch();
-
+    const accountStr = localStorage.getItem('account');
+    if (accountStr) {
+      const data = JSON.parse(accountStr);
+      setAccount(data);
+    } else {
+      setAccount({ role: '', id: '', email: '', balance: 0 });
+    }
     const token = localStorage.getItem('token') || '';
     const url = `${process.env.apiUrl}/api/tiktokAccount/listTiktokAccountCoin`;
     let params: { limit: number; offset: number; filter?: string; order?: string } = {
@@ -167,6 +175,8 @@ const Product = () => {
             discountForColaborator={discountForColaborator}
             setChange={setChange}
             change={change}
+            account={account}
+            setAccount={setAccount}
           />
         </Grid>
       ))}
