@@ -22,11 +22,42 @@ export const isEmpty = (value: string | number | object): boolean => {
     }
 };
 
-export function getMailFromSmsVietin(data: string) {
-    const one = data.split('.CT')[0];
-    const two = one.split('.');
-    const email = `${two[3].replace(' ', '@')}.${two[4]}`;
-    return email;
+function getMailFromSmsVCB(data: string) {
+    try {
+        const one = data.split('.CT')[0];
+        const two = one.split('.');
+        const email = `${two[3].replace(' ', '@')}.${two[4]}`;
+        return email;
+    } catch (error) {
+        return null;
+    }
+}
+
+function getMailFromSmsMBB(data: string) {
+    try {
+        const one = data.split('; tai Napas')[0];
+        const two = one.split(' ');
+        if (two.length == 6) {
+            return `${two[2]}.${two[3]}@${two[4]}.${two[5]}`;
+        }
+        return `${two[2]}@${two[3]}.${two[4]}`;
+    } catch (error) {
+        return null;
+    }
+}
+
+const regexEmail =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gi;
+
+export function getEmailFromSms(data: string) {
+    switch (true) {
+        case regexEmail.test(getMailFromSmsVCB(data)):
+            return getMailFromSmsVCB(data);
+        case regexEmail.test(getMailFromSmsMBB(data)):
+            return getMailFromSmsMBB(data);
+        default:
+            return null;
+    }
 }
 
 /**
