@@ -25,6 +25,7 @@ const ManagementTikTok = () => {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([]);
   const [trigger, setTrigger] = useState<boolean>(false);
+  const [count, setCount] = useState(0);
 
   // state statePagination
   const [page, setPage] = useState(0);
@@ -44,16 +45,19 @@ const ManagementTikTok = () => {
         Authorization: `Bearer ${token}`
       }
     };
-    const data = axios
+    axios
       .post(url, formData, header)
       .then(res => setTrigger(!trigger))
       .catch(err => console.log(err));
   };
 
   useEffect(() => {
+    setLoading(true);
+    const offset = rowsPerPage * page;
+
     const token = localStorage.getItem('token');
-    const url = `${process.env.apiUrl}/api/tiktokAccount/listTiktokAccountCoinForAdmin`;
-    const data = axios
+    const url = `${process.env.apiUrl}/api/tiktokAccount/listTiktokAccountCoinForAdmin?limit=${rowsPerPage}&offset=${offset}`;
+    axios
       .get(url, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -62,8 +66,9 @@ const ManagementTikTok = () => {
       .then(res => {
         setLoading(false);
         setlistAccounts(res.data.rows);
+        setCount(res.data.count);
       })
-      .catch(err => {
+      .catch(() => {
         setLoading(false);
       });
   }, [trigger, page, rowsPerPage]);
@@ -125,6 +130,7 @@ const ManagementTikTok = () => {
             setPage={setPage}
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
+            count={count}
           />
         </Card>
       </Grid>

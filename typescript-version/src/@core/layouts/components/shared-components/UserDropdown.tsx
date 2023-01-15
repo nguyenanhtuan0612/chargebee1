@@ -21,6 +21,7 @@ import CurrencyUsd from 'mdi-material-ui/CurrencyUsd';
 import LogoutVariant from 'mdi-material-ui/LogoutVariant';
 import ModalLogin from '../ModalLogin';
 import ModalRegister from '../ModalRegister';
+import { Account } from 'src/@core/models/UserInfo.model';
 
 interface State {
   password: string;
@@ -50,6 +51,7 @@ const UserDropdown = () => {
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [account, setAccount] = useState<Account>({ id: '', email: '', role: '', balance: 0 });
 
   const [stateToast, setStateToast] = useState<StateToast>({
     openToast: false,
@@ -91,8 +93,12 @@ const UserDropdown = () => {
 
   useEffect(() => {
     const token = window.localStorage.getItem('token');
+    const account = localStorage.getItem('account');
     if (!!token) {
       setIsLogin(true);
+    }
+    if (!!account) {
+      setAccount(JSON.parse(account));
     }
   }, []);
 
@@ -173,7 +179,7 @@ const UserDropdown = () => {
               <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>Admin</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{account.email}</Typography>
             </Box>
           </Box>
         </Box>

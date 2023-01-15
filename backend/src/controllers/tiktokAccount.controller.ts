@@ -1,6 +1,10 @@
 import { Roles } from '@/decorators/roles.decorator';
 import { ImportTiktokAccountCoinDto } from '@/dtos/systemConfigs.dto';
-import { AddAccountDto, UpdateAccountDto } from '@/dtos/tiktokAccount.dto';
+import {
+    AddAccountCoinDto,
+    AddAccountDto,
+    UpdateAccountDto,
+} from '@/dtos/tiktokAccount.dto';
 import { JwtAuthGuard } from '@/guards/jwt.guard';
 import { RolesGuard } from '@/guards/role.guard';
 import { RequestWithUserOption } from '@/interfaces/auth.interface';
@@ -48,7 +52,7 @@ export class TiktokController {
     @Post('createTiktokAccountCoin')
     async createTiktokAccountCoin(
         @Res() res: Response,
-        @Body() dto: AddAccountDto,
+        @Body() dto: AddAccountCoinDto,
     ) {
         try {
             const data = await this.service.createTiktokAccountCoin(dto);
