@@ -59,13 +59,12 @@ const DepositMoney = () => {
           <ul style={{ padding: '0px 40px' }}>
             <li>
               <Typography variant='body2'>
-                Khi gặp các lỗi không nạp được tài khoản xin các bạn vui lòng liên hệ: {infoAdmin.accountNumber}
+                Khi gặp các lỗi không nạp được tài khoản xin các bạn vui lòng liên hệ: 0869 158 732.
               </Typography>
             </li>
             <li>
               <Typography variant='body2'>
-                STK: Tất cả vấn đề liên quan đến số dư, lỗi tài khoản vui lòng liên hệ Admin Tóp Tóp để được hỗ trợ hoặc
-                hoàn tiền.
+                Tất cả vấn đề liên quan đến số dư, lỗi tài khoản vui lòng liên hệ Admin để được hỗ trợ hoặc hoàn tiền.
               </Typography>
             </li>
           </ul>
