@@ -221,7 +221,6 @@ export class TiktokAccountServie {
 
     async listTiktokAccountCoin(options: Options) {
         const { where, limit, order, offset } = options;
-
         const cate = await Category.findOne({
             where: { name: TIKTOK_ACCOUNT_COIN_CATEGORY },
         });

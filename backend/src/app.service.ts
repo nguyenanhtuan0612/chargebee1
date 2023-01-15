@@ -50,7 +50,7 @@ export class AppService implements OnModuleInit {
                 const data = new Category();
                 data.name = TIKTOK_ACCOUNT_COIN_CATEGORY;
                 data.active = true;
-                await categoryCoin.save();
+                await data.save();
             }
             return;
         } catch (error) {

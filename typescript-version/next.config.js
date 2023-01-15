@@ -1,4 +1,5 @@
 const path = require('path');
+require('dotenv').config();
 
 module.exports = {
   trailingSlash: true,
@@ -16,6 +17,6 @@ module.exports = {
     return config;
   },
   env: {
-    apiUrl: 'http://localhost:5001'
+    apiUrl: process.env.NEXT_PUBLIC_API_URL
   }
 };
