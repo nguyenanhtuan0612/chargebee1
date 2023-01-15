@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
-import { Account } from 'src/@core/models/UserInfo.model';
 
 // ** Demo Components Imports
 import CardAppleWatch from 'src/views/cards/CardAppleWatch';
@@ -13,27 +12,26 @@ import CardAppleWatch from 'src/views/cards/CardAppleWatch';
 const Product = () => {
   const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
+  const [change, setChange] = useState<boolean>(true);
 
-  const [account, setAccount] = useState<Account>({ role: '', id: '', email: '', balance: 0 });
   const [exchangeRate, setExchangRate] = useState(0);
+  const [discountForColaborator, setDiscountForColaborator] = useState(0);
 
   useEffect(() => {
+    setLoading(true);
     async function fetch() {
-      const url = 'http://localhost:5001/api/configs';
+      const url = `${process.env.apiUrl}/api/configs`;
       const res = await axios.get(url);
       setExchangRate(res.data.exchangeRate);
+      setDiscountForColaborator(res.data.discountForColaborator);
     }
 
     fetch();
 
-    const acc = JSON.parse(localStorage.getItem('account') || '{}');
-    if (acc) {
-      setAccount(acc);
-    }
     const token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6IjRkMzU2MDdhLWFjYWEtNDc3NS05OGVhLTliMWRkYTVlYjg3MCIsImlhdCI6MTY3MzA2Mjg5OCwiZXhwIjoxNzA0NTk4ODk4fQ.hjnpzFJWG52YXKhX_n_bm1TYH5z77k6wC3_NNcR5Ii8';
-    const url = 'http://localhost:5001/api/tiktokAccount';
-    const data = axios
+    const url = `${process.env.apiUrl}/api/tiktokAccount/listTiktokAccountCoin?limit=12`;
+    axios
       .get(url, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -43,10 +41,10 @@ const Product = () => {
         setLoading(false);
         setlistAccounts(res.data.rows);
       })
-      .catch(err => {
+      .catch(() => {
         setLoading(false);
       });
-  }, []);
+  }, [change]);
 
   const handleClose = () => {
     return;
@@ -59,7 +57,13 @@ const Product = () => {
       </Grid>
       {listAccounts.map((item, index) => (
         <Grid item xs={12} sm={6} md={4} key={index}>
-          <CardAppleWatch data={item} exchangeRate={exchangeRate} />
+          <CardAppleWatch
+            data={item}
+            exchangeRate={exchangeRate}
+            discountForColaborator={discountForColaborator}
+            setChange={setChange}
+            change={change}
+          />
         </Grid>
       ))}
       <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={isLoading} onClick={handleClose}>

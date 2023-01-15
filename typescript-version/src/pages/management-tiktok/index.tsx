@@ -8,9 +8,8 @@ import { Backdrop, Button, CircularProgress, DialogContent, Modal, Stack } from 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
-import FormLayoutsBasic from 'src/views/form-layouts/FormAddAccountTikTok';
-import TableManagementTikTok from 'src/views/tables/TableManagementTikTok';
 import FormAddAccountTikTok from 'src/views/form-layouts/FormAddAccountTikTok';
+import TableManagementTikTok from 'src/views/tables/TableManagementTikTok';
 
 const style = {
   position: 'absolute',
@@ -31,9 +30,8 @@ const ManagementTikTok = () => {
   const importExcel = (e: any) => {
     const formData = new FormData();
     formData.append('file', e.target.files[0]);
-    const url = 'http://localhost:5001/api/tiktokAccount/importTiktokAccountCoin';
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6IjRkMzU2MDdhLWFjYWEtNDc3NS05OGVhLTliMWRkYTVlYjg3MCIsImlhdCI6MTY3MzA2Mjg5OCwiZXhwIjoxNzA0NTk4ODk4fQ.hjnpzFJWG52YXKhX_n_bm1TYH5z77k6wC3_NNcR5Ii8';
+    const url = `${process.env.apiUrl}/api/tiktokAccount/importTiktokAccountCoin`;
+    const token = localStorage.getItem('token');
     const header = {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -47,9 +45,8 @@ const ManagementTikTok = () => {
   };
 
   useEffect(() => {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6IjRkMzU2MDdhLWFjYWEtNDc3NS05OGVhLTliMWRkYTVlYjg3MCIsImlhdCI6MTY3MzA2Mjg5OCwiZXhwIjoxNzA0NTk4ODk4fQ.hjnpzFJWG52YXKhX_n_bm1TYH5z77k6wC3_NNcR5Ii8';
-    const url = 'http://localhost:5001/api/tiktokAccount';
+    const token = localStorage.getItem('token');
+    const url = `${process.env.apiUrl}/api/tiktokAccount/listTiktokAccountCoinForAdmin`;
     const data = axios
       .get(url, {
         headers: {

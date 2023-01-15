@@ -83,9 +83,8 @@ const ManagementAccounts = () => {
 
   const fetchData = (email?: string) => {
     setLoading(true);
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6IjRkMzU2MDdhLWFjYWEtNDc3NS05OGVhLTliMWRkYTVlYjg3MCIsImlhdCI6MTY3MzA2Mjg5OCwiZXhwIjoxNzA0NTk4ODk4fQ.hjnpzFJWG52YXKhX_n_bm1TYH5z77k6wC3_NNcR5Ii8';
-    const url = 'http://localhost:5001/api/users';
+    const url = `${process.env.apiUrl}/api/users`;
+    const token = localStorage.getItem('token');
     let params = {};
     if (email) {
       const filter = JSON.stringify([{ operator: 'iLike', value: `${email}`, prop: 'email' }]);
@@ -101,7 +100,6 @@ const ManagementAccounts = () => {
         offset: page
       };
     }
-    debugger;
     const data = axios
       .get(url, {
         params,

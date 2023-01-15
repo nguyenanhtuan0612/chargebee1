@@ -13,11 +13,12 @@ interface Info {
   email: string;
   balance: number;
   role: 'admin' | 'customer' | 'collaborator';
+  active: boolean;
 }
 
 const TabAccount = () => {
   // ** State
-  const [info, setInfo] = useState<Info>({ id: '', email: '', balance: 0, role: 'admin' });
+  const [info, setInfo] = useState<Info>({ id: '', email: '', balance: 0, role: 'admin', active: true });
   const [isLoading, setLoading] = useState(false);
   const handleCloseLoading = () => {
     setTimeout(() => {
@@ -40,7 +41,7 @@ const TabAccount = () => {
     async function fetch() {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const url = 'http://localhost:5001/api/auth';
+      const url = `${process.env.apiUrl}/api/auth`;
       const res = await axios.get(url, { headers: { authorization: 'Bearer ' + token } });
       setInfo(res.data);
       handleCloseLoading();
@@ -77,7 +78,13 @@ const TabAccount = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField inputProps={{ readOnly: true }} fullWidth type='role' label='Vai trò' defaultValue='Admin' />
+              <TextField
+                inputProps={{ readOnly: true }}
+                fullWidth
+                type='role'
+                label='Trạng thái'
+                value={info.active ? 'Hoạt động' : 'Bị vô hiệu hóa'}
+              />
             </Grid>
           </Grid>
         </form>

@@ -15,7 +15,7 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { UsersService } from '@/services/users.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/guards/jwt.guard';
 import { RolesGuard } from '@/guards/role.guard';
 import { Roles } from '@/decorators/roles.decorator';
@@ -43,6 +43,27 @@ class UsersController {
         }
     }
 
+    @ApiQuery({
+        name: 'filter',
+        description:
+            '[{"operator":"search","value":"provai","prop":"email,fullName"},{"operator":"eq","value":"887c1870-3000-4110-9426-89afa8724d69","prop":"id"}]',
+        required: false,
+    })
+    @ApiQuery({
+        name: 'sort',
+        description: '[{"direction":"DESC","prop":"createdAt"}]',
+        required: false,
+    })
+    @ApiQuery({
+        name: 'offset',
+        description: '0',
+        required: false,
+    })
+    @ApiQuery({
+        name: 'limit',
+        description: '10',
+        required: false,
+    })
     @ApiBearerAuth('authorization')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles([Role.ADMIN])

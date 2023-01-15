@@ -42,9 +42,8 @@ const FormAddAccountUser = (props: IProps) => {
       role: role.replace(/^\s+|\s+$/gm, '')
     };
 
-    const url = 'http://localhost:5001/api/users';
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6IjRkMzU2MDdhLWFjYWEtNDc3NS05OGVhLTliMWRkYTVlYjg3MCIsImlhdCI6MTY3MzA2Mjg5OCwiZXhwIjoxNzA0NTk4ODk4fQ.hjnpzFJWG52YXKhX_n_bm1TYH5z77k6wC3_NNcR5Ii8';
+    const url = `${process.env.apiUrl}/api/users`;
+    const token = localStorage.getItem('token');
     const header = {
       headers: {
         Authorization: `Bearer ${token}`

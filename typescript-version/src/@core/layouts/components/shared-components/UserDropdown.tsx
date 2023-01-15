@@ -17,13 +17,10 @@ import Typography from '@mui/material/Typography';
 // ** Icons Imports
 import { Backdrop, CircularProgress, Modal, Snackbar, SnackbarOrigin } from '@mui/material';
 import AccountOutline from 'mdi-material-ui/AccountOutline';
-import CogOutline from 'mdi-material-ui/CogOutline';
 import CurrencyUsd from 'mdi-material-ui/CurrencyUsd';
 import LogoutVariant from 'mdi-material-ui/LogoutVariant';
 import ModalLogin from '../ModalLogin';
 import ModalRegister from '../ModalRegister';
-import { Login } from 'mdi-material-ui';
-import axios from 'axios';
 
 interface State {
   password: string;

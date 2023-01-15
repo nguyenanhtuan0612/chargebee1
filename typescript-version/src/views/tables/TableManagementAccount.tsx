@@ -73,7 +73,7 @@ const TableManagementAccount = (props: {
 
   const banAccount = (state: boolean, dataRow: AccountUser): void => {
     props.setLoading(true);
-    let url = 'http://localhost:5001/api/';
+    let url = `${process.env.apiUrl}/api/`;
     if (state) {
       url = url + `users/ban/${dataRow.id}`;
     } else {

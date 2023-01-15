@@ -26,6 +26,7 @@ import { Account } from 'src/@core/models/UserInfo.model';
 import TabTransaction from 'src/views/account-settings/TabTransaction';
 import TabRechargeHistory from 'src/views/account-settings/TabRechargeHistory';
 import TabSystemConfig from 'src/views/account-settings/TabSystemConfig';
+import router from 'next/router';
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -53,9 +54,14 @@ const AccountSettings = () => {
   const [value, setValue] = useState<string>('account');
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('account') || '');
-    if (data) {
+    const accountStr = localStorage.getItem('account');
+    if (accountStr) {
+      const data = JSON.parse(accountStr);
       setAccount(data);
+    } else {
+      router.push('/');
+
+      return;
     }
   }, []);
 
@@ -63,7 +69,7 @@ const AccountSettings = () => {
     setValue(newValue);
   };
 
-  return (
+  return !account.role ? null : (
     <Card>
       <TabContext value={value}>
         <TabList
