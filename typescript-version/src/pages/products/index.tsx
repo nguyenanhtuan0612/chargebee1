@@ -26,7 +26,7 @@ const Product = () => {
 
   const [exchangeRate, setExchangRate] = useState(0);
   const [discountForColaborator, setDiscountForColaborator] = useState(0);
-  const [count, setCount] = useState<number | undefined>(undefined);
+  const [count, setCount] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [rowsPerPage] = useState(12);
   const [totalPage, setTotalPage] = useState<number>(0);
