@@ -15,9 +15,10 @@ import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
+import spacing from 'src/@core/theme/spacing';
 
 // ** Demo Components Imports
-import CardAppleWatch from 'src/views/cards/CardAppleWatch';
+import CardAppleWatch from 'src/views/cards/CardAccountTiktokCoin';
 
 const Product = () => {
   const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([]);
@@ -30,6 +31,7 @@ const Product = () => {
   const [page, setPage] = useState<number>(1);
   const [rowsPerPage] = useState(12);
   const [totalPage, setTotalPage] = useState<number>(0);
+  const [order, setOrder] = useState('asc');
 
   useEffect(() => {
     setLoading(true);
@@ -44,28 +46,31 @@ const Product = () => {
 
     const token = localStorage.getItem('token') || '';
     const url = `${process.env.apiUrl}/api/tiktokAccount/listTiktokAccountCoin`;
-    let params: { limit: number; offset: number; filter?: string } = {
+    let params: { limit: number; offset: number; filter?: string; order?: string } = {
       limit: rowsPerPage,
-      offset: (page - 1) * rowsPerPage
+      offset: (page - 1) * rowsPerPage,
+      order: JSON.stringify([{ prop: 'tiktokCoin', direction: order }])
     };
-    if (valueSortCoin) {
+    if (valueFilterCoin) {
       let filter;
-      switch (valueSortCoin) {
+      switch (valueFilterCoin) {
         case '1':
-          filter = JSON.stringify([{ operator: 'between', value: '[0, 1000]', prop: 'tiktokCoin' }]);
+          filter = JSON.stringify([{ operator: 'between', value: '[0, 999]', prop: 'tiktokCoin' }]);
           params = { ...params, filter };
           break;
         case '2':
-          filter = JSON.stringify([{ operator: 'between', value: '[1000, 2000]', prop: 'tiktokCoin' }]);
+          filter = JSON.stringify([{ operator: 'between', value: '[1000, 1999]', prop: 'tiktokCoin' }]);
           params = { ...params, filter };
           break;
         case '3':
-          filter = JSON.stringify([{ operator: 'between', value: '[1000, 2000]', prop: 'tiktokCoin' }]);
+          filter = JSON.stringify([{ operator: 'between', value: '[2000, 4999]', prop: 'tiktokCoin' }]);
           params = { ...params, filter };
           break;
         case '4':
-          filter = JSON.stringify([{ operator: 'between', value: '[5000]', prop: 'tiktokCoin' }]);
+          filter = JSON.stringify([{ operator: 'gte', value: '5000', prop: 'tiktokCoin' }]);
           params = { ...params, filter };
+          break;
+        default:
           break;
       }
     }
@@ -81,8 +86,8 @@ const Product = () => {
         setLoading(false);
         setlistAccounts(res.data.rows);
         setCount(res.data.count);
-        const totalPage = Math.floor(count / rowsPerPage) + 1;
-        setTotalPage(totalPage);
+        const total = Math.floor(res.data.count / rowsPerPage) + 1;
+        setTotalPage(total);
       })
       .catch(() => {
         setLoading(false);
@@ -98,10 +103,15 @@ const Product = () => {
     setChange(!change);
   };
 
-  const [valueSortCoin, setValueSortCoin] = useState('');
+  const [valueFilterCoin, setValueFilterCoin] = useState('0');
 
-  const handleChangeSortCoin = (event: SelectChangeEvent) => {
-    setValueSortCoin(event.target.value as string);
+  const handleChangeFilterCoin = (event: SelectChangeEvent) => {
+    setValueFilterCoin(event.target.value as string);
+    setChange(!change);
+  };
+
+  const handleChangeOrderCoin = (event: SelectChangeEvent) => {
+    setOrder(event.target.value as string);
     setChange(!change);
   };
 
@@ -113,26 +123,41 @@ const Product = () => {
         <Typography variant='h6'>{'Danh sách tài khoản Tiktok'}</Typography>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        {/* <Box sx={{ minWidth: 120 }}>
-          <FormControl size='small'>
-            <InputLabel id='demo-simple-select-label'>Sắp xếp xu</InputLabel>
-            <Select
-              labelId='demo-simple-select-label'
-              id='demo-simple-select'
-              value={valueSortCoin}
-              label='Sắp xếp xu'
-              onChange={handleChangeSortCoin}
-            >
-              <MenuItem value=''>
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={'1'}>Từ 0 xu đến 1000 xu</MenuItem>
-              <MenuItem value={'2'}>Từ 1000 xu đến 2000 xu</MenuItem>
-              <MenuItem value={'3'}>Từ 2000 xu đến 5000 xu</MenuItem>
-              <MenuItem value={'4'}>Lớn hơn 5000 xu</MenuItem>
-            </Select>
-          </FormControl>
-        </Box> */}
+        <Grid sx={{ display: 'flex' }} columnSpacing={10}>
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl size='small'>
+              <InputLabel id='demo-simple-select-label'>Bộ lọc</InputLabel>
+              <Select
+                labelId='demo-simple-select-label'
+                id='demo-simple-select'
+                value={valueFilterCoin}
+                label='Bộ lọc'
+                onChange={handleChangeFilterCoin}
+              >
+                <MenuItem value={'0'}>Tất cả</MenuItem>
+                <MenuItem value={'1'}>Từ 0 xu đến 999 xu</MenuItem>
+                <MenuItem value={'2'}>Từ 1000 xu đến 1999 xu</MenuItem>
+                <MenuItem value={'3'}>Từ 2000 xu đến 4999 xu</MenuItem>
+                <MenuItem value={'4'}>Lớn hơn 5000 xu</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <Box sx={{ minWidth: 60 }}>
+            <FormControl size='small'>
+              <InputLabel id='demo-simple-select-label'>Sắp xếp</InputLabel>
+              <Select
+                labelId='demo-simple-select-label'
+                id='demo-simple-select'
+                value={order}
+                label='Sắp xếp'
+                onChange={handleChangeOrderCoin}
+              >
+                <MenuItem value={'asc'}>Xu tăng dần</MenuItem>
+                <MenuItem value={'desc'}>Xu giảm dần</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </Grid>
         <Pagination count={totalPage} page={page} onChange={handleChangePage} />
       </Grid>
       {listAccounts.map((item, index) => (

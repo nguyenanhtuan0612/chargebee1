@@ -40,7 +40,8 @@ export class TransactionController {
     }
 
     @ApiBearerAuth('authorization')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles([Role.COLABORATOR, Role.CUSTOMER])
     @Post('/buyAccount')
     async buyAccount(
         @Res() res: Response,
