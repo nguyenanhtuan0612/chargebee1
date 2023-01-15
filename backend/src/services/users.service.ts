@@ -67,11 +67,12 @@ export class UsersService {
     }
 
     async list(options: Options) {
-        const { limit, offset } = options;
+        const { limit, offset, where, order } = options;
         const data = await User.findAndCountAll({
+            where,
             limit,
             offset,
-            order: [['createdAt', 'DESC']],
+            order,
         });
 
         return data;

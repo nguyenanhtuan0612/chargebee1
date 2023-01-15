@@ -23,7 +23,7 @@ interface Column {
   id: string;
   label: string;
   minWidth?: number;
-  align?: 'right';
+  align?: 'right' | 'center';
   format?: (value: number) => string;
 }
 
@@ -33,20 +33,20 @@ const columns: readonly Column[] = [
     id: 'balance',
     label: 'Số tiền',
     minWidth: 170,
-    align: 'right'
+    align: 'center'
   },
   { id: 'role', label: 'Vị trí', align: 'right', minWidth: 100 },
   {
     id: 'active',
     label: 'Trạng thái',
     minWidth: 170,
-    align: 'right'
+    align: 'center'
   },
   {
     id: 'actions',
     label: 'Thao tác',
     minWidth: 170,
-    align: 'right'
+    align: 'center'
   }
 ];
 
@@ -56,11 +56,14 @@ const TableManagementAccount = (props: {
   setTrigger: Dispatch<SetStateAction<boolean>>;
   setLoading: Dispatch<SetStateAction<boolean>>;
   row: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  page: number;
+  rowsPerPage: number;
+  setRowsPerPage: Dispatch<SetStateAction<number>>;
 }) => {
   // ** States
-  const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [currentIdClick, setCurrentIdClick] = useState<string>('');
+  const { setPage, page, setRowsPerPage, rowsPerPage } = props;
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -80,14 +83,14 @@ const TableManagementAccount = (props: {
       url = url + `users/unBan/${dataRow.id}`;
     }
     const token = localStorage.getItem('token');
-    const data = axios
+    axios
       .put(url, null, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      .then(res => {
+      .then(() => {
         props.setTrigger(!props.trigger);
       })
-      .catch(err => {
+      .catch(() => {
         props.setLoading(false);
         console.log;
       });
@@ -101,7 +104,6 @@ const TableManagementAccount = (props: {
             {dataRow[id] ? 'Hoạt động' : 'Không hoạt động'}
           </TableCell>
         );
-        break;
       case 'role':
         let title = '';
         if (dataRow[id] == 'customer') {
@@ -117,7 +119,6 @@ const TableManagementAccount = (props: {
             {title}
           </TableCell>
         );
-        break;
       case 'actions':
         const state = dataRow.active;
 
@@ -158,14 +159,19 @@ const TableManagementAccount = (props: {
             </Tooltip>
           </TableCell>
         );
-        break;
+      case 'balance': {
+        return (
+          <TableCell key={id} align={align}>
+            {dataRow.balance.toLocaleString('en-Us') + ' VND'}
+          </TableCell>
+        );
+      }
       default:
         return (
           <TableCell key={id} align={align}>
             {dataRow[id]}
           </TableCell>
         );
-        break;
     }
   };
 
@@ -193,8 +199,8 @@ const TableManagementAccount = (props: {
       .put(url, body, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      .then(res => props.setTrigger(!props.trigger))
-      .catch(err => props.setLoading(false));
+      .then(() => props.setTrigger(!props.trigger))
+      .catch(() => props.setLoading(false));
   };
 
   //change money
@@ -230,8 +236,8 @@ const TableManagementAccount = (props: {
       .put(url, body, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      .then(res => props.setTrigger(!props.trigger))
-      .catch(err => props.setLoading(false));
+      .then(() => props.setTrigger(!props.trigger))
+      .catch(() => props.setLoading(false));
   };
 
   return (
@@ -248,7 +254,7 @@ const TableManagementAccount = (props: {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => {
+            {props.data.map((row: AccountUser) => {
               return (
                 <TableRow hover role='checkbox' tabIndex={-1} key={row.id}>
                   {columns.map(column => {

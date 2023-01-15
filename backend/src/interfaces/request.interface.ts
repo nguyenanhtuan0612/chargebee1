@@ -4,7 +4,7 @@ export interface Options {
     where?: any;
     limit: number;
     offset: number;
-    order?: any;
+    order?: any[];
 }
 
 export interface RequestWithOptions extends Request {
