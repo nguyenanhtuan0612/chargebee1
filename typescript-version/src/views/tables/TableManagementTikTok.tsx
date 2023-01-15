@@ -162,7 +162,7 @@ const TableManagementTikTok = (props: {
 
     handleCloseDropDown();
     props.setLoading(true);
-    const url = `http://localhost:5001/api/tiktokAccount/delete/${currentIdClick}`;
+    const url = `${process.env.apiUrl}/api/tiktokAccount/delete/${currentIdClick}`;
     const token = localStorage.getItem('token');
     axios
       .delete(url, {
