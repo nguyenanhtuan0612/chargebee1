@@ -56,7 +56,7 @@ const generateWhere = (filter: Filter) => {
 
 const generateOrder = (order: Order) => {
     const { prop, direction } = order;
-    return { [prop]: direction.toUpperCase() };
+    return [prop, direction.toUpperCase()];
 };
 
 @Injectable()
@@ -110,10 +110,7 @@ export class QueryMiddleware implements NestMiddleware {
                             ),
                         );
                     }
-                    options.order = Object.assign(
-                        options.order,
-                        generateOrder(iterator),
-                    );
+                    options.order.push(generateOrder(iterator));
                 }
             }
 
