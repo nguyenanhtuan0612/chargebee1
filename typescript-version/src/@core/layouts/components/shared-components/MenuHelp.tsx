@@ -75,7 +75,11 @@ const MenuHelp = () => {
         open={open}
         onClose={handleClose}
         onClick={handleClose}
-        sx={{ width: 200, padding: '8' }}
+        PaperProps={{
+          style: {
+            paddingRight: '8px'
+          }
+        }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
