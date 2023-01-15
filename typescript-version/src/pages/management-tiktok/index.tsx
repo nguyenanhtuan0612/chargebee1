@@ -4,12 +4,13 @@ import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 
 // ** Demo Components Imports
-import { Backdrop, Button, CircularProgress, DialogContent, Modal, Stack } from '@mui/material';
+import { Backdrop, Button, CircularProgress, DialogContent, Modal, Snackbar, Stack } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
 import FormAddAccountTikTok from 'src/views/form-layouts/FormAddAccountTikTok';
 import TableManagementTikTok from 'src/views/tables/TableManagementTikTok';
+import { StateToast } from '../management-accounts';
 
 const style = {
   position: 'absolute',
@@ -23,6 +24,7 @@ const ManagementTikTok = () => {
   const [open, setOpen] = useState(false);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([]);
+  const [trigger, setTrigger] = useState<boolean>(false);
 
   // state statePagination
   const [page, setPage] = useState(0);
@@ -44,7 +46,7 @@ const ManagementTikTok = () => {
     };
     const data = axios
       .post(url, formData, header)
-      .then(res => console.log(res))
+      .then(res => setTrigger(!trigger))
       .catch(err => console.log(err));
   };
 
@@ -64,7 +66,39 @@ const ManagementTikTok = () => {
       .catch(err => {
         setLoading(false);
       });
-  }, [page, rowsPerPage]);
+  }, [trigger, page, rowsPerPage]);
+
+  //setting toast
+  const [stateToast, setStateToast] = useState<StateToast>({
+    openToast: false,
+    vertical: 'top',
+    horizontal: 'right'
+  });
+
+  const { vertical, horizontal, openToast } = stateToast;
+
+  const handleOpenToast = (message: string) => {
+    setStateToast({ ...stateToast, openToast: true, message: message });
+    handleCloseToast();
+  };
+
+  const handleCloseToast = () => {
+    setTimeout(() => {
+      setStateToast({ ...stateToast, openToast: false });
+    }, 1000);
+  };
+
+  //end setting toast
+
+  const addSuccess = (isSuccess: boolean) => {
+    if (isSuccess) {
+      handleClose();
+      handleOpenToast('Thêm tài khoản thành công');
+    } else {
+      handleClose();
+      handleOpenToast('Thêm tài khoản thất bại');
+    }
+  };
 
   return (
     <Grid container spacing={6}>
@@ -101,13 +135,21 @@ const ManagementTikTok = () => {
         aria-describedby='parent-modal-description'
       >
         <DialogContent sx={style}>
-          <FormAddAccountTikTok />
+          <FormAddAccountTikTok addSuccess={addSuccess} trigger={trigger} setTrigger={setTrigger} />
         </DialogContent>
       </Modal>
 
       <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={isLoading} onClick={handleClose}>
         <CircularProgress color='inherit' />
       </Backdrop>
+
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={openToast}
+        onClose={handleCloseToast}
+        message={stateToast.message}
+        key={vertical + horizontal}
+      />
     </Grid>
   );
 };

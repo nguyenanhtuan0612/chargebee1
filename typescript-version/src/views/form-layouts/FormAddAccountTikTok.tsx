@@ -8,9 +8,57 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
+import { Dispatch, SetStateAction, useState } from 'react';
+
+interface IProps {
+  addSuccess: (value: boolean) => void;
+  trigger: boolean;
+  setTrigger: Dispatch<SetStateAction<boolean>>;
+}
 
 // ** Icons Imports
-const FormAddAccountTikTok = () => {
+const FormAddAccountTikTok = (props: IProps) => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [tikTokCoin, setTikTokCoin] = useState<string>('');
+
+  const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+  const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const handleChangeTikTokCoin = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTikTokCoin(event.target.value as string);
+  };
+
+  const submitAccount = () => {
+    const body = {
+      email: email.replace(/^\s+|\s+$/gm, ''),
+      password: password.replace(/^\s+|\s+$/gm, ''),
+      tikTokCoin: tikTokCoin.replace(/^\s+|\s+$/gm, '')
+    };
+
+    const url = `${process.env.apiUrl}/api/users`;
+    const token = localStorage.getItem('token');
+    const header = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+    const data = axios
+      .post(url, body, header)
+      .then(res => {
+        props.addSuccess(true);
+        props.setTrigger(!props.trigger);
+      })
+      .catch(err => {
+        props.addSuccess(false);
+      });
+  };
+
   return (
     <Card>
       <CardHeader title='Thêm tài khoản tiktok' titleTypographyProps={{ variant: 'h6' }} />
@@ -22,6 +70,8 @@ const FormAddAccountTikTok = () => {
                 fullWidth
                 label='Email'
                 placeholder='Nhập email'
+                value={email}
+                onChange={handleChangeEmail}
                 inputProps={{ style: { fontSize: 14 } }}
                 InputLabelProps={{ style: { fontSize: 14 } }}
               />
@@ -31,6 +81,8 @@ const FormAddAccountTikTok = () => {
                 fullWidth
                 label='Mật khẩu'
                 placeholder='Nhập mật khẩu'
+                value={password}
+                onChange={handleChangePassword}
                 inputProps={{ style: { fontSize: 14 } }}
                 InputLabelProps={{ style: { fontSize: 14 } }}
               />
@@ -40,6 +92,8 @@ const FormAddAccountTikTok = () => {
                 fullWidth
                 type='Xu tiktok'
                 label='Xu tiktok'
+                value={tikTokCoin}
+                onChange={handleChangeTikTokCoin}
                 inputProps={{ style: { fontSize: 14 } }}
                 InputLabelProps={{ style: { fontSize: 14 } }}
               />
@@ -54,7 +108,7 @@ const FormAddAccountTikTok = () => {
                   justifyContent: 'space-between'
                 }}
               >
-                <Button fullWidth type='submit' variant='contained'>
+                <Button fullWidth type='submit' variant='contained' onClick={submitAccount}>
                   Thêm
                 </Button>
               </Box>
