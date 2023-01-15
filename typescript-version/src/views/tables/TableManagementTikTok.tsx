@@ -52,9 +52,10 @@ const TableManagementTikTok = (props: {
   setPage: Dispatch<SetStateAction<number>>;
   rowsPerPage: number;
   setRowsPerPage: Dispatch<SetStateAction<number>>;
+  count: number;
 }) => {
   // ** States
-  const { setPage, page, setRowsPerPage, rowsPerPage } = props;
+  const { setPage, page, setRowsPerPage, rowsPerPage, count } = props;
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -100,7 +101,7 @@ const TableManagementTikTok = (props: {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component='div'
-        count={props.data.length}
+        count={count}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
