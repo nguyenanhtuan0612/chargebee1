@@ -24,13 +24,14 @@ import { Request, Response } from 'express';
 export class TransactionController {
     constructor(private readonly service: TransactionService) {}
 
-    @Get('/cassoWebhook')
+    @Post('/cassoWebhook')
     async create(
         @Res() res: Response,
         @Body() dto: ICassoPaymentHookData,
         @Req() req: Request,
     ) {
         try {
+            console.log(dto);
             const secureToken = req.headers['secure-token'] as string;
             const data = await this.service.cassoHook(dto, secureToken);
             return res.status(200).json(data);
