@@ -26,8 +26,10 @@ function getMailFromSmsVCB(data: string) {
     try {
         const one = data.split('.CT')[0];
         const two = one.split('.');
-        const email = `${two[3].replace(' ', '@')}.${two[4]}`;
-        return email;
+        if (two.length == 6) {
+            return `${two[3]}.${two[4].replace(' ', '@')}.${two[5]}`;
+        }
+        return `${two[3].replace(' ', '@')}.${two[4]}`;
     } catch (error) {
         return null;
     }
