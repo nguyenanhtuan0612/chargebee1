@@ -26,7 +26,7 @@ console.log(ENV);
         ConfigModule.forRoot({
             isGlobal: true,
             load: [appConfigs, authConfigs],
-            envFilePath: !ENV ? '.env.development' : `.env.${ENV}`,
+            envFilePath: !ENV ? '.env' : `.env.${ENV}`,
         }),
         JwtModule.registerAsync({
             imports: [ConfigModule],
