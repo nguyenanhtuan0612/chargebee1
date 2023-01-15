@@ -9,6 +9,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 // ** Icons Imports
 import Menu from 'mdi-material-ui/Menu';
 import Magnify from 'mdi-material-ui/Magnify';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 // ** Type Import
 import { Settings } from 'src/@core/context/settingsContext';
@@ -18,6 +19,7 @@ import ModeToggler from 'src/@core/layouts/components/shared-components/ModeTogg
 import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown';
 import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown';
 import { auto } from '@popperjs/core';
+import MenuHelp from 'src/@core/layouts/components/shared-components/MenuHelp';
 
 interface Props {
   hidden: boolean;
@@ -48,6 +50,7 @@ const AppBarContent = (props: Props) => {
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
         <ModeToggler settings={settings} saveSettings={saveSettings} />
+        <MenuHelp></MenuHelp>
         <UserDropdown />
       </Box>
     </Box>
