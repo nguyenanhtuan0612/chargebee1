@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 // ** MUI Imports
 import Paper from '@mui/material/Paper';
@@ -46,10 +46,15 @@ const columns: readonly Column[] = [
   }
 ];
 
-const TableManagementTikTok = (props: { data: AccountTikTok[] }) => {
+const TableManagementTikTok = (props: {
+  data: AccountTikTok[];
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  rowsPerPage: number;
+  setRowsPerPage: Dispatch<SetStateAction<number>>;
+}) => {
   // ** States
-  const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const { setPage, page, setRowsPerPage, rowsPerPage } = props;
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -58,26 +63,6 @@ const TableManagementTikTok = (props: { data: AccountTikTok[] }) => {
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
-  };
-
-  const getDataColumn = (id: string, align: any, dataRow: any) => {
-    switch (id) {
-      case 'status':
-        return (
-          <TableCell key={id} align={align}>
-            {dataRow[id] ? 'Hoạt động' : 'Không hoạt động'}
-          </TableCell>
-        );
-        break;
-
-      default:
-        return (
-          <TableCell key={id} align={align}>
-            {dataRow[id]}
-          </TableCell>
-        );
-        break;
-    }
   };
 
   return (
@@ -94,7 +79,7 @@ const TableManagementTikTok = (props: { data: AccountTikTok[] }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row: any) => {
+            {props.data.map((row: any) => {
               return (
                 <TableRow hover role='checkbox' tabIndex={-1} key={row.id}>
                   {columns.map(column => {

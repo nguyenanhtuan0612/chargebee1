@@ -24,6 +24,10 @@ const ManagementTikTok = () => {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([]);
 
+  // state statePagination
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -60,7 +64,7 @@ const ManagementTikTok = () => {
       .catch(err => {
         setLoading(false);
       });
-  }, []);
+  }, [page, rowsPerPage]);
 
   return (
     <Grid container spacing={6}>
@@ -81,7 +85,13 @@ const ManagementTikTok = () => {
               />
             </Button>
           </Stack>
-          <TableManagementTikTok data={listAccounts} />
+          <TableManagementTikTok
+            data={listAccounts}
+            page={page}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+          />
         </Card>
       </Grid>
       <Modal
