@@ -98,7 +98,7 @@ const UserDropdown = () => {
       setIsLogin(true);
     }
     if (!!account) {
-      setAccount(JSON.parse(account));
+      setAccount(JSON.parse(account) || {});
     }
   }, []);
 

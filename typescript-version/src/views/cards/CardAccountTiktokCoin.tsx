@@ -1,5 +1,5 @@
 // ** MUI Imports
-import { Backdrop, Box, CircularProgress, DialogContent, Modal, Snackbar, Stack } from '@mui/material';
+import { Backdrop, Box, CircularProgress, DialogContent, Grid, Modal, Snackbar, Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -22,6 +22,8 @@ interface PropsProduct {
   discountForColaborator: number;
   setChange: Dispatch<SetStateAction<boolean>>;
   change: boolean;
+  setAccount: Dispatch<SetStateAction<any>>;
+  account: Account;
 }
 
 interface AcountResponse {
@@ -30,7 +32,7 @@ interface AcountResponse {
 }
 
 const CardAcountTiktokCoin = (props: PropsProduct) => {
-  const { exchangeRate, discountForColaborator, setChange, change } = props;
+  const { exchangeRate, discountForColaborator, setChange, change, setAccount, account } = props;
 
   const calculatePrice = (coin: number, discountForColaborator?: number) => {
     let price = (Math.floor((coin * exchangeRate) / 100 / 1000) + 1) * 1000;
@@ -45,7 +47,7 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
 
   //Setting buyAccount
   const [openBuyAccount, setOpenBuyAccount] = useState(false);
-  const [account, setAccount] = useState<Account>({ role: '', id: '', email: '', balance: 0 });
+
   const [response, setResponse] = useState<AcountResponse>({ username: '', password: '' });
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -59,14 +61,25 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
   };
 
   const handleOpenBuyAccount = () => setOpenBuyAccount(true);
-  const handleCloseBuyAccount = () => setOpenBuyAccount(false);
+  const handleCloseBuyAccount = () => {
+    setOpenBuyAccount(false);
+    setChange(!change);
+  };
 
-  const popupBuyAccount = () => {
+  const popupBuyAccount = async () => {
+    setLoading(true);
     const token = localStorage.getItem('token');
     if (!token) {
       return setOpenNotLogin(true);
     }
+    const url = `${process.env.apiUrl}/api/auth`;
+    await axios.get(url, { headers: { authorization: 'Bearer ' + token } }).then(({ data }) => {
+      setAccount(data);
+      data = JSON.stringify(data);
+      localStorage.setItem('account', data);
+    });
     handleOpenBuyAccount();
+    setLoading(false);
   };
 
   //settingSuccess
@@ -197,15 +210,41 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
     <Card>
       <CardMedia sx={{ height: '14.5625rem' }} image='/images/cards/image-default-tiktok.png' />
       <CardContent sx={{ padding: theme => `${theme.spacing(3, 5.25, 4)} !important` }}>
-        <Typography sx={{ marginBottom: 2 }}>
-          Giá bán:
-          <NumericFormat
-            thousandSeparator
-            suffix=' VND'
-            value={props.data.price | calculatePrice(props.data.tiktokCoin) | 0}
-            displayType={'text'}
-          />
-        </Typography>
+        {account.role === 'collaborator' ? (
+          <Grid sx={{ display: 'flex' }}>
+            <Typography sx={{ marginBottom: 2 }}>
+              Giá bán:{' '}
+              <NumericFormat
+                thousandSeparator
+                suffix=' VND'
+                value={
+                  (props.data.price - (props.data.price * discountForColaborator) / 100) |
+                  calculatePrice(props.data.tiktokCoin, discountForColaborator) |
+                  0
+                }
+                displayType={'text'}
+              />
+            </Typography>
+            <Typography sx={{ marginLeft: 2, textDecoration: 'line-through' }} variant='body2'>
+              <NumericFormat
+                thousandSeparator
+                suffix=' VND'
+                value={props.data.price | calculatePrice(props.data.tiktokCoin) | 0}
+                displayType={'text'}
+              />
+            </Typography>
+          </Grid>
+        ) : (
+          <Typography sx={{ marginBottom: 2 }}>
+            Giá bán:
+            <NumericFormat
+              thousandSeparator
+              suffix=' VND'
+              value={props.data.price | calculatePrice(props.data.tiktokCoin) | 0}
+              displayType={'text'}
+            />
+          </Typography>
+        )}
         <Typography variant='body2'>
           Số xu: <NumericFormat thousandSeparator value={props.data.tiktokCoin | 0} displayType={'text'} />
         </Typography>
@@ -346,8 +385,7 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
                 Password: {response.password}
               </Typography>
               <Typography variant='body2' color='text.secondary'>
-                Xem lại thông tin những tài khoản đã mua{' '}
-                <Link href='http://localhost:3000/account-settings/'>tại đây</Link>
+                Xem lại thông tin những tài khoản đã mua <Link href='/account-settings'>tại đây</Link>
               </Typography>
               <Stack marginY={2} direction='row' spacing={2}>
                 <Button size='small' variant='outlined' onClick={handleCloseBuySuccess}>
