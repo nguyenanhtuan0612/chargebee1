@@ -18,7 +18,7 @@ import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
 import spacing from 'src/@core/theme/spacing';
 
 // ** Demo Components Imports
-import CardAppleWatch from 'src/views/cards/CardAppleWatch';
+import CardAppleWatch from 'src/views/cards/CardAccountTiktokCoin';
 
 const Product = () => {
   const [listAccounts, setlistAccounts] = useState<Array<AccountTikTok>>([]);

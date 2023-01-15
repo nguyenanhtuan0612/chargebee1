@@ -133,13 +133,15 @@ const CardAppleWatch = (props: PropsProduct) => {
           Số xu: <NumericFormat thousandSeparator value={props.data.tiktokCoin | 0} displayType={'text'} />
         </Typography>
       </CardContent>
-      <Button
-        variant='contained'
-        sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-        onClick={popupBuyAccount}
-      >
-        Mua ngay
-      </Button>
+      {account.role === 'admin' ? null : (
+        <Button
+          variant='contained'
+          sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+          onClick={popupBuyAccount}
+        >
+          Mua ngay
+        </Button>
+      )}
 
       {/* Modal buy account */}
       <Modal
