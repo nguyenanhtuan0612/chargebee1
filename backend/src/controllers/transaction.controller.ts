@@ -31,7 +31,7 @@ export class TransactionController {
         @Req() req: Request,
     ) {
         try {
-            console.log(dto);
+            //console.log(dto);
             const secureToken = req.headers['secure-token'] as string;
             const data = await this.service.cassoHook(dto, secureToken);
             return res.status(200).json(data);
@@ -39,6 +39,9 @@ export class TransactionController {
             throw error;
         }
     }
+
+    //ND:CT DEN:704T2310PYLQB5N1 MBVCB.2985873363.089720.hoangkim gmail.com.CT tu 9869158732 NGUYEN HOANG GIANG toi 106873259916 NGUYEN HOANG GIANG Ngan hang  Cong Thuong Viet Nam (VIETINBANK)
+    //ND:CT DEN:704T2310PYLQB5N1 MBVCB.2985873363.089720.hoangkim gmail.com.CT tu 9869158732 NGUYEN HOANG GIANG toi 106873259916 NGUYEN HOANG GIANG Ngan hang  Cong Thuong Viet Nam (VIETINBANK)ND:CT DEN:704T2310PYLQB5N1 MBVCB.2985873363.089720.hoangkim gmail.com.CT tu 9869158732 NGUYEN HOANG GIANG toi 106873259916 NGUYEN HOANG GIANG Ngan hang  Cong Thuong Viet Nam (VIETINBANK)
 
     @ApiBearerAuth('authorization')
     @UseGuards(JwtAuthGuard, RolesGuard)

@@ -9,6 +9,7 @@ import { Options } from '@/interfaces/request.interface';
 import { IUser } from '@/interfaces/users.interface';
 import { ICassoPaymentHookData } from '@/interfaces/webhook.interface';
 import { errors } from '@/utils/errors';
+import { getMailFromSmsVietin } from '@/utils/util';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -23,8 +24,9 @@ export class TransactionService {
         }
 
         for (const iterator of dto.data) {
+            const email = getMailFromSmsVietin(iterator.description);
             const user = await User.findOne({
-                where: { email: iterator.description },
+                where: { email: email },
             });
             if (!user) {
                 return 'user not found';

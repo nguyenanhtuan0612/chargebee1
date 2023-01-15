@@ -1,5 +1,3 @@
-import { plainToClass } from 'class-transformer';
-import { validate, ValidationError } from 'class-validator';
 /**
  * @method isEmpty
  * @param {String | Number | Object} value
@@ -23,6 +21,13 @@ export const isEmpty = (value: string | number | object): boolean => {
         return false;
     }
 };
+
+export function getMailFromSmsVietin(data: string) {
+    const one = data.split('.CT')[0];
+    const two = one.split('.');
+    const email = `${two[3].replace(' ', '@')}.${two[4]}`;
+    return email;
+}
 
 /**
  * @method parseBool
