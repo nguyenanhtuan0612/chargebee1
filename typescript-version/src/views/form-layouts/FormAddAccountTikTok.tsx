@@ -36,12 +36,12 @@ const FormAddAccountTikTok = (props: IProps) => {
 
   const submitAccount = () => {
     const body = {
-      email: email.replace(/^\s+|\s+$/gm, ''),
+      username: email.replace(/^\s+|\s+$/gm, ''),
       password: password.replace(/^\s+|\s+$/gm, ''),
-      tikTokCoin: tikTokCoin.replace(/^\s+|\s+$/gm, '')
+      tiktokCoin: +tikTokCoin.replace(/^\s+|\s+$/gm, '')
     };
 
-    const url = `${process.env.apiUrl}/api/users`;
+    const url = `${process.env.apiUrl}/api/tiktokAccount/createTiktokAccountCoin`;
     const token = localStorage.getItem('token');
     const header = {
       headers: {

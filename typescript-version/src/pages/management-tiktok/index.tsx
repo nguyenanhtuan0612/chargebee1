@@ -131,6 +131,9 @@ const ManagementTikTok = () => {
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
             count={count}
+            trigger={trigger}
+            setTrigger={setTrigger}
+            setLoading={setLoading}
           />
         </Card>
       </Grid>
