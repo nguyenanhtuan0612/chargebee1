@@ -133,20 +133,26 @@ const ManagementAccounts = () => {
       <Grid item xs={12}>
         <Card>
           <CardHeader title='Quản lý tài khoản' titleTypographyProps={{ variant: 'h6' }} />
-          <Stack direction='row' justifyContent='space-between' alignItems='center' spacing={2} mb={4.5} mx={4}>
-            <Stack direction='row' spacing={2}>
+          <Stack
+            justifyContent='space-between'
+            alignItems={{ lg: 'center' }}
+            spacing={2}
+            mb={4.5}
+            mx={4}
+            direction={{ xs: 'column', sm: 'column', md: 'row' }}
+          >
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
               <TextField
                 fullWidth
                 type='role'
                 size='small'
                 label='Email'
                 value={searchEmail}
-                sx={{ maxWidth: 220 }}
                 onChange={e => setSearchEmail(e.target.value)}
               />
-              <FormControl>
+              <FormControl size='small' sx={{ width: { md: 250 } }}>
                 <InputLabel id='demo-simple-select-label'>Số tiền</InputLabel>
-                <Select size='small' value={sortMoney} label='Số tiền' onChange={e => setSortMoney(e.target.value)}>
+                <Select value={sortMoney} label='Số tiền' onChange={e => setSortMoney(e.target.value)}>
                   <MenuItem value={'desc'}>Giảm dần</MenuItem>
                   <MenuItem value={'asc'}>Tăng dần</MenuItem>
                 </Select>
