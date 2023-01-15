@@ -106,7 +106,7 @@ const TabSecurity = () => {
   const handleSubmitChangePassword = async () => {
     setLoading(true);
     const token = localStorage.getItem('token');
-    const url = 'http://localhost:5001/api/auth/changePassword';
+    const url = `${process.env.apiUrl}/api/auth/changePassword`;
     await axios
       .put(
         url,

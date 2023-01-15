@@ -93,7 +93,7 @@ const ModalLogin = (props: any) => {
     const password = values.password;
     const isShowPassword = values.showPassword;
 
-    const url = 'http://localhost:5001/api/auth/login';
+    const url = `${process.env.apiUrl}/api/auth/login`;
     const payload = { email, password, isShowPassword };
     const data = axios
       .post(url, payload)

@@ -16,9 +16,9 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { AccountUser } from 'src/@core/models/AccountUser.model';
 import FormAddAccountUser from 'src/views/form-layouts/FormAddAccountUser';
 import TableManagementAccount from 'src/views/tables/TableManagementAccount';
-import { AccountUser } from 'src/@core/models/AccountUser.model';
 
 const style = {
   position: 'absolute',
@@ -68,9 +68,8 @@ const ManagementAccounts = () => {
 
   const fetchData = () => {
     setLoading(true);
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6IjRkMzU2MDdhLWFjYWEtNDc3NS05OGVhLTliMWRkYTVlYjg3MCIsImlhdCI6MTY3MzA2Mjg5OCwiZXhwIjoxNzA0NTk4ODk4fQ.hjnpzFJWG52YXKhX_n_bm1TYH5z77k6wC3_NNcR5Ii8';
-    const url = 'http://localhost:5001/api/users';
+    const token = localStorage.getItem('token');
+    const url = `${process.env.apiUrl}/api/users`;
     const data = axios
       .get(url, {
         headers: {

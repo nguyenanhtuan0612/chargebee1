@@ -87,7 +87,7 @@ const CardAppleWatch = (props: PropsProduct) => {
     setLoading(true);
 
     const token = localStorage.getItem('token');
-    const url = 'http://localhost:5001/api/transactions/buyAccount';
+    const url = `${process.env.apiUrl}/api/transactions/buyAccount`;
     await axios
       .post(
         url,

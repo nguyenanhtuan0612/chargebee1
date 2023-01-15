@@ -1,59 +1,59 @@
 // ** React Imports
-import * as React from 'react'
-import { ChangeEvent, Fragment, MouseEvent, useState } from 'react'
+import * as React from 'react';
+import { ChangeEvent, Fragment, MouseEvent, useState } from 'react';
 
 // ** Next Imports
-import Link from 'next/link'
+import Link from 'next/link';
 
 // ** MUI Components
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import MuiCard, { CardProps } from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import Checkbox from '@mui/material/Checkbox'
-import FormControl from '@mui/material/FormControl'
-import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
-import IconButton from '@mui/material/IconButton'
-import InputAdornment from '@mui/material/InputAdornment'
-import InputLabel from '@mui/material/InputLabel'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import { styled, useTheme } from '@mui/material/styles'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import MuiCard, { CardProps } from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { styled, useTheme } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 // ** Icons Imports
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-import EyeOutline from 'mdi-material-ui/EyeOutline'
+import EyeOffOutline from 'mdi-material-ui/EyeOffOutline';
+import EyeOutline from 'mdi-material-ui/EyeOutline';
 
 // ** Configs
 
 // ** Layout Import
 
 // ** Demo Imports
-import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import Alert from '@mui/material/Alert'
-import Stack from '@mui/material/Stack'
-import axios from 'axios'
+import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import axios from 'axios';
 
 interface State {
-  email: string
-  password: string
-  confirmPassword: string
-  showPassword: boolean
-  showConfirmPassword: boolean
+  email: string;
+  password: string;
+  confirmPassword: string;
+  showPassword: boolean;
+  showConfirmPassword: boolean;
 }
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
   [theme.breakpoints.up('xs')]: { width: '23.5rem' },
   [theme.breakpoints.up('sm')]: { width: '28rem' }
-}))
+}));
 
 const LinkStyled = styled('a')(({ theme }) => ({
   fontSize: '0.875rem',
   textDecoration: 'none',
   color: theme.palette.primary.main
-}))
+}));
 
 const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ theme }) => ({
   marginTop: theme.spacing(1.5),
@@ -62,7 +62,7 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
     fontSize: '0.875rem',
     color: theme.palette.text.secondary
   }
-}))
+}));
 
 const ModalRegister = (props: any) => {
   const [values, setValues] = useState<State>({
@@ -71,47 +71,47 @@ const ModalRegister = (props: any) => {
     confirmPassword: '',
     showPassword: false,
     showConfirmPassword: false
-  })
+  });
 
-  const [isError, setIsError] = useState<boolean>(false)
+  const [isError, setIsError] = useState<boolean>(false);
 
   // ** Hook
-  const theme = useTheme()
+  const theme = useTheme();
 
   const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
+    setValues({ ...values, [prop]: event.target.value });
+  };
 
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
 
   const handleClickShowConfirmPassword = () => {
-    setValues({ ...values, showConfirmPassword: !values.showConfirmPassword })
-  }
+    setValues({ ...values, showConfirmPassword: !values.showConfirmPassword });
+  };
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
+    event.preventDefault();
+  };
 
   const register = () => {
-    const email = values.email.replace(/^\s+|\s+$/gm, '')
-    const password = values.password.replace(/^\s+|\s+$/gm, '')
-    const confirmPassword = values.confirmPassword.replace(/^\s+|\s+$/gm, '')
-    const check = password === confirmPassword
-    if (!check) return
-    const body = { email, password }
+    const email = values.email.replace(/^\s+|\s+$/gm, '');
+    const password = values.password.replace(/^\s+|\s+$/gm, '');
+    const confirmPassword = values.confirmPassword.replace(/^\s+|\s+$/gm, '');
+    const check = password === confirmPassword;
+    if (!check) return;
+    const body = { email, password };
 
-    const url = 'http://localhost:5001/api/auth/register'
-    const payload = body
+    const url = `${process.env.apiUrl}/api/auth/register`;
+    const payload = body;
     const data = axios
       .post(url, payload)
       .then(res => {
-        props.submitRegister(body)
+        props.submitRegister(body);
       })
       .catch(err => {
-        setIsError(true)
-      })
-  }
+        setIsError(true);
+      });
+  };
 
   return (
     <Box className='content-center'>
@@ -223,7 +223,7 @@ const ModalRegister = (props: any) => {
         </CardContent>
       </Card>
     </Box>
-  )
-}
+  );
+};
 
-export default ModalRegister
+export default ModalRegister;

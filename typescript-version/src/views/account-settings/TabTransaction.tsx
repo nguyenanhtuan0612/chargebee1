@@ -93,7 +93,7 @@ const TabTransaction = () => {
     async function fetch() {
       setLoading(true);
       const offset = page * rowsPerPage;
-      const url = `http://localhost:5001/api/transactions/myTransaction?limit=${rowsPerPage}&offset=${offset}`;
+      const url = `${process.env.apiUrl}/api/transactions/myTransaction?limit=${rowsPerPage}&offset=${offset}`;
       const token = localStorage.getItem('token');
       const res = await axios.get(url, { headers: { authorization: 'Bearer ' + token } });
       const dataRows: Data[] = res.data.rows;

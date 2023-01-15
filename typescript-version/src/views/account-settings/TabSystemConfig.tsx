@@ -62,7 +62,7 @@ const TabSystemConfig = () => {
   useEffect(() => {
     async function fetch() {
       setLoading(true);
-      const url = 'http://localhost:5001/api/configs';
+      const url = `${process.env.apiUrl}/api/configs`;
       const data = await axios.get(url);
       setValues(data.data);
       handleCloseLoading();
@@ -90,7 +90,7 @@ const TabSystemConfig = () => {
   const handleSaveBtnClick = async () => {
     setLoading(true);
     const token = localStorage.getItem('token');
-    const url = 'http://localhost:5001/api/updateConfig';
+    const url = `${process.env.apiUrl}/api/updateConfig`;
     await axios.put(url, values, {
       headers: {
         authorization: 'Bearer ' + token

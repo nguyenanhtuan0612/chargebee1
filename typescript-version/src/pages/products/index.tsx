@@ -20,7 +20,7 @@ const Product = () => {
   useEffect(() => {
     setLoading(true);
     async function fetch() {
-      const url = 'http://localhost:5001/api/configs';
+      const url = `${process.env.apiUrl}/api/configs`;
       const res = await axios.get(url);
       setExchangRate(res.data.exchangeRate);
       setDiscountForColaborator(res.data.discountForColaborator);
@@ -30,7 +30,7 @@ const Product = () => {
 
     const token =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6IjRkMzU2MDdhLWFjYWEtNDc3NS05OGVhLTliMWRkYTVlYjg3MCIsImlhdCI6MTY3MzA2Mjg5OCwiZXhwIjoxNzA0NTk4ODk4fQ.hjnpzFJWG52YXKhX_n_bm1TYH5z77k6wC3_NNcR5Ii8';
-    const url = 'http://localhost:5001/api/tiktokAccount/listTiktokAccountCoin?limit=12';
+    const url = `${process.env.apiUrl}/api/tiktokAccount/listTiktokAccountCoin?limit=12`;
     axios
       .get(url, {
         headers: {
