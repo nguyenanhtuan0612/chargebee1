@@ -5,20 +5,29 @@ import Grid from '@mui/material/Grid';
 
 // ** Demo Components Imports
 import {
+  alpha,
   Backdrop,
   Button,
   CircularProgress,
   DialogContent,
+  InputAdornment,
+  Menu,
+  MenuItem,
+  MenuProps,
   Modal,
   Snackbar,
   SnackbarOrigin,
-  Stack
+  Stack,
+  styled,
+  TextField
 } from '@mui/material';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { AccountUser } from 'src/@core/models/AccountUser.model';
+import { ChangeEvent, useEffect, useState } from 'react';
 import FormAddAccountUser from 'src/views/form-layouts/FormAddAccountUser';
 import TableManagementAccount from 'src/views/tables/TableManagementAccount';
+import { AccountUser } from 'src/@core/models/AccountUser.model';
+import Magnify from 'mdi-material-ui/Magnify';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const style = {
   position: 'absolute',
@@ -43,6 +52,12 @@ const ManagementAccounts = () => {
   const [listAccounts, setlistAccounts] = useState<Array<AccountUser>>([]);
   const [trigger, setTrigger] = useState<boolean>(false);
 
+  // state statePagination
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [sortMoney, setSortMoney] = useState('DESC');
+  const [searchEmail, setSearchEmail] = useState<string>('');
+
   //setting toast
   const [stateToast, setStateToast] = useState<StateToast>({
     openToast: false,
@@ -66,12 +81,28 @@ const ManagementAccounts = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const fetchData = () => {
+  const fetchData = (email?: string) => {
     setLoading(true);
-    const token = localStorage.getItem('token');
     const url = `${process.env.apiUrl}/api/users`;
+    const token = localStorage.getItem('token');
+    let params = {};
+    if (email) {
+      const filter = JSON.stringify([{ operator: 'iLike', value: `${email}`, prop: 'email' }]);
+      debugger;
+      params = {
+        limit: rowsPerPage,
+        offset: page,
+        filter
+      };
+    } else {
+      params = {
+        limit: rowsPerPage,
+        offset: page
+      };
+    }
     const data = axios
       .get(url, {
+        params,
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -99,12 +130,112 @@ const ManagementAccounts = () => {
     }
   };
 
+  const searchUser = (e: any) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const textSearch = e.target.value;
+      fetchData(textSearch);
+      e.target.value = '';
+    }
+  };
+
+  // state menu sort
+
+  const StyledMenu = styled((props: MenuProps) => (
+    <Menu
+      elevation={0}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right'
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right'
+      }}
+      {...props}
+    />
+  ))(({ theme }) => ({
+    '& .MuiPaper-root': {
+      borderRadius: 6,
+      marginTop: theme.spacing(1),
+      minWidth: 180,
+      color: theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+      boxShadow:
+        'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+      '& .MuiMenu-list': {
+        padding: '4px 0'
+      },
+      '& .MuiMenuItem-root': {
+        '& .MuiSvgIcon-root': {
+          fontSize: 18,
+          color: theme.palette.text.secondary,
+          marginRight: theme.spacing(1.5)
+        },
+        '&:active': {
+          backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
+        }
+      }
+    }
+  }));
+
+  const [anchorElSortBalance, setAnchorElSortBalance] = useState<null | HTMLElement>(null);
+  const openSortBalance = Boolean(anchorElSortBalance);
+  const handleClickSortBalance = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElSortBalance(event.currentTarget);
+  };
+  const handleCloseSortBalance = () => {
+    setAnchorElSortBalance(null);
+  };
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
           <CardHeader title='Quản lý tài khoản' titleTypographyProps={{ variant: 'h6' }} />
-          <Stack direction='row' justifyContent='flex-end' alignItems='flex-start' spacing={2} mb={4.5} mr={2}>
+          <Stack direction='row' justifyContent='space-between' alignItems='center' spacing={2} mb={4.5} mx={4}>
+            <Stack direction='row' spacing={2}>
+              <TextField
+                onKeyPress={searchUser}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchEmail(e.target.value)}
+                size='small'
+                sx={{ '& .MuiOutlinedInput-root': { borderRadius: 4 } }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <Magnify fontSize='small' />
+                    </InputAdornment>
+                  )
+                }}
+              />
+              <Button
+                id='demo-customized-button'
+                aria-controls={openSortBalance ? 'demo-customized-menu' : undefined}
+                aria-haspopup='true'
+                aria-expanded={openSortBalance ? 'true' : undefined}
+                variant='contained'
+                disableElevation
+                onClick={handleClickSortBalance}
+                endIcon={<KeyboardArrowDownIcon />}
+              >
+                Sắp xếp giá
+              </Button>
+              <StyledMenu
+                id='demo-customized-menu'
+                MenuListProps={{
+                  'aria-labelledby': 'demo-customized-button'
+                }}
+                anchorEl={anchorElSortBalance}
+                open={openSortBalance}
+                onClose={handleCloseSortBalance}
+              >
+                <MenuItem onClick={handleCloseSortBalance} disableRipple>
+                  Giá tăng dần
+                </MenuItem>
+                <MenuItem onClick={handleCloseSortBalance} disableRipple>
+                  Giá giảm dần
+                </MenuItem>
+              </StyledMenu>
+            </Stack>
             <Button variant='contained' onClick={handleOpen}>
               Thêm tài khoản
             </Button>
@@ -132,6 +263,8 @@ const ManagementAccounts = () => {
         <CircularProgress color='inherit' />
       </Backdrop>
 
+      {/* toast */}
+
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         open={openToast}
@@ -139,6 +272,8 @@ const ManagementAccounts = () => {
         message={stateToast.message}
         key={vertical + horizontal}
       />
+
+      {/* Giá tăng dần và giảm dần */}
     </Grid>
   );
 };

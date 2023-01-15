@@ -11,11 +11,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
-import { IconButton, Tooltip } from '@mui/material';
+import { FormControl, IconButton, Input, InputAdornment, InputLabel, Menu, MenuItem, Tooltip } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import axios from 'axios';
 import { AccountUser } from 'src/@core/models/AccountUser.model';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 
 interface Column {
   id: string;
@@ -58,6 +60,7 @@ const TableManagementAccount = (props: {
   // ** States
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [currentIdClick, setCurrentIdClick] = useState<string>('');
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -139,6 +142,20 @@ const TableManagementAccount = (props: {
                 </IconButton>
               )}
             </Tooltip>
+            <Tooltip title='Thay đổi vai trò'>
+              <IconButton
+                onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleClickDropDown(e, dataRow.id)}
+              >
+                <SupervisorAccountIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title='Tiền'>
+              <IconButton
+                onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleClickChangeMoney(e, dataRow.id)}
+              >
+                <CurrencyExchangeIcon />
+              </IconButton>
+            </Tooltip>
           </TableCell>
         );
         break;
@@ -150,6 +167,71 @@ const TableManagementAccount = (props: {
         );
         break;
     }
+  };
+
+  // dropdown
+  const [anchorElDropDown, setAnchorElDropDown] = useState<null | HTMLElement>(null);
+  const openDropDown = Boolean(anchorElDropDown);
+  const handleClickDropDown = (event: React.MouseEvent<HTMLButtonElement>, id: string) => {
+    setCurrentIdClick(id);
+    setAnchorElDropDown(event.currentTarget);
+  };
+
+  const handleCloseDropDown = () => {
+    setAnchorElDropDown(null);
+  };
+
+  const setRole = (role: string) => {
+    handleCloseDropDown();
+    props.setLoading(true);
+    const url = `http://localhost:5001/api/users/changeRole/${currentIdClick}`;
+    const token = localStorage.getItem('token');
+    const body = {
+      role
+    };
+    axios
+      .put(url, body, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => props.setTrigger(!props.trigger))
+      .catch(err => props.setLoading(false));
+  };
+
+  //change money
+
+  const [anchorElChangeMoney, setAnchorElChangeMoney] = useState<null | HTMLElement>(null);
+  const openChangeMoney = Boolean(anchorElChangeMoney);
+  const handleClickChangeMoney = (event: React.MouseEvent<HTMLButtonElement>, id: string) => {
+    setCurrentIdClick(id);
+    setAnchorElChangeMoney(event.currentTarget);
+  };
+
+  const handleCloseChangeMoney = () => {
+    setAnchorElChangeMoney(null);
+  };
+
+  const onKeyPress = (e: any) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const money = +e.target.value;
+      changeMoney(money);
+    }
+  };
+
+  const changeMoney = (money: number) => {
+    handleCloseChangeMoney();
+    props.setLoading(true);
+    const url = `http://localhost:5001/api/users/addMoneyToBalance/${currentIdClick}`;
+    const token = localStorage.getItem('token');
+    const body = {
+      money
+    };
+    axios
+      .put(url, body, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(res => props.setTrigger(!props.trigger))
+      .catch(err => props.setLoading(false));
   };
 
   return (
@@ -189,6 +271,45 @@ const TableManagementAccount = (props: {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
+      {/* Dropdown change role */}
+      <Menu
+        id='basic-menu'
+        anchorEl={anchorElDropDown}
+        open={openDropDown}
+        onClose={handleCloseDropDown}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button'
+        }}
+      >
+        <MenuItem onClick={() => setRole('admin')}>Admin</MenuItem>
+        <MenuItem onClick={() => setRole('collaborator')}>Cộng tác viên</MenuItem>
+        <MenuItem onClick={() => setRole('customer')}>Khách</MenuItem>
+      </Menu>
+
+      {/* Dropdown change money */}
+
+      <Menu
+        id='basic-menu'
+        anchorEl={anchorElChangeMoney}
+        open={openChangeMoney}
+        onClose={handleCloseChangeMoney}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button'
+        }}
+      >
+        <MenuItem>
+          <FormControl fullWidth sx={{ m: 1 }} variant='standard'>
+            <InputLabel htmlFor='standard-adornment-amount'>Số tiền</InputLabel>
+            <Input
+              onKeyPress={onKeyPress}
+              id='standard-adornment-amount'
+              startAdornment={<InputAdornment position='start'>$</InputAdornment>}
+              autoFocus={true}
+            />
+          </FormControl>
+        </MenuItem>
+      </Menu>
     </Paper>
   );
 };
