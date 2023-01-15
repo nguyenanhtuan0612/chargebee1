@@ -1,5 +1,5 @@
 // ** MUI Imports
-import { Backdrop, CircularProgress } from '@mui/material';
+import { Backdrop, CircularProgress, Pagination } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
@@ -16,6 +16,10 @@ const Product = () => {
 
   const [exchangeRate, setExchangRate] = useState(0);
   const [discountForColaborator, setDiscountForColaborator] = useState(0);
+  const [count, setCount] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+  const [rowsPerPage] = useState(12);
+  const [totalPage, setTotalPage] = useState<number>(0);
 
   useEffect(() => {
     setLoading(true);
@@ -28,18 +32,25 @@ const Product = () => {
 
     fetch();
 
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN1YiI6IjRkMzU2MDdhLWFjYWEtNDc3NS05OGVhLTliMWRkYTVlYjg3MCIsImlhdCI6MTY3MzA2Mjg5OCwiZXhwIjoxNzA0NTk4ODk4fQ.hjnpzFJWG52YXKhX_n_bm1TYH5z77k6wC3_NNcR5Ii8';
-    const url = `${process.env.apiUrl}/api/tiktokAccount/listTiktokAccountCoin?limit=12`;
+    const token = localStorage.getItem('token') || '';
+    const url = `${process.env.apiUrl}/api/tiktokAccount/listTiktokAccountCoin`;
+    const config = {
+      params: {
+        limit: rowsPerPage,
+        offset: (page - 1) * rowsPerPage
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
     axios
-      .get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      .get(url, config)
       .then(res => {
         setLoading(false);
         setlistAccounts(res.data.rows);
+        setCount(res.data.count);
+        const totalPage = Math.floor(count / rowsPerPage) + 1;
+        setTotalPage(totalPage);
       })
       .catch(() => {
         setLoading(false);
@@ -50,10 +61,18 @@ const Product = () => {
     return;
   };
 
+  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+    setChange(!change);
+  };
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12} sx={{ paddingBottom: 4 }}>
         <Typography variant='h6'>{'Danh sách tài khoản Tiktok'}</Typography>
+      </Grid>
+      <Grid item xs={12} sx={{ justifyContent: 'space-between' }}>
+        <Pagination count={totalPage} page={page} onChange={handleChangePage} />
       </Grid>
       {listAccounts.map((item, index) => (
         <Grid item xs={12} sm={6} md={4} key={index}>
@@ -66,6 +85,9 @@ const Product = () => {
           />
         </Grid>
       ))}
+      <Grid item xs={12} sx={{ justifyContent: 'space-between' }}>
+        <Pagination count={totalPage} page={page} onChange={handleChangePage} />
+      </Grid>
       <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={isLoading} onClick={handleClose}>
         <CircularProgress color='inherit' />
       </Backdrop>
