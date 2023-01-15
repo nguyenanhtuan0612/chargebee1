@@ -1,5 +1,5 @@
 // ** MUI Imports
-import { DialogContent, Modal, Stack } from '@mui/material';
+import { Backdrop, Box, CircularProgress, DialogContent, Modal, Snackbar, Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -12,6 +12,9 @@ import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
 import { Account } from 'src/@core/models/UserInfo.model';
 import Link from 'next/link';
 import LoadingButton from '@mui/lab/LoadingButton';
+import ModalLogin from 'src/@core/layouts/components/ModalLogin';
+import { StateToast } from 'src/@core/layouts/components/shared-components/UserDropdown';
+import ModalRegister from 'src/@core/layouts/components/ModalRegister';
 
 interface PropsProduct {
   data: AccountTikTok;
@@ -59,6 +62,10 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
   const handleCloseBuyAccount = () => setOpenBuyAccount(false);
 
   const popupBuyAccount = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return setOpenNotLogin(true);
+    }
     handleOpenBuyAccount();
   };
 
@@ -109,12 +116,82 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
       });
   };
 
+  //set modalNotLogin
+  const [openNotLogin, setOpenNotLogin] = useState(false);
+
+  // const popupBuyFail = () => {
+  //   handleCloseBuyAccount();
+  // };
+
   useEffect(() => {
     const acc = JSON.parse(localStorage.getItem('account') || '{}');
     if (acc) {
       setAccount(acc);
     }
   }, []);
+
+  // tạm thời tiêm tríck
+
+  const [stateToast, setStateToast] = useState<StateToast>({
+    openToast: false,
+    vertical: 'top',
+    horizontal: 'right'
+  });
+
+  const { vertical, horizontal, openToast } = stateToast;
+
+  const handleOpenToast = (message: string) => {
+    setStateToast({ ...stateToast, openToast: true, message: message });
+    handleCloseToast();
+  };
+
+  const handleCloseToast = () => {
+    setTimeout(() => {
+      setStateToast({ ...stateToast, openToast: false });
+    }, 1000);
+  };
+
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+
+  const styleModalLogin = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24
+  };
+
+  const [isModalLogin, setModalLoginOpen] = useState(false);
+  const handleModalLoginOpen = () => {
+    setAnchorEl(null);
+    handleModalRegisterClose();
+    setModalLoginOpen(true);
+  };
+  const handleModalLoginClose = () => {
+    setModalLoginOpen(false);
+  };
+  const [isModalRegister, setModalRegisterOpen] = useState(false);
+  const handleModalRegisterOpen = () => {
+    setAnchorEl(null);
+    handleModalLoginClose();
+    setModalRegisterOpen(true);
+  };
+  const handleModalRegisterClose = () => {
+    setModalRegisterOpen(false);
+  };
+
+  const logIn = (success?: boolean) => {
+    handleModalLoginClose();
+
+    // setIsLogin(true);
+    handleOpenToast('Đăng nhập thành công');
+  };
+
+  const registerAccount = (body: any) => {
+    handleModalRegisterClose();
+    handleOpenToast('Đăng kí thành công');
+  };
 
   return (
     <Card>
@@ -290,7 +367,6 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
         aria-describedby='parent-modal-description'
       >
         <DialogContent sx={style}>
-          {/* <Fade> */}
           <Card>
             <CardContent>
               <Typography gutterBottom variant='h6' component='div'>
@@ -310,9 +386,67 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
               </Stack>
             </CardContent>
           </Card>
-          {/* </Fade> */}
         </DialogContent>
       </Modal>
+
+      <Modal
+        open={openNotLogin}
+        onClose={() => setOpenNotLogin(false)}
+        aria-labelledby='parent-modal-title'
+        aria-describedby='parent-modal-description'
+      >
+        <DialogContent sx={style}>
+          <Card>
+            <CardContent>
+              <Typography gutterBottom variant='h6' component='div'>
+                Bạn chưa đăng đăng nhập tài khoản
+              </Typography>
+              <Stack marginY={2} direction='row' spacing={2}>
+                <Button size='small' variant='contained' onClick={() => handleModalLoginOpen()}>
+                  Đăng nhập
+                </Button>
+              </Stack>
+            </CardContent>
+          </Card>
+        </DialogContent>
+      </Modal>
+
+      {/* tiêm chích */}
+
+      <Modal
+        open={isModalLogin}
+        onClose={handleModalLoginClose}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <Box sx={styleModalLogin}>{<ModalLogin submitLogin={logIn} openRegister={handleModalRegisterOpen} />}</Box>
+      </Modal>
+
+      {/* Modal Register */}
+
+      <Modal
+        open={isModalRegister}
+        onClose={handleModalRegisterClose}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <Box sx={styleModalLogin}>
+          {<ModalRegister submitRegister={registerAccount} openLogin={handleModalLoginOpen} />}
+        </Box>
+      </Modal>
+      <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={loading}>
+        <CircularProgress color='inherit' />
+      </Backdrop>
+
+      {/* toast */}
+
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={openToast}
+        onClose={handleCloseToast}
+        message={stateToast.message}
+        key={vertical + horizontal}
+      />
     </Card>
   );
 };

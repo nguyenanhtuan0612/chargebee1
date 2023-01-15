@@ -122,9 +122,9 @@ const Product = () => {
         <Typography variant='h6'>{'Danh sách tài khoản Tiktok'}</Typography>
       </Grid>
       <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Grid sx={{ display: 'flex' }} columnSpacing={10}>
+        <Grid sx={{ display: 'flex' }}>
           <Box sx={{ minWidth: 120 }}>
-            <FormControl size='small'>
+            <FormControl size='small' sx={{ marginRight: 3 }}>
               <InputLabel id='demo-simple-select-label'>Bộ lọc</InputLabel>
               <Select
                 labelId='demo-simple-select-label'
