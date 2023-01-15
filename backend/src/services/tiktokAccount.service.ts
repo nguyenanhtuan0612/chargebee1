@@ -239,7 +239,6 @@ export class TiktokAccountServie {
             order,
             attributes: [
                 'id',
-                'username',
                 'tiktokCoin',
                 'follower',
                 'like',
