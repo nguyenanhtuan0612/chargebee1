@@ -1,23 +1,19 @@
 // ** React Imports
-import { useState, ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
 // ** MUI Imports
+import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
-import TableRow from '@mui/material/TableRow';
-import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
-import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
-import { IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
-import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
-import DeleteIcon from '@mui/icons-material/Delete';
+import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
+import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
 
 interface Column {
   id: string;
@@ -162,7 +158,7 @@ const TableManagementTikTok = (props: {
 
     handleCloseDropDown();
     props.setLoading(true);
-    const url = `http://localhost:5001/api/tiktokAccount/delete/${currentIdClick}`;
+    const url = `${process.env.apiUrl}/api/tiktokAccount/delete/${currentIdClick}`;
     const token = localStorage.getItem('token');
     axios
       .delete(url, {

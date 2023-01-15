@@ -10,7 +10,6 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
-import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
 import { FormControl, IconButton, Input, InputAdornment, InputLabel, Menu, MenuItem, Tooltip } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
@@ -190,7 +189,7 @@ const TableManagementAccount = (props: {
   const setRole = (role: string) => {
     handleCloseDropDown();
     props.setLoading(true);
-    const url = `http://localhost:5001/api/users/changeRole/${currentIdClick}`;
+    const url = `${process.env.apiUrl}/api/users/changeRole/${currentIdClick}`;
     const token = localStorage.getItem('token');
     const body = {
       role
@@ -227,7 +226,7 @@ const TableManagementAccount = (props: {
   const changeMoney = (money: number) => {
     handleCloseChangeMoney();
     props.setLoading(true);
-    const url = `http://localhost:5001/api/users/addMoneyToBalance/${currentIdClick}`;
+    const url = `${process.env.apiUrl}/api/users/addMoneyToBalance/${currentIdClick}`;
     const token = localStorage.getItem('token');
     const body = {
       money
