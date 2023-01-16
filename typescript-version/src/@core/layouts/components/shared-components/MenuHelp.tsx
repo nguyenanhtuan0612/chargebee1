@@ -42,16 +42,6 @@ const MenuHelp = () => {
     setAnchorEl(null);
   };
 
-  const [infoAdmin, setInfoAdmin] = useState<IInfoAdmin>({});
-  const fetchData = () => {
-    const url = `${process.env.apiUrl}/api/configs`;
-    axios.get(url).then(res => setInfoAdmin(res.data));
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -99,7 +89,7 @@ const MenuHelp = () => {
           </Typography>
         </MenuItem>
         <MenuItem>
-          <img src='/images/zalo.svg' style={{ marginRight: '8px' }}></img>
+          <img alt='zalo' src='/images/zalo.svg' style={{ marginRight: '8px' }}></img>
           <Typography variant='body2' sx={{ fontSize: 13 }}>
             0869 158 732
           </Typography>
