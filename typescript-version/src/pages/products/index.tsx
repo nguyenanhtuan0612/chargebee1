@@ -135,8 +135,26 @@ const Product = () => {
       <Grid item xs={12} sx={{ paddingBottom: 4 }}>
         <Typography variant='h6'>{'Danh sách tài khoản Tiktok'}</Typography>
       </Grid>
-      <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Grid sx={{ display: 'flex' }}>
+      <Grid
+        item
+        xs={12}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexDirection: {
+            xs: 'column',
+            sm: 'row'
+          },
+          gap: {
+            xs: '15px'
+          }
+        }}
+      >
+        <Grid
+          sx={{
+            display: 'flex'
+          }}
+        >
           <Box sx={{ minWidth: 120 }}>
             <FormControl size='small' sx={{ marginRight: 3 }}>
               <InputLabel id='demo-simple-select-label'>Bộ lọc</InputLabel>
@@ -171,6 +189,7 @@ const Product = () => {
             </FormControl>
           </Box>
         </Grid>
+
         <Pagination count={totalPage} page={page} onChange={handleChangePage} />
       </Grid>
       {listAccounts.map((item, index) => (
