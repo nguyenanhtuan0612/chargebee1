@@ -2,47 +2,72 @@
 import Grid from '@mui/material/Grid';
 
 // ** Icons Imports
-import Poll from 'mdi-material-ui/Poll';
-import CurrencyUsd from 'mdi-material-ui/CurrencyUsd';
-import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline';
-import BriefcaseVariantOutline from 'mdi-material-ui/BriefcaseVariantOutline';
 
 // ** Custom Components Imports
-import CardStatisticsVerticalComponent from 'src/@core/components/card-statistics/card-stats-vertical';
 
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 
 // ** Demo Components Imports
-import Table from 'src/views/dashboard/Table';
-import Trophy from 'src/views/dashboard/Trophy';
-import TotalEarning from 'src/views/dashboard/TotalEarning';
-import StatisticsCard from 'src/views/dashboard/StatisticsCard';
-import WeeklyOverview from 'src/views/dashboard/WeeklyOverview';
-import DepositWithdraw from 'src/views/dashboard/DepositWithdraw';
-import SalesByCountries from 'src/views/dashboard/SalesByCountries';
+import { Backdrop, CircularProgress } from '@mui/material';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Account } from 'src/@core/models/UserInfo.model';
+import StatisticsCard from 'src/views/dashboard/StatisticsCard';
+import Trophy from 'src/views/dashboard/Trophy';
 import Product from './products';
 
 const Dashboard = () => {
+  const [data, setData] = useState({
+    totalAccSellLastMonth: 0,
+    totalAmountSellLastMonth: 0,
+    numUserCreatedThisMonth: 0,
+    numAccCreateThisMonth: 0,
+    numAccSoldThisMonth: 0,
+    amountThisMonth: 0
+  });
+  const [isLoading, setLoading] = useState<boolean>(true);
+
+  const handleCloseLoading = () => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 200);
+  };
+
+  useEffect(() => {
+    async function name() {
+      const token = localStorage.getItem('token');
+      await axios
+        .get(`${process.env.apiUrl}/api/dataDashboard`, {
+          headers: {
+            authorization: 'Bearer ' + token
+          }
+        })
+        .then(res => {
+          handleCloseLoading();
+          setData(res.data);
+        })
+        .catch(() => handleCloseLoading());
+    }
+
+    name();
+  }, []);
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12} md={4}>
-          <Trophy />
+          <Trophy data={data} />
         </Grid>
         <Grid item xs={12} md={8}>
-          <StatisticsCard />
+          <StatisticsCard data={data} />
         </Grid>
 
         {/* <Grid item xs={12} md={6} lg={6}>
           <WeeklyOverview />
         </Grid> */}
-        <Grid item xs={12} md={6} lg={6}>
-          <TotalEarning />
-        </Grid>
-        <Grid item xs={12} md={6} lg={6}>
+
+        {/* <Grid item xs={12} md={6} lg={6}>
           <Grid container spacing={6}>
             <Grid item xs={12} sm={6}>
               <CardStatisticsVerticalComponent
@@ -50,14 +75,14 @@ const Dashboard = () => {
                 icon={<Poll />}
                 color='success'
                 trendNumber=''
-                title='Nạp nhiều tiền nhất'
+                title='Nạp nhiều tiền nhất tháng'
                 subtitle='tuananhvd1998@gmail.comt'
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <CardStatisticsVerticalComponent
                 stats='78'
-                title='Mua nhiều tài khoản nhất'
+                title='Mua nhiều tài khoản nhất tháng'
                 trend='negative'
                 color='secondary'
                 trendNumber=''
@@ -70,7 +95,7 @@ const Dashboard = () => {
                 stats='862 VND'
                 trend='negative'
                 trendNumber=''
-                title='CTV mua nhiều tiền nhất'
+                title='CTV mua nhiều tiền nhất tháng'
                 subtitle='tuananhvd1998@gmail.com'
                 icon={<BriefcaseVariantOutline />}
               />
@@ -82,12 +107,16 @@ const Dashboard = () => {
                 trend='negative'
                 trendNumber=''
                 subtitle='tuananhvd1998@gmail.com'
-                title='KH mua nhiều tiền nhất'
+                title='KH mua nhiều tiền nhất tháng'
                 icon={<HelpCircleOutline />}
               />
             </Grid>
           </Grid>
         </Grid>
+        <Grid item xs={12} md={6} lg={6}>
+          <TotalEarning />
+        </Grid> */}
+
         {/* <Grid item xs={12} md={6} lg={4}>
           <SalesByCountries />
         </Grid>
@@ -98,6 +127,9 @@ const Dashboard = () => {
           <Table />
         </Grid> */}
       </Grid>
+      <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={isLoading}>
+        <CircularProgress color='inherit' />
+      </Backdrop>
     </ApexChartWrapper>
   );
 };

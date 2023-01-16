@@ -6,6 +6,7 @@ import {
 import { AccountCategoryLinks } from '@/entities/accountCategoryLink.entity';
 import { Category } from '@/entities/categories.entity';
 import { TiktokAccount } from '@/entities/tiktokAccount.entity';
+import { TransactionStatistic } from '@/entities/transactionStatistics.entity';
 import { User } from '@/entities/users.entity';
 import { ExceptionWithMessage } from '@/exceptions/HttpException';
 import {
@@ -42,6 +43,22 @@ export class TiktokAccountServie {
             }
         }
 
+        const month = new Date().getMonth();
+        const year = new Date().getFullYear();
+        const statistic = await TransactionStatistic.findOne({
+            where: { month, year },
+        });
+
+        if (statistic) {
+            statistic.accountCreate += 1;
+            await statistic.save();
+        } else {
+            const data = new TransactionStatistic();
+            data.month = month;
+            data.year = year;
+            data.accountCreate = 1;
+            await data.save();
+        }
         return res;
     }
 
@@ -61,6 +78,22 @@ export class TiktokAccountServie {
             await link.save();
         }
 
+        const month = new Date().getMonth();
+        const year = new Date().getFullYear();
+        const statistic = await TransactionStatistic.findOne({
+            where: { month, year },
+        });
+
+        if (statistic) {
+            statistic.accountCreate += 1;
+            await statistic.save();
+        } else {
+            const data = new TransactionStatistic();
+            data.month = month;
+            data.year = year;
+            data.accountCreate = 1;
+            await data.save();
+        }
         return res;
     }
 
@@ -183,6 +216,9 @@ export class TiktokAccountServie {
             raw: true,
         });
 
+        const month = new Date().getMonth();
+        const year = new Date().getFullYear();
+
         for (const iterator of arr) {
             const exist = await TiktokAccount.findOne({
                 where: { username: iterator.email },
@@ -214,6 +250,19 @@ export class TiktokAccountServie {
                 await link.save();
             }
             count++;
+        }
+        const statistic = await TransactionStatistic.findOne({
+            where: { month, year },
+        });
+        if (statistic) {
+            statistic.accountCreate += count;
+            await statistic.save();
+        } else {
+            const data = new TransactionStatistic();
+            data.month = month;
+            data.year = year;
+            data.accountCreate = count;
+            await data.save();
         }
 
         return { count, duplicate };

@@ -3,6 +3,7 @@ import { Payment } from '@/entities/payment.entity';
 import { SystemConfig } from '@/entities/systemConfig.entity';
 import { TiktokAccount } from '@/entities/tiktokAccount.entity';
 import { Transaction } from '@/entities/transaction.entity';
+import { TransactionStatistic } from '@/entities/transactionStatistics.entity';
 import { User } from '@/entities/users.entity';
 import { ExceptionWithMessage } from '@/exceptions/HttpException';
 import { Options } from '@/interfaces/request.interface';
@@ -95,6 +96,25 @@ export class TransactionService {
         transaction.tiktokAccountId = dto.tiktokAcountId;
         transaction.userId = user.id;
         await transaction.save();
+
+        const month = new Date().getMonth();
+        const year = new Date().getFullYear();
+        const statistic = await TransactionStatistic.findOne({
+            where: { month, year },
+        });
+
+        if (statistic) {
+            statistic.amount += dto.price;
+            statistic.accountSold += 1;
+            await statistic.save();
+        } else {
+            const data = new TransactionStatistic();
+            data.month = month;
+            data.year = year;
+            data.amount = dto.price;
+            data.accountSold = 1;
+            await data.save();
+        }
 
         return account;
     }

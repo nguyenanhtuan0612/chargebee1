@@ -5,6 +5,7 @@ import {
     CreateUserDto,
     UserResponse,
 } from '@/dtos/users.dto';
+import { CountUserRegister } from '@/entities/countUserRegister.entity';
 import { User } from '@/entities/users.entity';
 import { ExceptionWithMessage } from '@/exceptions/HttpException';
 import { Options } from '@/interfaces/request.interface';
@@ -21,8 +22,24 @@ export class UsersService {
         const salt = await genSalt(10);
         user.password = await hash(createUserDto.password, salt);
         user.role = createUserDto.role;
-
         const userData: IUser = await user.save();
+
+        const month = new Date().getMonth();
+        const year = new Date().getFullYear();
+        const count = await CountUserRegister.findOne({
+            where: { month, year },
+        });
+
+        if (count) {
+            count.count += 1;
+            await count.save();
+        } else {
+            const data = new CountUserRegister();
+            data.month = month;
+            data.year = year;
+            data.count = 1;
+            await data.save();
+        }
 
         return userData;
     }

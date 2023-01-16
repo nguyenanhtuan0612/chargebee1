@@ -40,4 +40,17 @@ export class AppController {
             throw error;
         }
     }
+
+    @ApiBearerAuth('authorization')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles([Role.ADMIN])
+    @Get('dataDashboard')
+    async dataDashboard(@Res() res: Response) {
+        try {
+            const data = await this.appService.dataDashboard();
+            return res.status(200).json(data);
+        } catch (error) {
+            throw error;
+        }
+    }
 }

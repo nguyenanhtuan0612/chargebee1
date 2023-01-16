@@ -28,34 +28,7 @@ interface DataType {
   icon: ReactElement;
 }
 
-const salesData: DataType[] = [
-  {
-    stats: '1.54k',
-    color: 'warning',
-    title: 'Số tài khoản đã tạo',
-    icon: <CellphoneLink sx={{ fontSize: '1.75rem' }} />
-  },
-  {
-    stats: '245k',
-    title: 'Số tài khoản đã đã bán',
-    color: 'primary',
-    icon: <TrendingUp sx={{ fontSize: '1.75rem' }} />
-  },
-  {
-    stats: '$88k',
-    color: 'info',
-    title: 'Tổng doanh thu',
-    icon: <CurrencyUsd sx={{ fontSize: '1.75rem' }} />
-  },
-  {
-    stats: '12.5k',
-    title: 'Số lượng người dùng',
-    color: 'success',
-    icon: <AccountOutline sx={{ fontSize: '1.75rem' }} />
-  }
-];
-
-const renderStats = () => {
+const renderStats = (salesData: DataType[]) => {
   return salesData.map((item: DataType, index: number) => (
     <Grid item xs={12} sm={6} key={index}>
       <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
@@ -81,20 +54,63 @@ const renderStats = () => {
   ));
 };
 
-const StatisticsCard = () => {
+interface Props {
+  data: {
+    totalAccSellLastMonth: number;
+    totalAmountSellLastMonth: number;
+    numUserCreatedThisMonth: number;
+    numAccCreateThisMonth: number;
+    numAccSoldThisMonth: number;
+    amountThisMonth: number;
+  };
+}
+
+const StatisticsCard = (props: Props) => {
+  const trend = props.data.totalAmountSellLastMonth <= props.data.amountThisMonth ? 'tăng' : 'giảm';
+  let change = 0;
+  if (props.data.totalAmountSellLastMonth <= props.data.amountThisMonth) {
+    if (props.data.totalAmountSellLastMonth == 0) {
+      change = 100;
+    } else {
+      change = Math.floor((props.data.amountThisMonth / props.data.totalAmountSellLastMonth) * 100);
+    }
+  }
+
+  const salesData: DataType[] = [
+    {
+      stats: props.data.numAccCreateThisMonth.toLocaleString('en-US'),
+      color: 'warning',
+      title: 'Số tài khoản đã tạo',
+      icon: <CellphoneLink sx={{ fontSize: '1.75rem' }} />
+    },
+    {
+      stats: props.data.numAccSoldThisMonth.toLocaleString('en-US'),
+      title: 'Số tài khoản đã đã bán',
+      color: 'primary',
+      icon: <TrendingUp sx={{ fontSize: '1.75rem' }} />
+    },
+    {
+      stats: props.data.amountThisMonth.toLocaleString('en-US') + ' VND',
+      color: 'info',
+      title: 'Tổng doanh thu',
+      icon: <CurrencyUsd sx={{ fontSize: '1.75rem' }} />
+    },
+    {
+      stats: props.data.numUserCreatedThisMonth.toLocaleString('en-US'),
+      title: 'Số lượng người dùng mới',
+      color: 'success',
+      icon: <AccountOutline sx={{ fontSize: '1.75rem' }} />
+    }
+  ];
+
   return (
     <Card>
       <CardHeader
         title='Tình hình kinh doanh'
-        action={
-          <IconButton size='small' aria-label='settings' className='card-more-options' sx={{ color: 'text.secondary' }}>
-            <DotsVertical />
-          </IconButton>
-        }
         subheader={
           <Typography variant='body2'>
             <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
-              Doanh thu tăng 48.5%
+              Doanh thu {trend} {change.toLocaleString('en-US')}%
             </Box>{' '}
             😎 so với tháng trước
           </Typography>
@@ -109,7 +125,7 @@ const StatisticsCard = () => {
       />
       <CardContent sx={{ pt: theme => `${theme.spacing(3)} !important` }}>
         <Grid container spacing={[5, 1]}>
-          {renderStats()}
+          {renderStats(salesData)}
         </Grid>
       </CardContent>
     </Card>

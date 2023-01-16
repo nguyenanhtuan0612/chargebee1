@@ -20,7 +20,18 @@ const TrophyImg = styled('img')({
   position: 'absolute'
 });
 
-const Trophy = () => {
+interface Props {
+  data: {
+    totalAccSellLastMonth: number;
+    totalAmountSellLastMonth: number;
+    numUserCreatedThisMonth: number;
+    numAccCreateThisMonth: number;
+    numAccSoldThisMonth: number;
+    amountThisMonth: number;
+  };
+}
+
+const Trophy = (props: Props) => {
   // ** Hook
   const theme = useTheme();
 
@@ -36,13 +47,13 @@ const Trophy = () => {
           Số Acc Tiktok đã bán:
         </Typography>
         <Typography variant='h5' sx={{ marginTop: 1, marginBottom: 4, color: 'primary.main' }}>
-          $42.8k
+          {props.data.totalAccSellLastMonth}
         </Typography>
         <Typography variant='body2' sx={{ letterSpacing: '0.25px' }}>
-          Best seller of the month
+          Doanh thu:
         </Typography>
         <Typography variant='h5' sx={{ marginTop: 1, marginBottom: 4, color: 'primary.main' }}>
-          $42.8k
+          {props.data.totalAccSellLastMonth.toLocaleString('en-US') + ' VND'}
         </Typography>
         <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />
         <TrophyImg alt='trophy' src='/images/misc/trophy.png' />

@@ -5,6 +5,8 @@ import { AccountCategoryLinks } from './accountCategoryLink.entity';
 import { SystemConfig } from './systemConfig.entity';
 import { Payment } from './payment.entity';
 import { Transaction } from './transaction.entity';
+import { CountUserRegister } from './countUserRegister.entity';
+import { TransactionStatistic } from './transactionStatistics.entity';
 
 export default [
     User,
@@ -14,4 +16,6 @@ export default [
     SystemConfig,
     Payment,
     Transaction,
+    CountUserRegister,
+    TransactionStatistic,
 ];

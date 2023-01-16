@@ -107,10 +107,6 @@ const Product = () => {
       });
   }, [change]);
 
-  const handleClose = () => {
-    return;
-  };
-
   const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     setChange(!change);
@@ -208,7 +204,7 @@ const Product = () => {
       <Grid item xs={12} sx={{ justifyContent: 'space-between' }}>
         <Pagination count={totalPage} page={page} onChange={handleChangePage} />
       </Grid>
-      <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={isLoading} onClick={handleClose}>
+      <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={isLoading}>
         <CircularProgress color='inherit' />
       </Backdrop>
     </Grid>
