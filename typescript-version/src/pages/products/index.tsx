@@ -136,7 +136,8 @@ const Product = () => {
           display: 'flex',
           justifyContent: 'space-between',
           flexDirection: {
-            xs: 'column'
+            xs: 'column',
+            sm: 'row'
           },
           gap: {
             xs: '15px'

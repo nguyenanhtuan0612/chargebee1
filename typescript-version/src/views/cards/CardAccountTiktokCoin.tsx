@@ -15,6 +15,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import ModalLogin from 'src/@core/layouts/components/ModalLogin';
 import { StateToast } from 'src/@core/layouts/components/shared-components/UserDropdown';
 import ModalRegister from 'src/@core/layouts/components/ModalRegister';
+import { width } from '@mui/system';
 
 interface PropsProduct {
   data: AccountTikTok;
@@ -55,9 +56,13 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
+    width: 430
+  };
 
-    // width: 450
+  const styleNotLogin = {
+    ...style,
+    width: 430
   };
 
   const handleOpenBuyAccount = () => setOpenBuyAccount(true);
@@ -132,6 +137,10 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
   //set modalNotLogin
   const [openNotLogin, setOpenNotLogin] = useState(false);
 
+  const handleCloseModalNotLogin = () => {
+    setOpenNotLogin(false);
+  };
+
   // const popupBuyFail = () => {
   //   handleCloseBuyAccount();
   // };
@@ -164,7 +173,7 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
     }, 1000);
   };
 
-  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+  // const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
   const styleModalLogin = {
     position: 'absolute',
@@ -177,7 +186,7 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
 
   const [isModalLogin, setModalLoginOpen] = useState(false);
   const handleModalLoginOpen = () => {
-    setAnchorEl(null);
+    setOpenNotLogin(false);
     handleModalRegisterClose();
     setModalLoginOpen(true);
   };
@@ -186,7 +195,7 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
   };
   const [isModalRegister, setModalRegisterOpen] = useState(false);
   const handleModalRegisterOpen = () => {
-    setAnchorEl(null);
+    setOpenNotLogin(false);
     handleModalLoginClose();
     setModalRegisterOpen(true);
   };
@@ -266,11 +275,11 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
         aria-labelledby='parent-modal-title'
         aria-describedby='parent-modal-description'
       >
-        <DialogContent sx={style}>
+        <DialogContent sx={[style, { width: { sm: 500 } }]}>
           <Card sx={{ maxWidth: 500 }}>
             <CardContent>
-              <Typography gutterBottom variant='h6' component='div'>
-                Bạn có muốn mua tài khoản này không ?
+              <Typography gutterBottom variant='h6' component='div' textAlign='center'>
+                Bạn có muốn mua tài khoản này không?
               </Typography>
               {account.role === 'collaborator' ? (
                 <>
@@ -316,7 +325,7 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
                   </Typography>
                 </>
               ) : (
-                <Typography marginBottom={2} variant='body1' color='text.primary'>
+                <Typography marginBottom={2} variant='body1' color='text.primary' noWrap={true}>
                   Giá:{' '}
                   <NumericFormat
                     thousandSeparator
@@ -327,7 +336,7 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
                 </Typography>
               )}
 
-              <Stack marginY={2} direction='row' spacing={2}>
+              <Stack marginTop={3} direction='row' spacing={2} justifyContent='center'>
                 {account.role === 'collaborator' ? (
                   <LoadingButton
                     loading={loading}
@@ -375,7 +384,7 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
           {/* <Fade> */}
           <Card>
             <CardContent>
-              <Typography gutterBottom variant='h6' component='div'>
+              <Typography gutterBottom variant='h6' component='div' textAlign='center'>
                 Mua tài khoản thành công
               </Typography>
               <Typography variant='body2' component='h2'>
@@ -387,7 +396,7 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
               <Typography variant='body2' color='text.secondary'>
                 Xem lại thông tin những tài khoản đã mua <Link href='/account-settings'>tại đây</Link>
               </Typography>
-              <Stack marginY={2} direction='row' spacing={2}>
+              <Stack marginTop={3} direction='row' spacing={2} justifyContent='center'>
                 <Button size='small' variant='outlined' onClick={handleCloseBuySuccess}>
                   Đóng
                 </Button>
@@ -407,10 +416,10 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
         <DialogContent sx={style}>
           <Card>
             <CardContent>
-              <Typography gutterBottom variant='h6' component='div'>
+              <Typography gutterBottom variant='h6' component='div' textAlign='center'>
                 Mua tài khoản không thành công
               </Typography>
-              <Stack marginY={2} direction='row' spacing={2}>
+              <Stack marginTop={3} direction='row' spacing={2} justifyContent='center'>
                 <Button
                   size='small'
                   variant='outlined'
@@ -429,19 +438,23 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
 
       <Modal
         open={openNotLogin}
-        onClose={() => setOpenNotLogin(false)}
+        onClose={handleCloseModalNotLogin}
         aria-labelledby='parent-modal-title'
         aria-describedby='parent-modal-description'
       >
-        <DialogContent sx={style}>
+        <DialogContent sx={[styleNotLogin, { width: { md: '450px' } }]}>
           <Card>
             <CardContent>
-              <Typography gutterBottom variant='h6' component='div'>
+              <Typography gutterBottom variant='h6' textAlign='center' component='div'>
                 Bạn chưa đăng đăng nhập tài khoản
               </Typography>
-              <Stack marginY={2} direction='row' spacing={2}>
-                <Button size='small' variant='contained' onClick={() => handleModalLoginOpen()}>
+              <Stack marginY={2} direction='row' justifyContent='center' spacing={2}>
+                <Button size='small' variant='contained' onClick={handleModalLoginOpen}>
                   Đăng nhập
+                </Button>
+
+                <Button size='small' variant='outlined' onClick={handleModalRegisterOpen}>
+                  Đăng kí
                 </Button>
               </Stack>
             </CardContent>
@@ -472,9 +485,9 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
           {<ModalRegister submitRegister={registerAccount} openLogin={handleModalLoginOpen} />}
         </Box>
       </Modal>
-      <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={loading}>
+      {/* <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }} open={loading}>
         <CircularProgress color='inherit' />
-      </Backdrop>
+      </Backdrop> */}
 
       {/* toast */}
 
