@@ -34,6 +34,12 @@ const Product = () => {
   const [totalPage, setTotalPage] = useState<number>(0);
   const [order, setOrder] = useState('asc');
 
+  const handleCloseLoading = () => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 200);
+  };
+
   useEffect(() => {
     setLoading(true);
     async function fetch() {
@@ -90,11 +96,11 @@ const Product = () => {
     axios
       .get(url, config)
       .then(res => {
-        setLoading(false);
         setlistAccounts(res.data.rows);
         setCount(res.data.count);
         const total = Math.floor(res.data.count / rowsPerPage) + 1;
         setTotalPage(total);
+        handleCloseLoading();
       })
       .catch(() => {
         setLoading(false);
