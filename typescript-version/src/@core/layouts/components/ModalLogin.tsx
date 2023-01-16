@@ -11,7 +11,6 @@ import Button from '@mui/material/Button';
 import MuiCard, { CardProps } from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Checkbox from '@mui/material/Checkbox';
-import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
@@ -25,10 +24,6 @@ import Typography from '@mui/material/Typography';
 // ** Icons Imports
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline';
 import EyeOutline from 'mdi-material-ui/EyeOutline';
-import Facebook from 'mdi-material-ui/Facebook';
-import Github from 'mdi-material-ui/Github';
-import Google from 'mdi-material-ui/Google';
-import Twitter from 'mdi-material-ui/Twitter';
 
 // ** Configs
 import themeConfig from 'src/configs/themeConfig';
