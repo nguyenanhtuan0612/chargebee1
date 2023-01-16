@@ -278,7 +278,7 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
         <DialogContent sx={[style, { width: { sm: 500 } }]}>
           <Card sx={{ maxWidth: 500 }}>
             <CardContent>
-              <Typography gutterBottom variant='h6' component='div' textAlign='center'>
+              <Typography marginBottom={4} gutterBottom variant='h6' component='div'>
                 Bạn có muốn mua tài khoản này không?
               </Typography>
               {account.role === 'collaborator' ? (
@@ -384,7 +384,7 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
           {/* <Fade> */}
           <Card>
             <CardContent>
-              <Typography gutterBottom variant='h6' component='div' textAlign='center'>
+              <Typography gutterBottom variant='h6' component='div'>
                 Mua tài khoản thành công
               </Typography>
               <Typography variant='body2' component='h2'>
@@ -445,7 +445,7 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
         <DialogContent sx={[styleNotLogin, { width: { md: '450px' } }]}>
           <Card>
             <CardContent>
-              <Typography gutterBottom variant='h6' textAlign='center' component='div'>
+              <Typography marginBottom={4} gutterBottom variant='h6' textAlign='center' component='div'>
                 Bạn chưa đăng đăng nhập tài khoản
               </Typography>
               <Stack marginY={2} direction='row' justifyContent='center' spacing={2}>
