@@ -35,67 +35,68 @@ const Dashboard = () => {
         <Grid item xs={12} md={8}>
           <StatisticsCard />
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+
+        {/* <Grid item xs={12} md={6} lg={6}>
           <WeeklyOverview />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        </Grid> */}
+        <Grid item xs={12} md={6} lg={6}>
           <TotalEarning />
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} md={6} lg={6}>
           <Grid container spacing={6}>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <CardStatisticsVerticalComponent
                 stats='$25.6k'
                 icon={<Poll />}
                 color='success'
-                trendNumber='+42%'
-                title='Total Profit'
-                subtitle='Weekly Profit'
+                trendNumber=''
+                title='Nạp nhiều tiền nhất'
+                subtitle='tuananhvd1998@gmail.comt'
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <CardStatisticsVerticalComponent
-                stats='$78'
-                title='Refunds'
+                stats='78'
+                title='Mua nhiều tài khoản nhất'
                 trend='negative'
                 color='secondary'
-                trendNumber='-15%'
-                subtitle='Past Month'
+                trendNumber=''
+                subtitle='tuananhvd1998@gmail.com'
                 icon={<CurrencyUsd />}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <CardStatisticsVerticalComponent
-                stats='862'
+                stats='862 VND'
                 trend='negative'
-                trendNumber='-18%'
-                title='New Project'
-                subtitle='Yearly Project'
+                trendNumber=''
+                title='CTV mua nhiều tiền nhất'
+                subtitle='tuananhvd1998@gmail.com'
                 icon={<BriefcaseVariantOutline />}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
               <CardStatisticsVerticalComponent
-                stats='15'
+                stats='152,000 VND'
                 color='warning'
                 trend='negative'
-                trendNumber='-18%'
-                subtitle='Last Week'
-                title='Sales Queries'
+                trendNumber=''
+                subtitle='tuananhvd1998@gmail.com'
+                title='KH mua nhiều tiền nhất'
                 icon={<HelpCircleOutline />}
               />
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        {/* <Grid item xs={12} md={6} lg={4}>
           <SalesByCountries />
         </Grid>
         <Grid item xs={12} md={12} lg={8}>
           <DepositWithdraw />
-        </Grid>
-        <Grid item xs={12}>
+        </Grid> */}
+        {/* <Grid item xs={12}>
           <Table />
-        </Grid>
+        </Grid> */}
       </Grid>
     </ApexChartWrapper>
   );

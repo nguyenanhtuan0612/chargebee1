@@ -1,17 +1,9 @@
-import { Avatar, Box, Button, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
-import { Fragment, SyntheticEvent, useEffect, useState } from 'react';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { Box, Button, IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
+import { Fragment, useState } from 'react';
 
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
-import axios from 'axios';
 import CallIcon from '@mui/icons-material/Call';
 import TelegramIcon from '@mui/icons-material/Telegram';
-import { right } from '@popperjs/core';
+import Typography from '@mui/material/Typography';
 
 interface IInfoAdmin {
   bankName?: string;

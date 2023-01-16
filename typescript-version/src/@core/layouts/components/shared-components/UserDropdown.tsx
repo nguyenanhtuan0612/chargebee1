@@ -19,9 +19,9 @@ import { Backdrop, CircularProgress, Modal, Snackbar, SnackbarOrigin } from '@mu
 import AccountOutline from 'mdi-material-ui/AccountOutline';
 import CurrencyUsd from 'mdi-material-ui/CurrencyUsd';
 import LogoutVariant from 'mdi-material-ui/LogoutVariant';
+import { Account } from 'src/@core/models/UserInfo.model';
 import ModalLogin from '../ModalLogin';
 import ModalRegister from '../ModalRegister';
-import { Account } from 'src/@core/models/UserInfo.model';
 
 interface State {
   password: string;
