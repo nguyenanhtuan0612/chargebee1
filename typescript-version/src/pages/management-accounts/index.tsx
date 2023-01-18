@@ -87,14 +87,14 @@ const ManagementAccounts = () => {
       const filter = JSON.stringify([{ operator: 'iLike', value: `${searchEmail}`, prop: 'email' }]);
       params = {
         limit: rowsPerPage,
-        offset: page,
+        offset: page * rowsPerPage,
         filter,
         order: JSON.stringify([{ direction: sortMoney, prop: 'balance' }])
       };
     } else {
       params = {
         limit: rowsPerPage,
-        offset: page,
+        offset: page * rowsPerPage,
         order: JSON.stringify([{ direction: sortMoney, prop: 'balance' }])
       };
     }

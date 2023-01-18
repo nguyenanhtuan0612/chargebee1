@@ -99,6 +99,7 @@ export class TransactionService {
 
         const month = new Date().getMonth();
         const year = new Date().getFullYear();
+
         const statistic = await TransactionStatistic.findOne({
             where: { month, year },
         });
