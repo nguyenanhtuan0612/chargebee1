@@ -1,21 +1,20 @@
 // ** MUI Imports
-import { Backdrop, Box, CircularProgress, DialogContent, Grid, Modal, Snackbar, Stack } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Box, DialogContent, Grid, Modal, Snackbar, Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
+import Link from 'next/link';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { NumericFormat } from 'react-number-format';
+import ModalLogin from 'src/@core/layouts/components/ModalLogin';
+import ModalRegister from 'src/@core/layouts/components/ModalRegister';
+import { StateToast } from 'src/@core/layouts/components/shared-components/UserDropdown';
 import { AccountTikTok } from 'src/@core/models/AccountTikTok.model';
 import { Account } from 'src/@core/models/UserInfo.model';
-import Link from 'next/link';
-import LoadingButton from '@mui/lab/LoadingButton';
-import ModalLogin from 'src/@core/layouts/components/ModalLogin';
-import { StateToast } from 'src/@core/layouts/components/shared-components/UserDropdown';
-import ModalRegister from 'src/@core/layouts/components/ModalRegister';
-import { width } from '@mui/system';
 
 interface PropsProduct {
   data: AccountTikTok;
@@ -203,14 +202,14 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
     setModalRegisterOpen(false);
   };
 
-  const logIn = (success?: boolean) => {
+  const logIn = () => {
     handleModalLoginClose();
 
     // setIsLogin(true);
     handleOpenToast('Đăng nhập thành công');
   };
 
-  const registerAccount = (body: any) => {
+  const registerAccount = () => {
     handleModalRegisterClose();
     handleOpenToast('Đăng kí thành công');
   };
@@ -335,6 +334,11 @@ const CardAcountTiktokCoin = (props: PropsProduct) => {
                   />
                 </Typography>
               )}
+              <Typography variant='body2'>Lưu ý: Tài khoản được bảo hành 24 giờ.</Typography>
+              <Typography variant='body2'>-Cấm thả rương</Typography>
+              <Typography variant='body2'>-Cấm spam quà</Typography>
+              <Typography variant='body2'>-Cấm donate video</Typography>
+              <Typography variant='body2'>Vi phạm sẽ không được bảo hành.</Typography>
 
               <Stack marginTop={3} direction='row' spacing={2} justifyContent='center'>
                 {account.role === 'collaborator' ? (

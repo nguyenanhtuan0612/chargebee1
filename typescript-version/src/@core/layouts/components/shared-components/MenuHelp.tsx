@@ -46,7 +46,7 @@ const MenuHelp = () => {
             aria-expanded={open ? 'true' : undefined}
           >
             <Button variant='contained' disableRipple>
-              Liên hệ
+              Liên hệ - Bảo hành
             </Button>
           </IconButton>
         </Tooltip>
@@ -65,7 +65,32 @@ const MenuHelp = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <Typography variant='body1' sx={{ ml: 4 }}>
+        <Box>
+          <Typography variant='body1' sx={{ ml: 4 }}>
+            Thông báo: Tài khoản được bảo hành 24 giờ
+          </Typography>
+          <MenuItem>
+            <Typography variant='body2' sx={{ fontSize: 13 }}>
+              - Cấm thả rương
+            </Typography>
+          </MenuItem>
+          <MenuItem>
+            <Typography variant='body2' sx={{ fontSize: 13 }}>
+              - Cấm spam quà
+            </Typography>
+          </MenuItem>
+          <MenuItem>
+            <Typography variant='body2' sx={{ fontSize: 13 }}>
+              - Cấm donate video
+            </Typography>
+          </MenuItem>
+          <MenuItem>
+            <Typography variant='body2' sx={{ fontSize: 13 }}>
+              Vi phạm sẽ không được bảo hành
+            </Typography>
+          </MenuItem>
+        </Box>
+        <Typography variant='body1' sx={{ ml: 4, mt: 3 }}>
           Thông tin hỗ trợ
         </Typography>
         <MenuItem>

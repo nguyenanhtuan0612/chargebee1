@@ -17,6 +17,7 @@ import axios from 'axios';
 import { AccountUser } from 'src/@core/models/AccountUser.model';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import Link from 'next/link';
 
 interface Column {
   id: string;
@@ -101,6 +102,14 @@ const TableManagementAccount = (props: {
         return (
           <TableCell key={id} align={align}>
             {dataRow[id] ? 'Hoạt động' : 'Không hoạt động'}
+          </TableCell>
+        );
+      case 'email':
+        return (
+          <TableCell key={id} align={align}>
+            <Link href={`/transaction-history/${dataRow.id}`} as={`/transaction-history/${dataRow.id}`}>
+              {dataRow[id]}
+            </Link>
           </TableCell>
         );
       case 'role':
