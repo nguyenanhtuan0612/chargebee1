@@ -48,6 +48,16 @@ function getMailFromSmsMBB(data: string) {
     }
 }
 
+function getMailForm3(data: string) {
+    try {
+        const emailRegex = /\S+@\S+/;
+        const email = data.match(emailRegex);
+        return email[0];
+    } catch (error) {
+        return null;
+    }
+}
+
 const regexEmail =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/gi;
 
@@ -57,6 +67,8 @@ export function getEmailFromSms(data: string) {
             return getMailFromSmsVCB(data);
         case regexEmail.test(getMailFromSmsMBB(data)):
             return getMailFromSmsMBB(data);
+        case regexEmail.test(getMailForm3(data)):
+            return getMailForm3(data);
         default:
             return null;
     }
