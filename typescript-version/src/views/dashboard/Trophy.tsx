@@ -53,7 +53,7 @@ const Trophy = (props: Props) => {
           Doanh thu:
         </Typography>
         <Typography variant='h5' sx={{ marginTop: 1, marginBottom: 4, color: 'primary.main' }}>
-          {props.data.totalAccSellLastMonth.toLocaleString('en-US') + ' VND'}
+          {props.data.totalAmountSellLastMonth.toLocaleString('en-US') + ' VND'}
         </Typography>
         <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />
         <TrophyImg alt='trophy' src='/images/misc/trophy.png' />
