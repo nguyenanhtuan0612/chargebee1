@@ -14,11 +14,12 @@ interface Info {
   balance: number;
   role: 'admin' | 'customer' | 'collaborator';
   active: boolean;
+  type: 'basic' | 'advanced' | 'premium';
 }
 
 const TabAccount = () => {
   // ** State
-  const [info, setInfo] = useState<Info>({ id: '', email: '', balance: 0, role: 'admin', active: true });
+  const [info, setInfo] = useState<Info>({ id: '', email: '', balance: 0, role: 'admin', active: true, type: 'basic' });
   const [isLoading, setLoading] = useState(false);
   const handleCloseLoading = () => {
     setTimeout(() => {
@@ -34,6 +35,17 @@ const TabAccount = () => {
         return 'Khách hàng';
       default:
         return 'Cộng tác viên';
+    }
+  };
+
+  const renderTypeString = (info: Info) => {
+    switch (info.type) {
+      case 'advanced':
+        return 'Nâng cao';
+      case 'premium':
+        return 'Đầy đủ';
+      default:
+        return 'Cơ bản';
     }
   };
 
@@ -68,7 +80,7 @@ const TabAccount = () => {
                 value={renderRoleString(info)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
                 inputProps={{ readOnly: true }}
@@ -76,12 +88,20 @@ const TabAccount = () => {
                 label='Số dư'
                 value={info.balance.toLocaleString('en-US') + ' VND'}
               />
+            </Grid> */}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                inputProps={{ readOnly: true }}
+                type='type'
+                label='Loại tài khoản'
+                value={renderTypeString(info)}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 inputProps={{ readOnly: true }}
                 fullWidth
-                type='role'
                 label='Trạng thái'
                 value={info.active ? 'Hoạt động' : 'Bị vô hiệu hóa'}
               />

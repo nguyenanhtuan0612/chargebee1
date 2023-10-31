@@ -16,6 +16,7 @@ import { Account } from 'src/@core/models/UserInfo.model';
 import StatisticsCard from 'src/views/dashboard/StatisticsCard';
 import Trophy from 'src/views/dashboard/Trophy';
 import Product from './products';
+import Subcription from './subcriptions';
 
 const Dashboard = () => {
   const [data, setData] = useState({
@@ -144,7 +145,8 @@ const Home = () => {
     }
   }, []);
 
-  return account.role === 'admin' ? <Dashboard /> : <Product />;
+  // return account.role === 'admin' ? <Dashboard /> : <Product />;
+  return <Subcription />;
 };
 
 export default Home;

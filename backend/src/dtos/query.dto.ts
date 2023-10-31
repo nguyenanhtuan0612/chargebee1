@@ -1,5 +1,11 @@
 import { IsValueFilter } from '@/utils/validators';
-import { IsDefined, IsIn, IsString, Validate } from 'class-validator';
+import {
+    IsDefined,
+    IsIn,
+    IsOptional,
+    IsString,
+    Validate,
+} from 'class-validator';
 
 export class Filter {
     @IsString()

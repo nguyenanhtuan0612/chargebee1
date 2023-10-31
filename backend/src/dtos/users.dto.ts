@@ -82,6 +82,7 @@ export class UserResponse {
     balance: number;
     role: string;
     active: boolean;
+    type: string;
 
     constructor(iUser: User) {
         this.id = iUser.id;
@@ -89,6 +90,7 @@ export class UserResponse {
         this.balance = iUser.balance;
         this.role = iUser.role;
         this.active = iUser.active;
+        this.type = iUser.type;
     }
 }
 

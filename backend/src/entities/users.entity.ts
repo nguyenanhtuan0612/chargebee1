@@ -1,4 +1,4 @@
-import { Role } from '@/utils/constants';
+import { Role, Type } from '@/utils/constants';
 import {
     Column,
     CreatedAt,
@@ -39,6 +39,9 @@ export class User extends Model {
 
     @Column({ defaultValue: Role.CUSTOMER })
     role: string;
+
+    @Column({ defaultValue: Type.BASIC })
+    type: string;
 
     @Column({ defaultValue: true })
     active: boolean;

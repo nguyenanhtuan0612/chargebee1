@@ -15,45 +15,45 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TransactionService {
-    async cassoHook(dto: ICassoPaymentHookData, secureToken: string) {
+    async cassoHook(dto: any) {
         const config = await SystemConfig.findOne({ where: { active: true } });
         if (!config) {
             return 'not found config';
         }
-        if (secureToken !== config.secureToken) {
-            throw new ExceptionWithMessage(errors.FORBIDDEN_RESOURCE, 403);
-        }
+        // if (secureToken !== config.secureToken) {
+        //     throw new ExceptionWithMessage(errors.FORBIDDEN_RESOURCE, 403);
+        // }
+        console.log(dto.content.subscription.subscription_items);
+        // for (const iterator of dto.data) {
+        //     const email = getEmailFromSms(iterator.description);
+        //     console.log(email);
+        //     if (!email) {
+        //         console.log('cant not get email: ', iterator.description);
+        //         return 'can not get email';
+        //     }
+        //     const user = await User.findOne({
+        //         where: { email: email },
+        //     });
+        //     if (!user) {
+        //         return 'user not found';
+        //     }
 
-        for (const iterator of dto.data) {
-            const email = getEmailFromSms(iterator.description);
-            console.log(email);
-            if (!email) {
-                console.log('cant not get email: ', iterator.description);
-                return 'can not get email';
-            }
-            const user = await User.findOne({
-                where: { email: email },
-            });
-            if (!user) {
-                return 'user not found';
-            }
+        //     const oldPayment = await Payment.findOne({
+        //         where: { cassoId: iterator.id },
+        //     });
+        //     if (oldPayment) {
+        //         return 'oldPayment';
+        //     }
 
-            const oldPayment = await Payment.findOne({
-                where: { cassoId: iterator.id },
-            });
-            if (oldPayment) {
-                return 'oldPayment';
-            }
+        //     const payment = new Payment();
+        //     payment.amount = iterator.amount;
+        //     payment.userId = user.id;
+        //     payment.cassoId = iterator.id;
+        //     await payment.save();
 
-            const payment = new Payment();
-            payment.amount = iterator.amount;
-            payment.userId = user.id;
-            payment.cassoId = iterator.id;
-            await payment.save();
-
-            user.balance = user.balance + iterator.amount;
-            await user.save();
-        }
+        //     user.balance = user.balance + iterator.amount;
+        //     await user.save();
+        // }
         return 'ok';
     }
 

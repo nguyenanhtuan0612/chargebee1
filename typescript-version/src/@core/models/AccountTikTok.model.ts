@@ -10,3 +10,9 @@ export interface AccountTikTok {
   price: number;
   status?: any;
 }
+
+export interface SubPack {
+  link: string;
+  name: string;
+  price: number;
+}

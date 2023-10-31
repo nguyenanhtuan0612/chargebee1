@@ -24,7 +24,7 @@ import { Request, Response } from 'express';
 export class TransactionController {
     constructor(private readonly service: TransactionService) {}
 
-    @Post('/cassoWebhook')
+    @Post('/webhook')
     async create(
         @Res() res: Response,
         @Body() dto: ICassoPaymentHookData,
@@ -32,8 +32,8 @@ export class TransactionController {
     ) {
         try {
             //console.log(dto);
-            const secureToken = req.headers['secure-token'] as string;
-            const data = await this.service.cassoHook(dto, secureToken);
+            //const secureToken = req.headers['secure-token'] as string;
+            const data = await this.service.cassoHook(req.body);
             return res.status(200).json(data);
         } catch (error) {
             throw error;
