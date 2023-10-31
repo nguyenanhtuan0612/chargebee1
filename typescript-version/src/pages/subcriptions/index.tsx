@@ -38,7 +38,7 @@ const tiers = [
     buttonText: 'Subscribe now',
     buttonVariant: 'outlined',
     frequency: 'year',
-    link: 'https://legendsonlyhkt-test.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=Adv-USD-Yearly&subscription_items[quantity][0]=1&layout=in_app'
+    link: 'https://legendsonlyhkt.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=Plan099-USD-Yearly&subscription_items[quantity][0]=1&layout=in_app'
   },
   {
     title: 'Plan499',
@@ -47,7 +47,7 @@ const tiers = [
     buttonText: 'Subscribe now',
     buttonVariant: 'outlined',
     frequency: 'year',
-    link: 'https://legendsonlyhkt-test.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=Adv-USD-Yearly&subscription_items[quantity][0]=1&layout=in_app'
+    link: 'https://legendsonlyhkt.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=Plan499-USD-Yearly&subscription_items[quantity][0]=1&layout=in_app'
   },
   {
     title: 'Plan999',
@@ -56,7 +56,7 @@ const tiers = [
     buttonText: 'Subscribe now',
     buttonVariant: 'outlined',
     frequency: 'year',
-    link: 'https://legendsonlyhkt-test.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=Adv-USD-Yearly&subscription_items[quantity][0]=1&layout=in_app'
+    link: 'https://legendsonlyhkt.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=Plan999-USD-Yearly&subscription_items[quantity][0]=1&layout=in_app'
   },
   {
     title: 'Plan1999',
@@ -65,7 +65,7 @@ const tiers = [
     buttonText: 'Subscribe now',
     buttonVariant: 'outlined',
     frequency: 'year',
-    link: 'https://legendsonlyhkt-test.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=Adv-USD-Yearly&subscription_items[quantity][0]=1&layout=in_app'
+    link: 'https://legendsonlyhkt.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=Plan199-USD-Yearly&subscription_items[quantity][0]=1&layout=in_app'
   },
   {
     title: 'Plan4999',
@@ -74,7 +74,7 @@ const tiers = [
     buttonText: 'Subscribe now',
     buttonVariant: 'outlined',
     frequency: 'year',
-    link: 'https://legendsonlyhkt-test.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=Adv-USD-Yearly&subscription_items[quantity][0]=1&layout=in_app'
+    link: 'https://legendsonlyhkt.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=Plan4999-USD-Yearly&subscription_items[quantity][0]=1&layout=in_app'
   },
   {
     title: 'Vip-Now',
@@ -83,7 +83,7 @@ const tiers = [
     buttonText: 'Subscribe now',
     buttonVariant: 'outlined',
     frequency: 'week',
-    link: 'https://legendsonlyhkt-test.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=Adv-USD-Yearly&subscription_items[quantity][0]=1&layout=in_app'
+    link: 'https://legendsonlyhkt.chargebee.com/hosted_pages/checkout?subscription_items[item_price_id][0]=Vip-Now-USD-Weekly&subscription_items[quantity][0]=1&layout=in_app'
   }
 ];
 const footers = [
