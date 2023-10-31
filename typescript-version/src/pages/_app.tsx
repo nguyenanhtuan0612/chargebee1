@@ -63,7 +63,7 @@ const App = (props: ExtendedAppProps) => {
     <CacheProvider value={emotionCache}>
       <Head>
         <title>{`Subcription Pricing`}</title>
-        <meta name='description' content={`${themeConfig.templateName} –Tóp tóp`} />
+        <meta name='description' content={`Subcription Pricing - Chargebee`} />
         <meta name='keywords' content='Tóp tóp, tiktok, mua, bán, mua bán' />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
